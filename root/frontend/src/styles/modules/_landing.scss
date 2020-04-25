@@ -1,0 +1,82 @@
+#logo {
+    width: 70px;
+    height: 70px;
+    opacity: 0.77;
+    margin: 0 2rem;
+    color: #fff;
+    text-transform: uppercase;
+
+    &-link {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+#landing {
+    margin: 0;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    
+    &::after {
+        content: "";
+        background: url('../../images/bg-img.jpg') center right/cover no-repeat;
+        opacity: 0.5;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+    }
+}
+
+#navbar {
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+    height: 100vh;
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    ul {
+        display: flex;
+        margin: 0 4rem;
+        li {
+            justify-content: center;
+            margin: 0 1rem;
+            list-style: none;
+            padding-top: 0.7rem;
+        }
+
+        a {
+            color: black;
+            text-transform: uppercase;
+            border-bottom: 3px transparent solid;
+            padding-bottom: 0.5rem;
+            transition: border-color 1s;
+
+            &:hover {
+                border-color: yellow;
+                text-decoration: none;
+            }
+    
+            &.current {
+                border-color: orange;
+            }
+        }
+    }
+
+    #header-content {
+        text-align: center;
+        padding-top: 20%;
+    }
+}
+
+
+
+
+
