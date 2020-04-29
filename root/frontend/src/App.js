@@ -5,7 +5,12 @@ import Landing  from './components/Landing';
 function App() {
   return (
     <div className="App">
-      <Landing />
+      <Router>
+        <Switch>
+          <Route path="/landing" component={Landing} />
+          <Route path="/signup" component={SignUp} />
+        </Switch>
+      </Router>
     </div>
   );
 }
