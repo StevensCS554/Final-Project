@@ -9,6 +9,7 @@
     "bootstrap": "^4.4.1",
     "lodash": "^4.17.15",
     "react": "^16.13.1",
+    "react-materialize": "^3.8.10",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
