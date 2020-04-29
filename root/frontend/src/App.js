@@ -1,6 +1,9 @@
 import React from 'react';
 import './styles/App.scss';
 import Landing  from './components/Landing';
+import SignUp from './components/SignUp';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import './App.css';
 
 function App() {
   return (
