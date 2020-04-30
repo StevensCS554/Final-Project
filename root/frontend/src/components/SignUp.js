@@ -6,6 +6,9 @@ function SignUp() {
     return(
         <div style={{ display: "flex", justifyContent: "center"}}>
             <div className="vertical">
+                <div className="createNewAccount">
+                    <h3>Create a New Account</h3>
+                </div>
                 <div className="outerBox">
                     <TextInput id="SignUp-Email" label="Email"/>
                     <TextInput label="Username"/>
@@ -16,6 +19,9 @@ function SignUp() {
                     <Button node="button" type="submit" waves="light">
                         Submit
                     </Button>
+                </div>
+                <div className="alreadyHaveAccount">
+                    <a href='#'>Already Have an Account?</a>
                 </div>
             </div>
         </div>

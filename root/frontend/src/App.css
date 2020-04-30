@@ -19,3 +19,11 @@ body{
   justify-content: center;
   align-items: center;
 }
+
+.createNewAccount{
+  text-align: center;
+}
+
+.alreadyHaveAccount{
+  text-align: center;
+}
