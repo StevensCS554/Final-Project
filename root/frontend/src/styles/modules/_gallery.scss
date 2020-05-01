@@ -1,0 +1,24 @@
+#explore-gallery {
+    margin-top: 2rem;
+    border: red 3px solid;
+    min-height: 100vh;
+    max-width: 1920px;
+    display: flex;
+
+    &-sidebar {
+        border: green 3px solid;
+        flex: 0.6;
+        
+    }
+
+    &-showcase {
+        flex: 2;
+        border: orange 3px solid;
+    }
+
+    &-heading {
+        border: black 3px solid;
+        text-align: center;
+    }
+}
+

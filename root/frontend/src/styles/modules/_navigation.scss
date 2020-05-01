@@ -58,6 +58,33 @@
             }
         }
     }
+    &-profile {
+        display: flex;
+
+        div {
+            flex: 2;
+            text-align: center;
+            a {
+                padding: 0;
+            }
+        }
+        p {
+            display: inline;
+            color: $pro_light_green;
+            margin: auto 1rem;
+        }
+        img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+        a {
+            flex: 1;
+            padding: auto;
+            color: $pro_light_green;
+            padding-left: 3.5rem;
+        }
+    }
 }
 
 .current {

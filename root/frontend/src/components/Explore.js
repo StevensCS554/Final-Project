@@ -1,6 +1,8 @@
 import React from 'react';
 import Navigation from './utilities/Navigation';
 import Map from './utilities/Map';
+import Gallery from './utilities/Gallery';
+import Footer from './utilities/Footer';
 import { withGoogleMap, withScriptjs } from 'react-google-maps';
 
 
@@ -45,7 +47,8 @@ export default function Explore() {
                     }}>CLOSE GOOGLE MAP</button>
                 </div>
             </div>
-            <div><h1>hehe</h1></div>
+            <Gallery />
+            <Footer />
         </div>
     )
 }

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './styles/App.scss';
 import Landing from './components/Landing';
 import Explore from './components/Explore';
+import Userprofile from './components/Userprofile';
 
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <div className="App">
         <Route exact path='/' component={Landing} />
         <Route exact path='/explore' component={Explore} />
+        <Route exact path='/userprofile/:id' component={Userprofile} />
       </div>
     </Router>
   );

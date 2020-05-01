@@ -1,0 +1,52 @@
+#profile-form-container {
+    margin: 3rem auto;
+}
+
+#profile-form {
+    border: 3px green solid;
+    max-width: 38.2rem;
+    margin: 0 auto;
+    display: flex;
+
+    &-pic {
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem 0.5rem;
+        flex: 1;
+
+        input {
+            width: 50%;
+            margin: auto;
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    &-f {
+        flex: 1.3;
+
+        label {
+            display: block;
+        }
+        input {
+            width: 95%;
+        }
+        button {
+            width: 90%;
+            margin-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+    }
+}
+
+.form-group {
+    margin-left: 1rem;
+}
+
+#gender-input {
+    display: inline-block;
+}
+
+#age-input {
+    display: inline-block;
+    margin-left: 2rem;
+}
