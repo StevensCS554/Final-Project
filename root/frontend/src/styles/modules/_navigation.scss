@@ -40,6 +40,19 @@
     }
 }
 
+.standard-btn {
+    background-color: $pro_medium_green;
+    border-radius: 7px;
+    color: $pro_light_purple;
+    box-shadow: 2px 2px;
+    &:hover {
+        background-color: $pro_light_pink;
+        color: $pro_light_purple;
+        transform: scale(1.05);
+        transition: transform 0.79s;
+    }
+}
+
 #navbar-link {
     flex: 1;
     margin: auto auto;
@@ -83,6 +96,42 @@
             padding: auto;
             color: $pro_light_green;
             padding-left: 3.5rem;
+        }
+    }
+}
+
+#logout-pupup {
+    position: absolute;
+    top: 3rem;
+    right: 1rem;
+    z-index: 2;
+    background-color: $pro_light_green;
+    border-radius: 10px;
+    opacity: 0;
+    transition: opacity 0.3s linear;
+
+    p {
+        color: $pro_light_purple;
+    }
+
+    &-btns {
+        display: flex;
+        &-y {
+            flex: 1;
+            button {
+                color: $pro_medium_purple;
+                width: 3rem;
+                border-radius: 7px;
+                background-color: transparent;
+            }
+        }
+        &-n {
+            flex: 1;
+            button {
+                color: $pro_medium_purple;
+                width: 3rem;
+                border-radius: 7px;
+            }
         }
     }
 }

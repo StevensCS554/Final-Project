@@ -3,21 +3,23 @@
 }
 
 #profile-form {
-    border: 3px green solid;
     max-width: 38.2rem;
     margin: 0 auto;
     display: flex;
+    box-shadow: 2px 2px 3px 3px;
 
     &-pic {
         display: flex;
         flex-direction: column;
         padding: 0.5rem 0.5rem;
         flex: 1;
+        box-shadow: 1px 1px;
 
-        input {
-            width: 50%;
-            margin: auto;
-            margin-bottom: 0.5rem;
+        img {
+            box-shadow: 1.5px 1.5px;
+        }
+        button {
+            margin-top: 4.839rem;
         }
     }
 
@@ -40,6 +42,9 @@
 
 .form-group {
     margin-left: 1rem;
+    input {
+        box-shadow: -1px -1px;
+    }
 }
 
 #gender-input {
@@ -49,4 +54,10 @@
 #age-input {
     display: inline-block;
     margin-left: 2rem;
+    width: 3rem;
+}
+
+#zipcode-input {
+    display: inline-block;
+    width: 8rem;
 }

@@ -7,7 +7,7 @@ export default function ProfileForm() {
             <div id='profile-form'>
                 <div id='profile-form-pic'>
                     <img src={profile} />
-                    <input type='submit' />
+                    <button className='standard-btn' type='submit'>Change Avatar</button>
                 </div>
                 <form id='profile-form-f'>
                     <div className='form-group'>
@@ -26,6 +26,10 @@ export default function ProfileForm() {
                         <label htmlFor='age'>Age</label>
                         <input type='number' name='age' />
                     </div>
+                    <div className='form-group' id='zipcode-input'>
+                        <label htmlFor='zipcode'>Zip Code</label>
+                        <input type='text' name='zipcode' />
+                    </div>
                     <div className='form-group'>
                         <label htmlFor='cellphone'>Cell Phone</label>
                         <input type='tel' name='cellphone' />
@@ -35,7 +39,7 @@ export default function ProfileForm() {
                         <input type='tel' name='bio' />
                     </div>
                     
-                    <button className='submit-button' type='submit'>SAVE CHANGES</button>
+                    <button className='standard-btn' type='submit'>SAVE CHANGES</button>
                 </form>
             </div>
         </div>
