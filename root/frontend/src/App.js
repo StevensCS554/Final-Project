@@ -7,15 +7,15 @@ import Userprofile from './components/Userprofile';
 
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Route exact path='/' component={Landing} />
-        <Route exact path='/explore' component={Explore} />
-        <Route exact path='/userprofile/:id' component={Userprofile} />
-      </div>
-    </Router>
-  );
+   return (
+      <Router>
+         <div className="App">
+            <Route exact path='/' component={Landing} />
+            <Route exact path='/explore' component={Explore} />
+            <Route exact path='/userprofile/:id' component={Userprofile} />
+         </div>
+      </Router>
+   );
 }
 
 export default App;
