@@ -73,12 +73,22 @@
    }
    &-profile {
       display: flex;
-
-      div {
-         flex: 2;
+      
+      #div1 {
+         flex: 1;
          text-align: center;
-         a {
-            padding: 0;
+         width: 3rem;
+      }
+
+      #div2 {
+         flex: 1;
+         display: flex;
+         div {
+            flex: 1;
+            text-align: center;
+            a {
+               padding-top: auto;
+            }
          }
       }
       p {

@@ -84,7 +84,8 @@ export default function Gallery() {
 
          <div id='explore-gallery-showcase'>
             <div id='explore-gallery-heading'>
-               <p>Tags</p>
+               <h1>CHOOSE GROUPS TO JOIN TODAY!</h1>
+               <div className='energy-bar'></div>
             </div>
             <div id='explore-gallery-groups'>
 

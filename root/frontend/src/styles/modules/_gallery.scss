@@ -5,7 +5,6 @@
 #explore-gallery {
    margin-top: 2rem;
    margin-bottom: 3rem;
-   border: red 3px solid;
    min-height: 100vh;
    max-width: 1920px;
    box-sizing: border-box;
@@ -13,50 +12,69 @@
    overflow: scroll;
 
    &-sidebar {
-      border: green 3px solid;
+      border-radius: 20px;
+      margin-left: 0.5rem;
+      box-shadow: 1px 1px 1px 1px;
+      background-color: rgba(119, 28, 122, 0.5);
       flex: 0.6;
       min-height: 100vh;
       overflow: scroll;
 
       &-profile {
+         color: $pro_medium_purple;
          &-header {
             text-align: center;
             box-shadow: 1px 1px;
+            background-color: $pro_light_green;
+
             img {
                border-radius: 20px;
             }
             p {
                margin: 0.5rem auto;
+               color: $pro_light_purple;
             }
             border-bottom: 3px $pro_medium_purple solid;
          }
       }
 
       &-usergroup {
-         padding-bottom: 1rem;
          text-align: center;
+         color: wheat;
+         background-color: rgba(119, 28, 122, 0.3);
          border-bottom: 3px $pro_medium_purple solid;
-      }      
+         .standard-btn {
+            margin-bottom: 1rem;
+            color: wheat;
+         }
+      }
 
       &-usergroups {
          text-align: center;
+         color: wheat;
+         background-color: rgba(119, 28, 122, 0.3);
          border-bottom: 3px $pro_medium_purple solid;
       }
 
       &-groups-list {
          text-align: center;
+         background-color: rgba(119, 28, 122, 0.3);
          border-bottom: 3px $pro_medium_purple solid;
       }
    }
 
    &-showcase {
       flex: 2;
-      border: orange 3px solid;
+      box-shadow: 2px 2px 2px 2px;
+      margin-left: 1rem;
+      margin-right: 0.5rem;
    }
 
    &-heading {
-      border: black 3px solid;
       text-align: center;
+      .energy-bar {
+         width: 70%;
+      }
    }
 }
 
