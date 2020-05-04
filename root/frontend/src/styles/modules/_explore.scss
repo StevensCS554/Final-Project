@@ -1,0 +1,40 @@
+#explore-heading {
+   text-align: center;
+   font-size: 1.3rem;
+   color: $pro_medium_purple;
+   text-transform: uppercase;
+   font-family: Georgia, "Times New Roman", Times, serif;
+   margin-top: 0.5rem;
+   margin-bottom: 0rem;
+   p {
+      margin: auto auto;
+   }
+}
+
+#google-map {
+   box-shadow: 3px 3px 3px 3px;
+   max-width: 1350px;
+   transition: height 0.5s linear;
+
+   &-switches {
+      button {
+         display: block;
+         margin: 0.2rem auto;
+         background-color: $pro_medium_purple;
+         color: $pro_light_green;
+         width: 170px;
+         border-radius: 20px;
+
+         &:hover {
+            color: $pro_medium_purple;
+            background-color: $pro_light_pink;
+            transform: scale(1.06);
+            transition: transform 0.7s;
+         }
+      }
+   }
+}
+
+#map-on {
+   display: none;
+}
