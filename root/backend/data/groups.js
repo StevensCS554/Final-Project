@@ -18,18 +18,16 @@ async function getById(id) {
     return group;
 };
 
-async function creatGroup(name, location, mamager, description) {
-    console.log(0);
-
+async function creatGroup(name, location, manager, description) {
     const newGroup = {
         name: name,
         location: location,
-        mamager: mamager,
+        manager: manager,
         user: [],
         description: description
     }
     const groupsCollection = await groups();
-    const insertedGroup = await groupsCollection.insertOne(newPostTask);
+    const insertedGroup = await groupsCollection.insertOne(newGroup);
     // if(insertedGroup.id)
     return newGroup;
 };
