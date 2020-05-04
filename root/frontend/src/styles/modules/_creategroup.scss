@@ -1,0 +1,93 @@
+#create-group {
+   min-height: 90vh;
+
+   &-container {
+      display: flex;
+      width: 80%;
+      height: 70vh;
+      margin: auto auto;
+      margin-top: 10vh;
+      box-shadow: 2px 2px 2px 2px;
+   }
+
+   &-profile {
+      flex: 1;
+      text-align: center;
+      img {
+         width: 95%;
+         height: 80%;
+         box-shadow: 2px 2px;
+      }
+      button {
+         margin-top: 2rem;
+      }
+   }
+
+   &-form {
+      flex: 1.1;
+      text-align: center;
+      margin-left: 1rem;
+
+      label {
+         display: block;
+      }
+
+      .single-input {
+         margin: 1rem auto;
+
+         input {
+            width: 95%;
+            box-shadow: -1px -1px;
+         }
+      }
+
+      p {
+         margin-bottom: 0;
+         font-size: large;
+         text-align: center;
+      }
+
+      .energy-bar {
+         width: 7rem;
+      }
+   }
+
+   #group-limitations {
+      display: flex;
+
+      #age-limitations {
+         flex: 1;
+         display: flex;
+         text-align: center;
+         justify-content: space-between;
+
+         input {
+            width: 3rem;
+         }
+
+         #p1 {
+            display: inline-block;
+            text-align: center;
+         }
+         #p2 {
+            display: inline-block;
+            text-align: center;
+         }
+      }
+      #gender-limitations {
+         flex: 1;
+         text-align: center;
+      }
+      #number-limitations {
+         flex: 1;
+         text-align: center;
+         input {
+            width: 5rem;
+         }
+      }
+   }
+
+   #group-form-btn {
+      margin-top: 3rem;
+   }
+}
