@@ -12,7 +12,7 @@ async function createUser(name, email, phone = null, gender = null, age = null, 
       age: age,
       location: location,
       bio: bio,
-      groups: []
+      groups: null
    };
    const usersCollection = await getCollection();
    const findUser = await usersCollection.findOne({ $and: [{ name: name, email: email }] });
