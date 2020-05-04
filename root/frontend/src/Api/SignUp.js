@@ -1,7 +1,6 @@
 import {firebaseApp, userRef} from "../firebase";
 
 export default (email, username, address, password) => {
-    console.log("this is sign up function!!!!!!!!!!!!!!!!!");
 
     if(!username || !address){
         return false;
