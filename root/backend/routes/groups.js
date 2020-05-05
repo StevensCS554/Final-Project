@@ -19,7 +19,6 @@ router.get("/", async (req, res) => {
 //create
 router.post("/", async (req, res) => {
     try {
-        console.log("hello");
         const name = req.body.name;
         const location = req.body.location;
         //TODO: 
@@ -62,7 +61,7 @@ router.post("/", async (req, res) => {
         }
 
         const newGroup = await groupsData.creatGroup(name, location, manager, description);
-        res.send(newGroup);
+        res.json(newGroup);
     } catch (e) {
         res.status(200).json(e);
     }

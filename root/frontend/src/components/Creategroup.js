@@ -1,9 +1,87 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
 import defaultGroup from '../images/group-bg.jpg';
 
 export default function Creategroup() {
+
+   useEffect(() => {
+      document.getElementById("group-form-btn").addEventListener("click", createGroup);
+      document.getElementById("upload-profile-btn").addEventListener("click", createGroup);
+   }, []);
+
+   async function createGroup() {
+      const groupName = document.getElementById('groupName').value;
+      //const form = $(this).parent();
+      //const groupName = form.find("#groupName").value;
+      if (!groupName) {
+         alert("Please input the groupName!")
+         return false;
+      }
+      const groupNotice = document.getElementById('groupNotice').value;
+      //const groupNotice = form.find("#groupNotice").value;
+      if (!groupNotice) {
+         alert("Please input the groupNotice!")
+         return false;
+      }
+      const maxAge = document.getElementById('maxAge').value;
+      //const maxAge = form.find("#maxAge").value;
+      if (!maxAge) {
+         alert("Please input the maxAge!")
+         return false;
+      }
+      if (maxAge < 10 || maxAge > 100) {
+         alert("Max Age should be in range 10~100!")
+         return false;
+      }
+      const minAge = document.getElementById('minAge').value;
+      //const minAge = form.find("#minAge").value;
+      if (!minAge) {
+         alert("Please input the minAge!")
+         return false;
+      }
+      if (minAge < 10 || minAge > 100) {
+         alert("Min Age should be in range 10~100!")
+         return false;
+      }
+      if (minAge > maxAge) {
+         alert("Min Age should not be bigger than max age!")
+         return false;
+      }
+      const maxGroupNo = document.getElementById('maxGroupNo').value;
+      //const maxGroupNo = form.find("#maxGroupNo").value;
+      if (!maxGroupNo) {
+         alert("Please input the maxGroupNo!")
+         return false;
+      }
+      if (maxGroupNo <= 0) {
+         alert("Max group number should be bigger than 0!")
+         return false;
+      }
+      const response = await fetch("http://localhost:4000/group", {
+         method: "POST",
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+            name: groupName,
+            location: groupNotice,
+            manager: maxAge,
+            //minAge: minAge,
+            description: document.getElementById("gender").value
+            //maxGroupNo: maxGroupNo
+         })
+      });
+      if (response.status == 200) {
+         alert('Succes!');
+      }
+      else {
+         alert('Sorry, something went wrong!');
+         console.log(await response.json());
+      }
+      window.location.reload();
+   }
+
    return (
       <div>
          <Navigation />
@@ -11,7 +89,7 @@ export default function Creategroup() {
             <div id='create-group-container'>
                <div id='create-group-profile'>
                   <img src={defaultGroup} />
-                  <button className='standard-btn'>UPLOAD PROFILE</button>
+                  <button id='upload-profile-btn' className='standard-btn'>UPLOAD PROFILE</button>
                </div>
                <div id='create-group-form'>
                   <form>
@@ -29,11 +107,11 @@ export default function Creategroup() {
                      <div id='group-limitations'>
                         <div id='age-limitations'>
                            <div id='p1'>
-                              <label htmlFor='maxAge'>Min Age</label>
+                              <label htmlFor='maxAge'>Max Age</label>
                               <input type='number' id='maxAge' name='maxAge' />
                            </div>
                            <div id='p2'>
-                              <label htmlFor='minAge'>Max Age</label>
+                              <label htmlFor='minAge'>Min Age</label>
                               <input type='number' id='minAge' name='minAge' />
                            </div>
                         </div>
