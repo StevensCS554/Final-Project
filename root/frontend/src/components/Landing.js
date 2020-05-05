@@ -40,7 +40,7 @@ const Landing = () => {
                   <ul>
                      <li><a href='#' className='current'>Home</a></li>
                      <li><Link to='/explore'><a>Explore</a></Link></li>
-                     <li><a href='#'>Login</a></li>
+                     <li><Link to='/signin'><a>Signin</a></Link></li>
                      <li><a href='#'>Sigup</a></li>
                   </ul>
                </nav>
