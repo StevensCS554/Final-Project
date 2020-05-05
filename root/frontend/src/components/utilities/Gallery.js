@@ -59,7 +59,7 @@ export default function Gallery() {
                      <button onClick={() => handleToggle1()} className='click-to-reveal'>The groups you are in</button>
                      <div style={{display: 'none'}} ref={toggle1Ref}>
                         <ul>
-                           <li>Group 1</li>
+                           <Link to='/group-profile/1'><li>Group 1</li></Link>
                            <li>Group 2</li>
                            <li>Group 3</li>
                         </ul>

@@ -1,0 +1,89 @@
+#group-profile {
+   height: 100vh;
+   max-width: 1920px;
+   margin: 3rem auto;
+   margin-bottom: 10rem;
+
+   &-container {
+      display: flex;
+      width: 90%;
+      height: 100%;
+      margin: auto auto;
+      box-shadow: 2px 2px 2px 2px;
+
+      #group-member-list {
+         flex: 1;
+         width: 100%;
+         height: 100%;
+         overflow: scroll;
+         text-align: center;
+         #group-manager {
+            box-shadow: 2px 2px 2px 2px;
+            img {
+               border-radius: 50%;
+            }
+         }
+
+         .single-group-member {
+            margin-top: 0.5rem;
+            box-shadow: 2px 2px 2px 2px;
+            background-color: $pro_light-pink;
+            p {
+               display: inline-block;
+               font-size: larger;
+               margin-right: 2rem;
+            }
+            img {
+               width: 4rem;
+               height: 4rem;
+               border-radius: 50%;
+            }
+            
+            div {
+               margin-top: 0.5rem;
+               display: flex;
+               a {
+                  flex: 1;
+               }
+            }
+         }
+      }
+
+      #group-info {
+         flex: 1.5;
+         width: 100%;
+         height: 100%;
+         overflow: scroll;
+         &-pic {
+            width: 70%;
+            margin-left: auto;
+            margin-right: auto;
+         }
+         &-name {
+            text-align: center;
+            font-size: 2rem;
+         }
+         &-notice {
+            text-align: center;
+            font-size: 1.5rem;
+         }
+         img {
+            width: 100%;
+            height: 20%;
+         }
+         &-posts {
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+            .single-posts {
+               background-color: rgb(212, 211, 211);
+            }
+         }
+      }
+   }
+}
+
+#join-group {
+   margin-top: 3rem;
+   text-align: center;
+}

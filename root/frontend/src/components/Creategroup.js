@@ -3,6 +3,7 @@ import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
 import defaultGroup from '../images/group-bg.jpg';
 
+
 export default function Creategroup() {
    return (
       <div>
