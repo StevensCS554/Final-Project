@@ -5,15 +5,13 @@ export default (email, password) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((data) => {
-        console.log(data.user);
-        userRef.child(data.user.uid).once("value", snapshot => {
-            console.log(snapshot.val());
-            return snapshot.val();
-        });
+        if(data.user){
+            console.log("there have user");
+        }
     })
     .catch(err => {
         console.log(err.message);
         console.log("User Not Found and not Signed");
-        return err;
+        return err;// is not functioning right
     });  
 };
