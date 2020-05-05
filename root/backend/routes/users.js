@@ -4,25 +4,24 @@ const { ObjectId } = require("mongodb");
 //middleware
 // const middleware 	= require("../middleware");
 const data = require('../data');
-const groupsData = data.groupsData;
+const usersData = data.usersData;
 
-//index
-router.get("/", async (req, res) => {
-    try {
-        const allGroup = await groupsData.getAll();
-        res.json(allGroup)
-    } catch (e) {
-        res.status(200).json(e);
-    }
-});
+// //index
+// router.get("/", async (req, res) => {
+//     try {
+//         const allGroup = await usersData.getAll();
+//         res.json(allGroup)
+//     } catch (e) {
+//         res.status(200).json(e);
+//     }
+// });
 
 //create
 router.post("/", async (req, res) => {
     try {
-        console.log("hello");
+
         const name = req.body.name;
         const location = req.body.location;
-        //TODO: 
         const manager = req.body.manager;
         //manager should be current user!
         //using the gived for now
@@ -61,8 +60,8 @@ router.post("/", async (req, res) => {
             throw "You Must Provide A description!";
         }
 
-        const newGroup = await groupsData.creatGroup(name, location, manager, description);
-        res.send(newGroup);
+        const newGroup = await usersData.creatGroup(name, location, manager, description);
+        res.json(newGroup);
     } catch (e) {
         res.status(200).json(e);
     }
@@ -75,7 +74,7 @@ router.get("/:id", async (req, res) => {
         const id = req.params.id;
         const checkedId = checkId(id);
 
-        const targetGroup = await groupsData.getById(checkedId);
+        const targetGroup = await usersData.getById(checkedId);
         res.json(targetGroup);
     } catch (e) {
         res.status(200).json(e);
@@ -87,7 +86,7 @@ router.get("/:id", async (req, res) => {
 // router.get("/:id/edit", (req, res) => {
 //     const id = req.params.id;
 //     const checkedId = checkId(id);
-//     const targetGroup = await groupsData.getById(checkedId);
+//     const targetGroup = await usersData.getById(checkedId);
 // });
 
 //update group
@@ -130,7 +129,7 @@ router.put("/:id", async (req, res) => {
             }
         }
 
-        const updatedGroup = await groupsData.updateGroup(checkedId, name, location, mamager, description);
+        const updatedGroup = await usersData.updateGroup(checkedId, name, location, mamager, description);
         res.json(updatedGroup);
     } catch (e) {
         res.status(200).json(e);
@@ -144,7 +143,7 @@ router.delete("/:id", async (req, res) => {
         const id = req.params.id;
         const checkedId = checkId(id);
 
-        const deleted = await groupsData.deleteGroupById(checkId);
+        const deleted = await usersData.deleteGroupById(checkId);
     } catch (e) {
         res.status(200).json(e);
     }

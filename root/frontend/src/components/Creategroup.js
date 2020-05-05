@@ -21,8 +21,8 @@ export default function Creategroup() {
                      </div>
 
                      <div className='single-input'>
-                        <label for='groupName'>Group Notice</label>
-                        <input type='text' name='groupName' id='groupName' />
+                        <label for='groupNotice'>Group Notice</label>
+                        <input type='text' name='groupNotice' id='groupNotice' />
                      </div>
                      <p>Group Limitations</p>
                      <div className='energy-bar'></div>
@@ -49,11 +49,11 @@ export default function Creategroup() {
 
                         <div id='number-limitations'>
                            <label>Max Number</label>
-                           <input type='number' name='maxGroupNo' />
+                           <input type='number' name='maxGroupNo' id='maxGroupNo' />
                         </div>
                      </div>
 
-                     <button id='group-form-btn' className='standard-btn' type='submit'>SUBMIT</button>
+                     <button id='group-form-btn' className='standard-btn'>SUBMIT</button>
                   </form>
 
                </div>
