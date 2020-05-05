@@ -21,15 +21,12 @@ router.post("/", async (req, res) => {
     try {
 
         const name = req.body.name;
+        const email = req.body.email;
+        const phone = req.body.phone;
+        const gender = req.body.gender;
+        const age = req.body.age;
         const location = req.body.location;
-        const manager = req.body.manager;
-        //manager should be current user!
-        //using the gived for now
-        // const manager = {
-        //     id: req.user._id,
-        //     username: req.user.username
-        // };
-        const description = req.body.description;
+        const bio = req.body.bio;
 
         if (name) {
             if (typeof name !== 'string') {
@@ -38,120 +35,106 @@ router.post("/", async (req, res) => {
         } else {
             throw "You Must Provide A Name!";
         }
-        if (location) {
-            if (typeof location !== 'string') {
-                throw `You Must Provide A location with string type! what you give:${typeof location}`;
+        if (email) {
+            if (typeof email !== 'string') {
+                throw `You Must Provide A email with string type! what you give:${typeof location}`;
             }
         } else {
-            throw "You Must Provide A location!";
+            throw "You Must Provide A email!";
         }
-        if (manager) {
-            if (typeof manager !== 'string') {
-                throw `You Must Provide A location with string type! what you give:${typeof manager}`;
-            }
-        } else {
-            throw "You Must Provide A location!";
-        }
-        if (description) {
-            if (typeof description !== 'string') {
-                throw `You Must Provide A description with string type! what you give:${typeof description}`;
-            }
-        } else {
-            throw "You Must Provide A description!";
-        }
-
-        const newGroup = await usersData.creatGroup(name, location, manager, description);
-        res.json(newGroup);
+        
+        const newUser = await usersData.createUser(name, email, phone, gender, age, location, bio);
+        res.json(newUser);
     } catch (e) {
         res.status(200).json(e);
     }
 });
 
-//show
 router.get("/:id", async (req, res) => {
     try {
 
         const id = req.params.id;
         const checkedId = checkId(id);
 
-        const targetGroup = await usersData.getById(checkedId);
-        res.json(targetGroup);
+        const user = await usersData.readUser(checkedId);
+        res.json(user);
     } catch (e) {
         res.status(200).json(e);
     }
 });
 
-// // TODO:
-// //edit page
-// router.get("/:id/edit", (req, res) => {
-//     const id = req.params.id;
-//     const checkedId = checkId(id);
-//     const targetGroup = await usersData.getById(checkedId);
-// });
-
-//update group
 router.put("/:id", async (req, res) => {
     try {
 
-        const id = req.params.id;
         const name = req.body.name;
+        const email = req.body.email;
+        const phone = req.body.phone;
+        const gender = req.body.gender;
+        const age = req.body.age;
         const location = req.body.location;
-        //TODO: 
-        const manager = req.body.manager;
-        //manager should be current user!
-        //using the gived for now
-        // const manager = {
-        //     id: req.user._id,
-        //     username: req.user.username
-        // };
-        const description = req.body.description;
+        const bio = req.body.bio;
 
-        //error check
-        const checkedId = checkId(id);
         if (name) {
             if (typeof name !== 'string') {
                 throw `You Must Provide A Name with string type! what you give:${typeof name}`;
             }
+        } else {
+            throw "You Must Provide A Name!";
         }
-        if (location) {
-            if (typeof location !== 'string') {
-                throw `You Must Provide A location with string type! what you give:${typeof location}`;
+        if (email) {
+            if (typeof email !== 'string') {
+                throw `You Must Provide A email with string type! what you give:${typeof location}`;
             }
+        } else {
+            throw "You Must Provide A email!";
         }
-        if (manager) {
-            if (typeof manager !== 'string') {
-                throw `You Must Provide A location with string type! what you give:${typeof manager}`;
-            }
-        }
-        if (description) {
-            if (typeof id !== 'string') {
-                throw `You Must Provide A description with string type! what you give:${typeof id}`;
-            }
-        }
+        
+        const updatedUser = await usersData.updateUser(name, email, phone, gender, age, location, bio);
+        res.json(updatedUser);
 
-        const updatedGroup = await usersData.updateGroup(checkedId, name, location, mamager, description);
-        res.json(updatedGroup);
     } catch (e) {
         res.status(200).json(e);
     }
 });
 
-//destory campground route
 router.delete("/:id", async (req, res) => {
     try {
 
-        const id = req.params.id;
-        const checkedId = checkId(id);
+        const checkedId = checkId(req.params.id);
 
-        const deleted = await usersData.deleteGroupById(checkId);
+        const deletedUser = await usersData.deleteGroupById(checkedId);
+        res.json(deletedUser);
     } catch (e) {
         res.status(200).json(e);
     }
 
 })
 
+router.put("/:userId/:groupId", async (req, res) =>{
+    try {
+        const checkedUserId = checkId(req.params.userId);
+        const checkedGroupId = checkId(req.params.groupId);
+
+        const addedUser = await usersData.addGroup(checkedUserId, checkedGroupId);
+        res.json(addedUser);
+    } catch (e) {
+        res.status(200).json(e);
+    }
+})
+
+router.delete("/:userId/:groupId", async (req, res) =>{
+    try {
+        const checkedUserId = checkId(req.params.userId);
+        const checkedGroupId = checkId(req.params.groupId);
+
+        const removedUser = await usersData.removeGroup(checkedUserId, checkedGroupId);
+        res.json(removedUser);
+    } catch (e) {
+        res.status(200).json(e);
+    }
+})
+
 //-----------------------------------check--------------------------------------
-//helper
 function checkId(id) {
     if (!id) throw "You Must Provide A Id!";
     if (id._bsontype == "ObjectID") {

@@ -143,7 +143,7 @@ router.delete("/:id", async (req, res) => {
         const id = req.params.id;
         const checkedId = checkId(id);
 
-        const deleted = await groupsData.deleteGroupById(checkId);
+        const deleted = await groupsData.deleteGroupById(checkedId);
     } catch (e) {
         res.status(200).json(e);
     }
