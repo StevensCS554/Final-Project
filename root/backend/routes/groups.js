@@ -129,7 +129,7 @@ router.put("/:id", async (req, res) => {
          }
       }
 
-      const updatedGroup = await groupsData.updateGroup(checkedId, name, location, mamager, description);
+      const updatedGroup = await groupsData.updateGroup(checkedId, name, location, manager, description);
       res.json(updatedGroup);
    } catch (e) {
       res.status(200).json(e);
