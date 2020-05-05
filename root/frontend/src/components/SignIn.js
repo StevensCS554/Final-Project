@@ -5,8 +5,11 @@ class SignIn extends Component{
 
     onSignIn = () =>{
         const result = signIn("18781099692@163.com", "123456");
-        //console.log("the result of sign in");
-        //console.log(result);
+        if(result){
+            window.location.replace('/explore');
+        }else{
+            alert('Sorry, the email and the password is not match.')
+        }
       }
 
     render(){
