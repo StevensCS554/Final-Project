@@ -18,7 +18,6 @@ router.get("/", async (req, res) => {
 
 //create
 router.post("/", async (req, res) => {
-<<<<<<< HEAD
     try {
         const name = req.body.name;
         const location = req.body.location;
@@ -66,56 +65,6 @@ router.post("/", async (req, res) => {
     } catch (e) {
         res.status(200).json(e);
     }
-=======
-   try {
-
-      const name = req.body.name;
-      const location = req.body.location;
-      //TODO: 
-      const manager = req.body.manager;
-      //manager should be current user!
-      //using the gived for now
-      // const manager = {
-      //     id: req.user._id,
-      //     username: req.user.username
-      // };
-      const description = req.body.description;
-
-      if (name) {
-         if (typeof name !== 'string') {
-            throw `You Must Provide A Name with string type! what you give:${typeof name}`;
-         }
-      } else {
-         throw "You Must Provide A Name!";
-      }
-      if (location) {
-         if (typeof location !== 'string') {
-            throw `You Must Provide A location with string type! what you give:${typeof location}`;
-         }
-      } else {
-         throw "You Must Provide A location!";
-      }
-      if (manager) {
-         if (typeof manager !== 'string') {
-            throw `You Must Provide A location with string type! what you give:${typeof manager}`;
-         }
-      } else {
-         throw "You Must Provide A location!";
-      }
-      if (description) {
-         if (typeof description !== 'string') {
-            throw `You Must Provide A description with string type! what you give:${typeof description}`;
-         }
-      } else {
-         throw "You Must Provide A description!";
-      }
-
-      const newGroup = await groupsData.creatGroup(name, location, mamager, description);
-      res.json(newGroup);
-   } catch (e) {
-      res.status(200).json(e);
-   }
->>>>>>> e9593f7b2485c689f669acf1f51829aa24708440
 });
 
 //show
@@ -194,17 +143,10 @@ router.delete("/:id", async (req, res) => {
       const id = req.params.id;
       const checkedId = checkId(id);
 
-<<<<<<< HEAD
         const deleted = await groupsData.deleteGroupById(checkedId);
     } catch (e) {
         res.status(200).json(e);
     }
-=======
-      const deleted = await groupsData.deleteGroupById(checkId);
-   } catch (e) {
-      res.status(200).json(e);
-   }
->>>>>>> e9593f7b2485c689f669acf1f51829aa24708440
 
 })
 
