@@ -8,18 +8,6 @@ import { doSignOut } from '../../firebase/FirebaseFunctions';
 export default function Navigation() {
    const { currentUser } = useContext(AuthContext);
 
-   useEffect(() => {
-      document.getElementById("signout-button").addEventListener("click", onSignOut);
-   }, []);
-
-   function onSignOut(){
-      firebaseApp.auth().signOut().then(function() {
-         // Sign-out successful.
-       }).catch(function(error) {
-         // An error happened.
-       });
-       window.location.replace('/signin');
-   }
 
    return (
       <div className='navigation-bar'>
@@ -50,7 +38,7 @@ export default function Navigation() {
                      <div>
                         <a href='#' onClick={() => {
                            const logout = document.querySelector('#logout-pupup');
-                           logout.style.opacity = '1'; 
+                           logout.style.opacity = '1';
                         }} >LOGOUT</a>
                      </div>
                   </div>

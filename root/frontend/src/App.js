@@ -9,6 +9,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import Creategroup from './components/Creategroup';
 import Userprofile from './components/Userprofile';
+import Groupprofile from './components/Groupprofile';
 
 function App() {
    return (
