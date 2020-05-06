@@ -12,13 +12,46 @@ export default function Signup() {
       e.preventDefault();
       const { username, email, password } = e.target.elements;
       try {
-         await doCreateUserWithEmailAndPassword(email.value, password.value, username.value);
+         const email_v = email.value;
+         const password_v = password.value;
+         const username_v = username.value;
+         if (!email_v) {
+            throw 'No email provided!';
+         }
+         if (!password_v) {
+            throw 'No password provided!';
+         }
+         if (!username_v) {
+            throw 'No username provided!';
+         }
+         await doCreateUserWithEmailAndPassword(email_v, password_v, username_v);
+         const response = await fetch("http://localhost:4000/user", {
+            method: "POST",
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+               name: username_v,
+               email: email_v
+            })
+         });
+
+//do something with session
+
+         if (response.status == 200) {
+            alert('Succes! Redirect to landing page!');
+         }
+         else {
+            alert('Sorry, something went wrong!');
+            console.log(await response.json());
+         }
+         window.location.href = "http://localhost:3000/";
       } catch (e) {
-         alert(e);
+         alert(e.message ? e.message : e);
       }
    }
 
-   
+
 
    return (
       <div>
