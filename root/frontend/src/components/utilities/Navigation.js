@@ -8,6 +8,19 @@ import { doSignOut } from '../../firebase/FirebaseFunctions';
 export default function Navigation() {
    const { currentUser } = useContext(AuthContext);
 
+   useEffect(() => {
+      document.getElementById("signout-button").addEventListener("click", onSignOut);
+   }, []);
+
+   function onSignOut(){
+      firebaseApp.auth().signOut().then(function() {
+         // Sign-out successful.
+       }).catch(function(error) {
+         // An error happened.
+       });
+       window.location.replace('/signin');
+   }
+
    return (
       <div className='navigation-bar'>
          <div id='navbar-logo'>
@@ -37,7 +50,7 @@ export default function Navigation() {
                      <div>
                         <a href='#' onClick={() => {
                            const logout = document.querySelector('#logout-pupup');
-                           logout.style.opacity = '1';
+                           logout.style.opacity = '1'; 
                         }} >LOGOUT</a>
                      </div>
                   </div>
@@ -46,13 +59,13 @@ export default function Navigation() {
                   <div id='logout-pupup'>
                      <p>Are you sure to logout?</p>
                      <div id='logout-pupup-btns'>
-                        <div id='logout-pupup-btns-y'>
+                        <div id='signout-button'>
                            <button onClick={() => {
                               doSignOut()
                               alert('success logout')
                            }}>Yes</button>
                         </div>
-                        <div id='logout-pupup-btns-n'>
+                        <div id='logout-pupup-btns-y'>
                            <button onClick={() => {
                               const logout = document.querySelector('#logout-pupup');
                               logout.style.opacity = '0';

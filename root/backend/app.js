@@ -12,7 +12,7 @@ app.use(express.json());
 const configRoute = require("./routes");
 configRoute(app);
 
-app.listen(process.env.PORT || 3000, process.env.IP, (req, res) => {
+app.listen(process.env.PORT || 4000, process.env.IP, (req, res) => {
     console.log("express start!");
-    console.log("http://localhost:3000");
+    console.log("http://localhost:4000");
 })
