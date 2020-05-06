@@ -1,10 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.png';
-import profile from '../../images/team-bg.jpeg'
+import profile from '../../images/team-bg.jpeg';
+import {firebaseApp} from "../../firebase";
 
 export default function Navigation() {
    const [isLoggedIn, setLoggedIn] = useState(true);
+
+   useEffect(() => {
+      document.getElementById("signout-button").addEventListener("click", onSignOut);
+   }, []);
+
+   function onSignOut(){
+      firebaseApp.auth().signOut().then(function() {
+         // Sign-out successful.
+       }).catch(function(error) {
+         // An error happened.
+       });
+       window.location.replace('/signin');
+   }
 
    return (
       <div className='navigation-bar'>
@@ -35,7 +49,7 @@ export default function Navigation() {
                      <div>
                         <a href='#' onClick={() => {
                            const logout = document.querySelector('#logout-pupup');
-                           logout.style.opacity = '1';
+                           logout.style.opacity = '1'; 
                         }} >LOGOUT</a>
                      </div>
                   </div>
@@ -44,13 +58,13 @@ export default function Navigation() {
                   <div id='logout-pupup'>
                      <p>Are you sure to logout?</p>
                      <div id='logout-pupup-btns'>
-                        <div id='logout-pupup-btns-y'>
+                        <div id='signout-button'>
                            <button onClick={() => {
                               const logout = document.querySelector('#logout-pupup');
                               logout.style.opacity = '0';
                            }}>Yes</button>
                         </div>
-                        <div id='logout-pupup-btns-n'>
+                        <div id='logout-pupup-btns-y'>
                            <button onClick={() => {
                               const logout = document.querySelector('#logout-pupup');
                               logout.style.opacity = '0';
