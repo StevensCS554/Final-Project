@@ -14,7 +14,7 @@ class SignIn extends Component{
     }
 
     onSignIn = () =>{
-        const result = signIn("18781099692@163.com", "123456");
+        const result = signIn(this.state.email, this.state.password);
         console.log("the result of signin of api : " + result);
         /*
         if(result){
