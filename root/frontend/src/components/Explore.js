@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Navigation from './utilities/Navigation';
 import Map from './utilities/Map';
 import Gallery from './utilities/Gallery';
 import Footer from './utilities/Footer';
+import { AuthContext } from '../firebase/Auth';
 import { withGoogleMap, withScriptjs } from 'react-google-maps';
 
 
@@ -10,6 +11,8 @@ const WrappedMap = withScriptjs(withGoogleMap(Map));
 
 export default function Explore() {
 
+   const {currentUser} = useContext(AuthContext);
+   console.log(currentUser);
    return (
       <div>
          <Navigation />

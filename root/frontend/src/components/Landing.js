@@ -1,12 +1,15 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useContext } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import logo from '../images/logo.png';
 import teamBg from '../images/team-bg.jpeg';
 import { throttle } from 'lodash';
 import Footer from './utilities/Footer';
+import { AuthContext } from '../firebase/Auth';
 
 
 const Landing = () => {
+
+   const { currentUser } = useContext(AuthContext);
 
    useEffect(() => {
       events();
@@ -30,6 +33,10 @@ const Landing = () => {
          el.classList.add('is-visible');
    }
 
+   if (currentUser) {
+      return <Redirect to='explore' />
+   }
+
    return (
       <div id='landing-component'>
          {/* navbar and header */}
@@ -39,9 +46,9 @@ const Landing = () => {
                   <a id='logo-link' href='#'><img id='logo' src={logo} alt='company logo' /></a>
                   <ul>
                      <li><a href='#' className='current'>Home</a></li>
-                     <li><Link to='/explore'><a>Explore</a></Link></li>
-                     <li><a href='#'>Login</a></li>
-                     <li><a href='#'>Sigup</a></li>
+                     <li><Link to='/explore'>Explore</Link></li>
+                     <li><Link to='/login'>Login</Link></li>
+                     <li><Link to='/signup'>Sigup</Link></li>
                   </ul>
                </nav>
 

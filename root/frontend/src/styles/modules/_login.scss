@@ -1,0 +1,43 @@
+#login-header {
+   text-align: center;
+   p {
+      font-size: 1.5rem;
+      margin-bottom: 0.3rem;
+   }
+   div {
+      margin-top: 0;
+      width: 3rem;
+   }
+}
+
+#login-container {
+   height: 70vh;
+   margin-top: 3rem;
+   color: $pro_medium_purple;
+   #login-form {
+      width: 30%;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      form {
+         box-shadow: 2px 2px 2px 2px;
+         border-radius: 20px;
+         label {
+            display: block;
+         }
+         .login-input {
+            text-align: center;
+            margin-top: 1rem;
+            input {
+               width: 90%;
+               margin: auto;
+               box-shadow: -1px -1px;
+            }
+         }
+      }
+      button {
+         margin: 1rem;
+         width: 90%;
+      }
+   }
+}

@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import $ from 'jquery';
-import { findDOMNode } from 'react-dom';
 import profile from '../../images/team-bg.jpeg';
 
 export default function Gallery() {
