@@ -1,12 +1,12 @@
 #create-group {
-   height: 70vh;
+   min-height: 70vh;
 
    &-container {
       display: flex;
       width: 80%;
       min-height: 60%;
       margin: 4rem auto;
-      margin-bottom: 0;
+      margin-bottom: 4rem;
       box-shadow: 2px 2px 2px 2px;
    }
 

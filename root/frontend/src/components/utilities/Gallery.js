@@ -1,10 +1,13 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../firebase/Auth';
 import $ from 'jquery';
 import profile from '../../images/team-bg.jpeg';
 
 export default function Gallery() {
    const [userGroup, setUserGroup] = useState(undefined);
+   const { currentUser } = useContext(AuthContext);
+
    const toggle1Ref = useRef();
    const toggle2Ref = useRef();
    const toggle3Ref = useRef();
@@ -32,44 +35,52 @@ export default function Gallery() {
 
          <div id='explore-gallery-sidebar'>
             <div id='to-scroll'>
+
                <div id='explore-gallery-sidebar-profile'>
+                  {currentUser && (
                   <div id='explore-gallery-sidebar-profile-header'>
                      <img src={profile} />
                      <p>Username</p>
                      <Link to='/userprofile/1'><p>CHANGE PROFILE</p></Link>
                   </div>
+                  )}
+
+                  {currentUser && (
                   <div id='explore-gallery-sidebar-usergroup'>
                      <button onClick={() => handleToggle3()} className='click-to-reveal'>MY GROUP</button>
                      {userGroup && (
-                        <div style={{display: 'none'}} ref={toggle3Ref}>
+                        <div style={{ display: 'none' }} ref={toggle3Ref}>
                            <p>Manage Your Group</p>
                            <p>User Group</p>
                         </div>
                      )}
                      {!userGroup && (
-                        <div style={{display: 'none'}} ref={toggle3Ref}>
+                        <div style={{ display: 'none' }} ref={toggle3Ref}>
                            <p>You don't have a group yet!</p>
                            <Link to='/create-group/1'><button className='standard-btn'>CREATE YOUR OWN GROUP</button></Link>
                         </div>
                      )}
                   </div>
-
+                  )}
+                  
+                  {currentUser && (
                   <div id='explore-gallery-sidebar-usergroups'>
                      <button onClick={() => handleToggle1()} className='click-to-reveal'>THE GROUP YOU ARE IN</button>
-                     <div style={{display: 'none'}} ref={toggle1Ref}>
+                     <div style={{ display: 'none' }} ref={toggle1Ref}>
                         <ul>
                            <li><Link to='/group-profile/1'>Group 1</Link></li>
                            <li>Group 2</li>
                            <li>Group 3</li>
                         </ul>
                      </div>
-
                   </div>
+                  )}
+                  
                </div>
 
                <div id='explore-gallery-sidebar-groups-list'>
                   <button onClick={() => handleToggle2()} className='click-to-reveal'>GROUPS WITHIN 07307</button>
-                  <div style={{display: 'none'}} ref={toggle2Ref}>
+                  <div style={{ display: 'none' }} ref={toggle2Ref}>
                      <ul>
                         <li>Group 1</li>
                         <li>Group 2</li>

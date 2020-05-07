@@ -37,14 +37,14 @@ export default function Navigation() {
                      </div>
                      <div>
                         <a href='#' onClick={() => {
-                           const logout = document.querySelector('#logout-pupup');
-                           logout.style.opacity = '1';
+                           doSignOut();
+                           alert('You have successfully signed out!')
                         }} >LOGOUT</a>
                      </div>
                   </div>
 
                   {/* logout pupup form */}
-                  <div id='logout-pupup'>
+                  {/* <div id='logout-pupup'>
                      <p>Are you sure to logout?</p>
                      <div id='logout-pupup-btns'>
                         <div id='signout-button'>
@@ -60,7 +60,9 @@ export default function Navigation() {
                            }}>No</button>
                         </div>
                      </div>
-                  </div>
+                  </div> */}
+
+
                </div>)
             }
 
