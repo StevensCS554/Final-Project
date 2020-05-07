@@ -8,8 +8,8 @@ module.exports = (app) => {
         next();
       });
 
-    app.use("/group", groupRoute);
-    app.use("/user", userRoute);
+    app.use("/groups", groupRoute);
+    app.use("/users", userRoute);
 
    app.use("*", (req, res) => {
       res.status(404).json("Page Not Found");

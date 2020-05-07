@@ -1,10 +1,11 @@
 const express = require("express");
+const fileUpload = require("express-fileupload");
 const app = express();
-// const bodyParser = require("body-parser");
 
-// app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded());
 app.use(express.json());
+// file upload 
+app.use(fileUpload());
 
 // const configMiddleware = require("./middleware");
 // configMiddleware(app);

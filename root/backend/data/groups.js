@@ -28,8 +28,9 @@ async function creatGroup(name, location, manager, description) {
       user: [],
       description: description
    }
+   
    const groupsCollection = await groups();
-   const insertedGroup = await groupsCollection.insertOne(newPostTask);
+   const insertedGroup = await groupsCollection.insertOne(newGroup);
    // if(insertedGroup.id)
    return newGroup;
 };

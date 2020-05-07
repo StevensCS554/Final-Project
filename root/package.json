@@ -1,14 +1,14 @@
 {
-  "name": "root",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Agile Monsters",
-  "license": "ISC",
-  "dependencies": {
-    "concurrently": "^5.1.0"
-  }
+   "name": "root",
+   "version": "1.0.0",
+   "description": "",
+   "main": "index.js",
+   "scripts": {
+      "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\" "
+   },
+   "author": "Agile Monsters",
+   "license": "ISC",
+   "dependencies": {
+      "concurrently": "^5.1.0"
+   }
 }

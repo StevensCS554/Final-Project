@@ -1,15 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import profile from '../../images/team-bg.jpeg';
 
 export default function ProfileForm() {
+   const [file, setFile] = useState(null);
    
+   const uploadFile = (e) => {
+      setFile(e.target.files[0]);
+   }
+
+   const submitForm = async (e) => {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+         const res = await axios.post(
+            'http://localhost:4000/users/upload', formData, {
+               headers: {
+                  'Content-Type': 'multipart/form-data'
+               }
+            });
+         alert('good');
+      } catch(e) {
+         alert(e);
+      }  
+   }
+
    return (
       <div id='profile-form-container'>
          <div id='profile-form'>
-            <div id='profile-form-pic'>
+            <form id='profile-form-pic' onSubmit={submitForm}>
                <img src={profile} />
-               <button className='standard-btn' type='submit'>Change Avatar</button>
-            </div>
+               <input type='file' id='userprofile' onChange={uploadFile} />
+               <label htmlFor='userprofile'>Change Avatar</label>
+               <input type='submit' value='upload' />
+            </form>
             <form id='profile-form-f'>
                <div className='form-group'>
                   <label htmlFor='username'>Username</label>

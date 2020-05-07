@@ -184,11 +184,15 @@
 #landing-footer {
    background-color: $pro_medium_purple;
    color: wheat;
-   height: 40vh;
+   min-height: 27vh;
+   padding-top: 2.1%;
 
+   &-test {
+      height: 100%;
+      margin-top: auto;
+   }
    &-c {
       display: flex;
-      height: 80%;
    }
 
    &-h {
@@ -228,6 +232,7 @@
 
 #copy-right {
    text-align: center;
+   margin: 0;
 }
 
 .is-revealed {

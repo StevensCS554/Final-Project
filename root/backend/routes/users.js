@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const path = require('path');
 const { ObjectId } = require("mongodb");
 //middleware
 // const middleware 	= require("../middleware");
@@ -132,6 +133,26 @@ router.delete("/:userId/:groupId", async (req, res) =>{
     } catch (e) {
         res.status(200).json(e);
     }
+})
+
+// User Image file upload route!!! Added by Kuan //
+router.post('/upload', async(req, res) => {
+   if (req.files.file === null)
+      return res.status(400).json({msg: 'No file uploaded!'});
+
+   const file = req.files.file;
+   const date = new Date();
+   const newName = date + file.name;
+   file.mv(path.resolve(`../frontend/public/upload/users/${newName}`), err => {
+      if (err) {
+         console.log(err);
+         return res.status(500).json({e: err});
+      }
+      res.status(200).json({
+         filename: file.name,
+         filepath: `/uploads/users/${newName}`
+      })
+   });
 })
 
 //-----------------------------------check--------------------------------------

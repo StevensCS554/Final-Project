@@ -1,12 +1,12 @@
 #create-group {
-   min-height: 90vh;
+   height: 70vh;
 
    &-container {
       display: flex;
       width: 80%;
-      height: 70vh;
-      margin: auto auto;
-      margin-top: 10vh;
+      min-height: 60%;
+      margin: 4rem auto;
+      margin-bottom: 0;
       box-shadow: 2px 2px 2px 2px;
    }
 
@@ -88,6 +88,8 @@
    }
 
    #group-form-btn {
-      margin-top: 3rem;
+      margin-top: 4rem;
+      margin-bottom: 1rem;
+      width: 90%;
    }
 }

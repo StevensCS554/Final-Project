@@ -63,7 +63,8 @@ router.post("/", async (req, res) => {
         const newGroup = await groupsData.creatGroup(name, location, manager, description);
         res.json(newGroup);
     } catch (e) {
-        res.status(200).json(e);
+       console.log(e);
+        res.status(500).json(e);
     }
 });
 

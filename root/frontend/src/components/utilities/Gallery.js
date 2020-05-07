@@ -49,13 +49,13 @@ export default function Gallery() {
                      {!userGroup && (
                         <div style={{display: 'none'}} ref={toggle3Ref}>
                            <p>You don't have a group yet!</p>
-                           <Link to='/create-group/1'><button className='standard-btn'>Create Your Own Group</button></Link>
+                           <Link to='/create-group/1'><button className='standard-btn'>CREATE YOUR OWN GROUP</button></Link>
                         </div>
                      )}
                   </div>
 
                   <div id='explore-gallery-sidebar-usergroups'>
-                     <button onClick={() => handleToggle1()} className='click-to-reveal'>The groups you are in</button>
+                     <button onClick={() => handleToggle1()} className='click-to-reveal'>THE GROUP YOU ARE IN</button>
                      <div style={{display: 'none'}} ref={toggle1Ref}>
                         <ul>
                            <li><Link to='/group-profile/1'>Group 1</Link></li>
@@ -68,7 +68,7 @@ export default function Gallery() {
                </div>
 
                <div id='explore-gallery-sidebar-groups-list'>
-                  <button onClick={() => handleToggle2()} className='click-to-reveal'>Groups within 07307</button>
+                  <button onClick={() => handleToggle2()} className='click-to-reveal'>GROUPS WITHIN 07307</button>
                   <div style={{display: 'none'}} ref={toggle2Ref}>
                      <ul>
                         <li>Group 1</li>

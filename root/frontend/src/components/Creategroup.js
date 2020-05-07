@@ -7,7 +7,7 @@ export default function Creategroup() {
 
    useEffect(() => {
       document.getElementById("group-form-btn").addEventListener("click", createGroup);
-      document.getElementById("upload-profile-btn").addEventListener("click", createGroup);
+      // document.getElementById("upload-profile-btn").addEventListener("click", createGroup);
    }, []);
 
    async function createGroup() {
@@ -89,7 +89,6 @@ export default function Creategroup() {
             <div id='create-group-container'>
                <div id='create-group-profile'>
                   <img src={defaultGroup} />
-                  <button id='upload-profile-btn' className='standard-btn'>UPLOAD PROFILE</button>
                </div>
                <div id='create-group-form'>
                   <form>
@@ -131,8 +130,8 @@ export default function Creategroup() {
                         </div>
                      </div>
 
-                     <button id='group-form-btn' className='standard-btn'>SUBMIT</button>
                   </form>
+                  <button type='submit' id='group-form-btn' className='standard-btn'>SUBMIT</button>
 
                </div>
             </div>
