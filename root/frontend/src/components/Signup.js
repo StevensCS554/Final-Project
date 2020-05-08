@@ -8,6 +8,10 @@ import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions'
 export default function Signup() {
    const { currentUser } = useContext(AuthContext);
 
+   if (currentUser) {
+      return <Redirect to='/explore'/>
+   }
+
    const handleSignup = async (e) => {
       e.preventDefault();
       const { username, email, password } = e.target.elements;

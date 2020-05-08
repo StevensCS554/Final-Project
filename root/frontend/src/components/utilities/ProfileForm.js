@@ -1,51 +1,45 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import profile from '../../images/team-bg.jpeg';
-const images = require.context('../../upload/users');
-
+import { storage } from '../../firebase/Firebase';
 // can't import images outside src folder
-// import d from `../../upload/users/`
 
 export default function ProfileForm() {
-   const [file, setFile] = useState(null);
-   const [uploadedFile, setUploadedFile] = useState({});
-   const [fileName, setFileName] = useState(null);
-   const baseUrl = '../../images/';
+   const [userProfile, setUserProfile] = useState('');
+   const [profileUrl, setProfileUrl] = useState(null);
 
    const uploadFile = (e) => {
-      setFile(e.target.files[0]);
+      setUserProfile(e.target.files[0]);
    }
 
-   const submitForm1 = async (e) => {
+   const submitForm1 = (e) => {
       e.preventDefault();
-      const formData = new FormData();
-      formData.append('file', file);
-      try {
-         const { data } = await axios.post(
-            'http://localhost:4000/users/upload', formData, {
-            headers: {
-               'Content-Type': 'multipart/form-data'
-            }
-         });
-         const { fileName, filePath } = data;
-         setFileName(fileName);
-         setUploadedFile({ fileName, filePath });
-         alert(filePath);
-      } catch (e) {
-         alert(e);
-      }
+      const newName = userProfile.name + Date.now();
+      const uploadTask = storage.ref(`images/${newName}`).put(userProfile);
+      uploadTask.on(
+         'state_changed',
+         snapshot => { },
+         error => {
+            alert(error);
+         },
+         () => {
+            storage.ref('images').child(newName).getDownloadURL().then(url => {
+               setProfileUrl(url);
+            });
+         }
+      );
    }
 
    return (
       <div id='profile-form-container'>
-         {/* <img src={} /> */}
-         {/* <img src={d} /> */}
          <div id='profile-form'>
             <form id='profile-form-pic' onSubmit={submitForm1}>
-               <img style={{}} src={profile} />
+               <div id='profile-form-pic-img'>
+                  {profileUrl ? <img src={profileUrl} /> : <img style={{}} src={profile} />}
+               </div>
                <input type='file' id='userprofile' onChange={uploadFile} />
-               <label htmlFor='userprofile'>Change Avatar</label>
-               <input type='submit' value='upload' />
+               <label htmlFor='userprofile' />
+               <input className='standard-btn' type='submit' value='CHANGE AVATAR' />
             </form>
             <form id='profile-form-f'>
                <div className='form-group'>
