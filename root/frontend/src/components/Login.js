@@ -13,7 +13,6 @@ export default function Login() {
       const { email, password } = e.target.elements;
       try {
          await doSignInWithEmailAndPassword(email.value, password.value);
-         alert('success');
       } catch (e) {
          alert(e);
       }

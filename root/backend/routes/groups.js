@@ -32,6 +32,7 @@ router.post("/", async (req, res) => {
         // const managerId = req.user._id//managerId should be current user!
         const zipcode = 12345;
         const managerId = null;
+      //   const posts = [];    every group has an array of posts !!
 
         if (groupName) {
             if (typeof groupName !== 'string') {
@@ -166,6 +167,10 @@ router.delete("/:id", async (req, res) => {
     }
 
 })
+
+
+// -----------------------Posts Section Added by Kuan -------------------
+
 
 //-----------------------------------check--------------------------------------
 //helper

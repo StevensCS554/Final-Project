@@ -3,9 +3,9 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 
-async function createUser(name, email, phone = null, gender = null, age = null, location = null, bio = null) {
+async function createUser(username, email, phone = null, gender = null, age = null, location = null, bio = null) {
    const addUser = {
-      name: name,
+      username: username,
       email: email,
       phone: phone,
       gender: gender,
@@ -15,7 +15,7 @@ async function createUser(name, email, phone = null, gender = null, age = null, 
       groups: null
    };
    const usersCollection = await getCollection();
-   const findUser = await usersCollection.findOne({ $and: [{ name: name, email: email }] });
+   const findUser = await usersCollection.findOne({ $and: [{ username: username, email: email }] });
    let insertedUserId = "";
    if (findUser == null) {
       const insertInfo = await usersCollection.insertOne(addUser);
@@ -73,14 +73,14 @@ async function removeGroup(userId, groupId) {
    return await readUser(checkedUserId);
 }
 
-async function updateUser(userId, name = null, email = null, phone = null, gender = null, age = null, location = null, bio = null) {
+async function updateUser(userId, username = null, email = null, phone = null, gender = null, age = null, location = null, bio = null) {
    const checkedId = checkId(userId);
 
    await readUser(checkedId);
 
    const usersCollection = await getCollection();
-   if (name) {
-      const updatedUser = await usersCollection.updateOne({ _id: checkedId }, { $set: { name: name } });
+   if (username) {
+      const updatedUser = await usersCollection.updateOne({ _id: checkedId }, { $set: { username: username } });
       if (updatedUser.modifiedCount === 0) throw "Can't Update Name of User with ID: " + checkedId;
    }
    if (email) {
@@ -120,6 +120,18 @@ async function deleteUser(userId) {
    return true;
 }
 
+// --------------Added by Kuan-------------
+
+async function getUserByUserName(username) {
+   if (typeof username !== 'string')
+      throw 'Invalid username provided!';
+   const usersCollection = await getCollection();
+   const user = await usersCollection.findOne({ username: username });
+   if (!user)
+      return undefined;
+   return user;
+}
+
 //-----------------------------------check--------------------------------------
 
 function checkId(id) {
@@ -137,4 +149,4 @@ async function getCollection() {
    return await users();
 }
 
-module.exports = { createUser, readUser, updateUser, removeGroup, addGroup, deleteUser }
+module.exports = { createUser, readUser, updateUser, removeGroup, addGroup, deleteUser, getUserByUserName }
