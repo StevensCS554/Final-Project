@@ -1,20 +1,20 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "dev": "nodemon app.js"
-  },
-  "author": "Agile Monsters",
-  "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1",
-    "mongodb": "^3.5.6"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.3"
-  }
+   "name": "backend",
+   "version": "1.0.0",
+   "description": "",
+   "main": "app.js",
+   "scripts": {
+      "start": "node app.js",
+      "dev": "nodemon app.js"
+   },
+   "author": "Agile Monsters",
+   "license": "ISC",
+   "dependencies": {
+      "express": "^4.17.1",
+      "express-fileupload": "^1.1.7-alpha.3",
+      "mongodb": "^3.5.6"
+   },
+   "devDependencies": {
+      "nodemon": "^2.0.3"
+   }
 }

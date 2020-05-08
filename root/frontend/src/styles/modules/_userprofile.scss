@@ -1,7 +1,7 @@
 #profile-form-container {
    margin: 3rem auto;
    margin-bottom: 0;
-   height: 70vh;
+   min-height: 70vh;
 }
 
 #profile-form {
@@ -20,8 +20,8 @@
       img {
          box-shadow: 1.5px 1.5px;
       }
-      button {
-         margin-top: 4.839rem;
+      input {
+         width: 100%;
       }
    }
 
