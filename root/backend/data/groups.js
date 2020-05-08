@@ -19,7 +19,8 @@ async function getById(id) {
     try {
         checkId(id);
         const groupsCollection = await groups();
-        const group = groupsCollection.find({ id: id });
+        console.log(id);
+        const group = groupsCollection.findOne({ _id: id });
         return group;
     } catch (e) {
         throw `` + e;

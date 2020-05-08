@@ -25,10 +25,13 @@ router.post("/", async (req, res) => {
         const maxAge = req.body.maxAge;
         const minAge = req.body.minAge;
         const gender = req.body.gender;
-        const maxGroupNo = req.body.groupNotice;
-        //saved information:
-        const zipcode = req.zipcode;
-        const managerId = req.user._id//managerId should be current user!
+        const maxGroupNo = req.body.maxGroupNo;
+        //saved user information:
+        //TODO:
+        // const zipcode = req.zipcode;
+        // const managerId = req.user._id//managerId should be current user!
+        const zipcode = 12345;
+        const managerId = null;
 
         if (groupName) {
             if (typeof groupName !== 'string') {
@@ -103,7 +106,7 @@ router.put("/:id", async (req, res) => {
         const maxAge = req.body.maxAge;
         const minAge = req.body.minAge;
         const gender = req.body.gender;
-        const maxGroupNo = req.body.groupNotice;
+        const maxGroupNo = req.body.maxGroupNo;
 
         //error check
         const checkedId = checkId(id);
