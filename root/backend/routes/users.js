@@ -13,7 +13,7 @@ const usersData = data.usersData;
 //         const allGroup = await usersData.getAll();
 //         res.json(allGroup)
 //     } catch (e) {
-//         res.status(200).json(e);
+//         res.status(500).json(e);
 //     }
 // });
 
@@ -21,33 +21,68 @@ const usersData = data.usersData;
 router.post("/", async (req, res) => {
     try {
 
-        const name = req.body.name;
+        const username = req.body.username;
         const email = req.body.email;
-        const phone = req.body.phone;
-        const gender = req.body.gender;
         const age = req.body.age;
-        const location = req.body.location;
+        const zipcode = req.body.zipcode;
+        const gender = req.body.gender;
+        const phone = req.body.phone;
         const bio = req.body.bio;
 
-        if (name) {
-            if (typeof name !== 'string') {
-                throw `You Must Provide A Name with string type! what you give:${typeof name}`;
+        //required
+        if (username) {
+            if (typeof username !== 'string') {
+                throw `You Must Provide A username with string type! what you give:${typeof username}`;
             }
         } else {
-            throw "You Must Provide A Name!";
+            throw "You Must Provide A username!";
         }
         if (email) {
             if (typeof email !== 'string') {
-                throw `You Must Provide A email with string type! what you give:${typeof location}`;
+                throw `You Must Provide A email with string type! what you give:${typeof email}`;
             }
         } else {
             throw "You Must Provide A email!";
         }
+        if (age) {
+            if (isNaN(age)) {
+                throw `You Must Provide A age with number type! what you give:${typeof age}`;
+            }
+        } else {
+            throw "You Must Provide A age!";
+        }
+        if (zipcode) {
+            if (typeof zipcode !== 'string') {
+                throw `You Must Provide A zipcode with string type! what you give:${typeof zipcode}`;
+            }
+        } else {
+            throw "You Must Provide A zipcode!";
+        }
+        if (gender) {
+            if (typeof gender !== 'string') {
+                throw `You Must Provide A gender with string type! what you give:${typeof gender}`;
+            }
+        } else {
+            throw "You Must Provide A gender!";
+        }
+        if (phone) {
+            if (typeof phone !== 'string') {
+                throw `You Must Provide A phone with string type! what you give:${typeof phone}`;
+            }
+        } else {
+            throw "You Must Provide A phone!";
+        }
+        //optional
+        if (bio) {
+            if (typeof bio !== 'string') {
+                throw `You Must Provide A bio with string type! what you give:${typeof bio}`;
+            }
+        }
         
-        const newUser = await usersData.createUser(name, email, phone, gender, age, location, bio);
+        const newUser = await usersData.createUser(username, email, age, zipcode, gender, phone, bio);
         res.json(newUser);
     } catch (e) {
-        res.status(200).json(e);
+        res.status(500).json(e);
     }
 });
 
@@ -60,41 +95,67 @@ router.get("/:id", async (req, res) => {
         const user = await usersData.readUser(checkedId);
         res.json(user);
     } catch (e) {
-        res.status(200).json(e);
+        res.status(500).json(e);
     }
 });
 
 router.put("/:id", async (req, res) => {
     try {
 
-        const name = req.body.name;
+        
+        const id = req.params.id;
+        const username = req.body.username;
         const email = req.body.email;
-        const phone = req.body.phone;
-        const gender = req.body.gender;
         const age = req.body.age;
-        const location = req.body.location;
+        const zipcode = req.body.zipcode;
+        const gender = req.body.gender;
+        const phone = req.body.phone;
         const bio = req.body.bio;
 
-        if (name) {
-            if (typeof name !== 'string') {
-                throw `You Must Provide A Name with string type! what you give:${typeof name}`;
+        // required
+        const checkedId = checkId(id);
+        //optional
+        if (username) {
+            if (typeof username !== 'string') {
+                throw `You Must Provide A username with string type! what you give:${typeof username}`;
             }
-        } else {
-            throw "You Must Provide A Name!";
         }
         if (email) {
             if (typeof email !== 'string') {
-                throw `You Must Provide A email with string type! what you give:${typeof location}`;
+                throw `You Must Provide A email with string type! what you give:${typeof email}`;
             }
-        } else {
-            throw "You Must Provide A email!";
+        }
+        if (age) {
+            if (isNaN(age)) {
+                throw `You Must Provide A age with number type! what you give:${typeof age}`;
+            }
+        }
+        if (zipcode) {
+            if (typeof zipcode !== 'string') {
+                throw `You Must Provide A zipcode with string type! what you give:${typeof zipcode}`;
+            }
+        }
+        if (gender) {
+            if (typeof gender !== 'string') {
+                throw `You Must Provide A gender with string type! what you give:${typeof gender}`;
+            }
+        }
+        if (phone) {
+            if (typeof phone !== 'string') {
+                throw `You Must Provide A phone with string type! what you give:${typeof phone}`;
+            }
+        }
+        if (bio) {
+            if (typeof bio !== 'string') {
+                throw `You Must Provide A bio with string type! what you give:${typeof bio}`;
+            }
         }
         
-        const updatedUser = await usersData.updateUser(name, email, phone, gender, age, location, bio);
+        const updatedUser = await usersData.updateUser(checkedId, username, email, age, zipcode, gender, phone, bio);
         res.json(updatedUser);
 
     } catch (e) {
-        res.status(200).json(e);
+        res.status(500).json(e);
     }
 });
 
@@ -106,7 +167,7 @@ router.delete("/:id", async (req, res) => {
         const deletedUser = await usersData.deleteGroupById(checkedId);
         res.json(deletedUser);
     } catch (e) {
-        res.status(200).json(e);
+        res.status(500).json(e);
     }
 
 })
@@ -119,7 +180,7 @@ router.put("/:userId/:groupId", async (req, res) =>{
         const addedUser = await usersData.addGroup(checkedUserId, checkedGroupId);
         res.json(addedUser);
     } catch (e) {
-        res.status(200).json(e);
+        res.status(500).json(e);
     }
 })
 
@@ -131,7 +192,7 @@ router.delete("/:userId/:groupId", async (req, res) =>{
         const removedUser = await usersData.removeGroup(checkedUserId, checkedGroupId);
         res.json(removedUser);
     } catch (e) {
-        res.status(200).json(e);
+        res.status(500).json(e);
     }
 })
 
@@ -148,7 +209,7 @@ router.post('/upload', async(req, res) => {
          console.log(err);
          return res.status(500).json({e: err});
       }
-      res.status(200).json({
+      res.status(500).json({
          filename: file.name,
          filepath: `/uploads/users/${newName}`
       })
