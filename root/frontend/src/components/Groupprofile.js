@@ -8,7 +8,7 @@ export default function Groupprofile() {
    const [managerId, setManagerId] = useState(true);
 
    return (
-      <div>
+      <div>          
          <Navigation />
          <div id='group-profile'>
             <div id='group-profile-container'>

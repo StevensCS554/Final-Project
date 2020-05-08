@@ -161,7 +161,6 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
     try {
-
         const checkedId = checkId(req.params.id);
 
         const deletedUser = await usersData.deleteGroupById(checkedId);
@@ -204,7 +203,7 @@ router.post('/upload', async(req, res) => {
    const file = req.files.file;
    const date = new Date();
    const newName = date + file.name;
-   file.mv(path.resolve(`../frontend/public/upload/users/${newName}`), err => {
+   file.mv(path.resolve(`../frontend/src/upload/users/${newName}`), err => {
       if (err) {
          console.log(err);
          return res.status(500).json({e: err});
@@ -214,7 +213,8 @@ router.post('/upload', async(req, res) => {
          filepath: `/uploads/users/${newName}`
       })
    });
-})
+});
+
 
 //-----------------------------------check--------------------------------------
 function checkId(id) {

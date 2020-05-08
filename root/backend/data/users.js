@@ -15,6 +15,7 @@ async function createUser(username, email, age, zipcode, gender, phone, bio){
       groups: null
    };
    const usersCollection = await users();
+
    const findUser = await usersCollection.findOne({ $and: [{ username: username, email: email }] });
    let insertedUserId = "";
    if (findUser == null) {
@@ -119,6 +120,18 @@ async function deleteUser(userId) {
    const deleteUser = await usersCollection.deleteOne({ _id: checkedId });
    if (!deleteUser.result) throw "Can't Delete Comment with ID: " + checkedId;
    return true;
+}
+
+// --------------Added by Kuan-------------
+
+async function getUserByUserName(username) {
+   if (typeof username !== 'string')
+      throw 'Invalid username provided!';
+   const usersCollection = await getCollection();
+   const user = await usersCollection.findOne({ username: username });
+   if (!user)
+      return undefined;
+   return user;
 }
 
 //-----------------------------------check--------------------------------------
