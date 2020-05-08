@@ -121,7 +121,7 @@ async function joinGroup(username, groupId) {
    );
    if (!updateInfo)
       throw 'Can\'t join in!'
-   const group = await getById(groupId);
+   group = await getById(groupId);
    return group;
 }
 
