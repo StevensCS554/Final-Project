@@ -21,7 +21,7 @@ const userSeeds = [
         "age": 18,
         "zipcode": "07030",
         "gender": "none",
-        "phone": 1234567890,
+        "phone": "1234567890",
         "bio": "bio"
      },
 ]
