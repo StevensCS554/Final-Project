@@ -3,12 +3,70 @@ import defaultGroup from '../images/group-bg.jpg';
 import profile from '../images/team-bg.jpeg';
 import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
+import { AuthContext } from '../firebase/Auth';
 
 export default function Groupprofile() {
-   const [managerId, setManagerId] = useState(true);
+   const [groupData, setGroupData] = useState(undefined);
+   const [manager, setManager] = useState(undefined);
+   const [error, setError] = useState(undefined);
+   const { currentUser } = useContext(AuthContext);
+   useEffect(
+      () => {
+         async function fetchGroupsData() {
+            try {
+               const { groups } = await axios.get(`http://localhost:4000/groups/`);
+               setGroupData(groups);
+            } catch (e) {
+               setError(e);
+            }
+         }
+         async function fetchGroupManager() {
+            try {
+               const managerInfo = await axios.get(`http://localhost:4000/users/` + groupData.managerId);
+               setManager(managerInfo);
+            } catch (e) {
+               setError(e);
+            }
+         }
+         fetchGroupsData();
+         fetchGroupManager();
+      },
+      []
+   );
+
+   const handleMemberDelete = async (userId) => {
+      try {
+         await fetch(`http://localhost:4000/groups/` + groupData._id + userId, {
+            method: "DELETE",
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+      } catch (error) {
+         setError(error);
+      }
+   }
+
+   const handleJoinGroup = (userId) => {
+      try {
+         //related to the backend handle. for now i just call route in groups router. then we can handle both user and group join function in there.
+         await fetch(`http://localhost:4000/groups/join` + groupData._id, {
+            method: "POST",
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+               userId: userId,
+               groupId: groupData._id
+            })
+         });
+      } catch (e) {
+         setError(error);
+      }
+   }
 
    return (
-      <div>          
+      <div>
          <Navigation />
          <div id='group-profile'>
             <div id='group-profile-container'>
@@ -17,35 +75,39 @@ export default function Groupprofile() {
                <div id='group-member-list'>
                   <div id='group-manager'>
                      <img src={profile} />
-                     <p>Group Manager: username</p>
+                     <p>Group Manager: {manager && manager.username}</p>
                      <a href='#'>MESSAGE</a>
                   </div>
 
+                  {error && <h1 className='error'>{error}</h1>}
                   <div id='group-members'>
-                     <div className='single-group-member'>
-                        <p>Member 1</p>
-                        <img src={profile} />
-                        <div id='group-members-links'>
-                           <a href='#'>MESSAGE</a>
-                           <a href='#'>DELETE</a>
-                        </div>
-                     </div>
-                     <div className='single-group-member'>
-                        <p>Member 2</p>
-                        <img src={profile} />
-                        <div id='group-members-links'>
-                           <a href='#'>MESSAGE</a>
-                           <a href='#'>DELETE</a>
-                        </div>
-                     </div>
-                     <div className='single-group-member'>
-                        <p>Member 3</p>
-                        <img src={profile} />
-                        <div id='group-members-links'>
-                           <a href='#'>MESSAGE</a>
-                           <a href='#'>DELETE</a>
-                        </div>
-                     </div>
+                     {groupData &&
+                        groupData.user.map((userId) => {
+                           return (
+                              <div className='single-group-member'>
+                                 <p>{
+                                    () => {
+                                       let userInfo = await axios.get(`http://localhost:4000/users/` + userId);
+                                       return userInfo.username;
+                                    }
+                                 }</p>
+                                 <img src={profile} />
+                                 <div id='group-members-links'>
+                                    <a href='#'>MESSAGE</a>
+                                    {() => {
+                                       if (currentUser.email == manager.email) {
+                                          return (
+                                             <a href='#' onClick={handleMemberDelete(userId)}>DELETE</a>
+                                          );
+                                       }
+                                       else {
+                                          return;
+                                       }
+                                    }}
+                                 </div>
+                              </div>
+                           );
+                        })}
                   </div>
                </div>
 
@@ -65,37 +127,25 @@ export default function Groupprofile() {
 
                   {/* group posts section */}
                   <div id='group-info-posts'>
-
-                     <div className='single-posts'>
-                        <div id='group-info-posts-header'>
-                           <p>Time + User who posted it</p>
-                        </div>
-                        <div id='group-info-posts-content'>
-                           <p>Some content</p>
-                        </div>
-                     </div>
-                     <div className='single-posts'>
-                        <div id='group-info-posts-header'>
-                           <p>Time + User who posted it</p>
-                        </div>
-                        <div id='group-info-posts-content'>
-                           <p>Some content</p>
-                        </div>
-                     </div>
-                     <div className='single-posts'>
-                        <div id='group-info-posts-header'>
-                           <p>Time + User who posted it</p>
-                        </div>
-                        <div id='group-info-posts-content'>
-                           <p>Some content</p>
-                        </div>
-                     </div>
+                     {groupData &&
+                        groupData.posts.map((post) => {
+                           return (
+                              <div className='single-posts'>
+                                 <div id='group-info-posts-header'>
+                                    <p>{post.time} + {post.username}</p>
+                                 </div>
+                                 <div id='group-info-posts-content'>
+                                    <p>{post.content}</p>
+                                 </div>
+                              </div>
+                           );
+                        })}
                   </div>
                </div>
 
             </div>
             <div id='join-group'>
-               <button className='standard-btn'>JOIN GROUP</button>
+               <button className='standard-btn' onClick={handleJoinGroup}>JOIN GROUP</button>
             </div>
          </div>
          <Footer />
