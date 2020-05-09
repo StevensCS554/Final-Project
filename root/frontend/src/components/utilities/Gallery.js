@@ -105,18 +105,36 @@ export default function Gallery() {
                      <p>group name dsf </p>
                   </div>
                </div>
-               {/* <div className='single-group'>
+               <div className='single-group'>
                   <img style={{ width: '100%', height: '100%' }} src={group} />
+                  <div className='single-group-overlay'>
+                     <p>group name dsf </p>
+                  </div>
                </div>
                <div className='single-group'>
                   <img style={{ width: '100%', height: '100%' }} src={group} />
+                  <div className='single-group-overlay'>
+                     <p>group name dsf </p>
+                  </div>
                </div>
                <div className='single-group'>
                   <img style={{ width: '100%', height: '100%' }} src={group} />
+                  <div className='single-group-overlay'>
+                     <p>group name dsf </p>
+                  </div>
                </div>
                <div className='single-group'>
                   <img style={{ width: '100%', height: '100%' }} src={group} />
-               </div> */}
+                  <div className='single-group-overlay'>
+                     <p>group name dsf </p>
+                  </div>
+               </div>
+               <div className='single-group'>
+                  <img style={{ width: '100%', height: '100%' }} src={group} />
+                  <div className='single-group-overlay'>
+                     <p>group name dsf </p>
+                  </div>
+               </div>
             </div>
 
          </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
 import profile from '../../images/team-bg.jpeg';
 import { storage } from '../../firebase/Firebase';
