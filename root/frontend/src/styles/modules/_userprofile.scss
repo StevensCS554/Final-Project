@@ -8,20 +8,36 @@
    max-width: 38.2rem;
    margin: auto;
    display: flex;
+   min-height: 70vh;
+   margin-bottom: 3rem;
    box-shadow: 2px 2px 3px 3px;
 
    &-pic {
-      display: flex;
-      flex-direction: column;
       padding: 0.5rem 0.5rem;
+      min-height: 100%;
       flex: 1;
       box-shadow: 1px 1px;
 
+      &-img {
+         min-height: 70%;
+         width: 100%;
+         position: relative;
+      }
+
       img {
          box-shadow: 1.5px 1.5px;
+         position: absolute;
+         top: 0;
+         right: 0;
+         left: 0;
+         bottom: 0;
+         width: 100%;
+         height: 100%;
       }
+
       input {
          width: 100%;
+         margin-top: 1rem;
       }
    }
 
@@ -37,6 +53,7 @@
       button {
          width: 90%;
          margin-left: 1rem;
+         margin-top: 0.8rem;
          margin-bottom: 0.5rem;
       }
    }

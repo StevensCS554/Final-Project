@@ -8,6 +8,10 @@ import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions'
 export default function Signup() {
    const { currentUser } = useContext(AuthContext);
 
+   if (currentUser) {
+      return <Redirect to='/explore'/>
+   }
+
    const handleSignup = async (e) => {
       e.preventDefault();
       const { username, email, password } = e.target.elements;
@@ -25,7 +29,7 @@ export default function Signup() {
             throw 'No username provided!';
          }
          await doCreateUserWithEmailAndPassword(email_v, password_v, username_v);
-         const response = await fetch("http://localhost:4000/user", {
+         const response = await fetch("http://localhost:4000/users", {
             method: "POST",
             headers: {
                'Content-Type': 'application/json'

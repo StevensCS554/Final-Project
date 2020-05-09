@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../firebase/Auth';
 import $ from 'jquery';
 import profile from '../../images/team-bg.jpeg';
+import group from '../../images/group-bg.jpg';
 
 export default function Gallery() {
    const [userGroup, setUserGroup] = useState(undefined);
@@ -38,44 +39,44 @@ export default function Gallery() {
 
                <div id='explore-gallery-sidebar-profile'>
                   {currentUser && (
-                  <div id='explore-gallery-sidebar-profile-header'>
-                     <img src={profile} />
-                     <p>Username</p>
-                     <Link to='/userprofile/1'><p>CHANGE PROFILE</p></Link>
-                  </div>
+                     <div id='explore-gallery-sidebar-profile-header'>
+                        <img src={profile} />
+                        <p>Username</p>
+                        <Link to='/userprofile/1'><p>CHANGE PROFILE</p></Link>
+                     </div>
                   )}
 
                   {currentUser && (
-                  <div id='explore-gallery-sidebar-usergroup'>
-                     <button onClick={() => handleToggle3()} className='click-to-reveal'>MY GROUP</button>
-                     {userGroup && (
-                        <div style={{ display: 'none' }} ref={toggle3Ref}>
-                           <p>Manage Your Group</p>
-                           <p>User Group</p>
-                        </div>
-                     )}
-                     {!userGroup && (
-                        <div style={{ display: 'none' }} ref={toggle3Ref}>
-                           <p>You don't have a group yet!</p>
-                           <Link to='/create-group/1'><button className='standard-btn'>CREATE YOUR OWN GROUP</button></Link>
-                        </div>
-                     )}
-                  </div>
-                  )}
-                  
-                  {currentUser && (
-                  <div id='explore-gallery-sidebar-usergroups'>
-                     <button onClick={() => handleToggle1()} className='click-to-reveal'>THE GROUP YOU ARE IN</button>
-                     <div style={{ display: 'none' }} ref={toggle1Ref}>
-                        <ul>
-                           <li><Link to='/group-profile/1'>Group 1</Link></li>
-                           <li>Group 2</li>
-                           <li>Group 3</li>
-                        </ul>
+                     <div id='explore-gallery-sidebar-usergroup'>
+                        <button onClick={() => handleToggle3()} className='click-to-reveal'>MY GROUP</button>
+                        {userGroup && (
+                           <div style={{ display: 'none' }} ref={toggle3Ref}>
+                              <p>Manage Your Group</p>
+                              <p>User Group</p>
+                           </div>
+                        )}
+                        {!userGroup && (
+                           <div style={{ display: 'none' }} ref={toggle3Ref}>
+                              <p>You don't have a group yet!</p>
+                              <Link to='/create-group/1'><button className='standard-btn'>CREATE YOUR OWN GROUP</button></Link>
+                           </div>
+                        )}
                      </div>
-                  </div>
                   )}
-                  
+
+                  {currentUser && (
+                     <div id='explore-gallery-sidebar-usergroups'>
+                        <button onClick={() => handleToggle1()} className='click-to-reveal'>THE GROUP YOU ARE IN</button>
+                        <div style={{ display: 'none' }} ref={toggle1Ref}>
+                           <ul>
+                              <li><Link to='/group-profile/1'>Group 1</Link></li>
+                              <li>Group 2</li>
+                              <li>Group 3</li>
+                           </ul>
+                        </div>
+                     </div>
+                  )}
+
                </div>
 
                <div id='explore-gallery-sidebar-groups-list'>
@@ -98,8 +99,26 @@ export default function Gallery() {
                <div className='energy-bar'></div>
             </div>
             <div id='explore-gallery-groups'>
-
+               <div className='single-group'>
+                  <img style={{ width: '100%', height: '100%' }} src={group} />
+                  <div className='single-group-overlay'>
+                     <p>group name dsf </p>
+                  </div>
+               </div>
+               {/* <div className='single-group'>
+                  <img style={{ width: '100%', height: '100%' }} src={group} />
+               </div>
+               <div className='single-group'>
+                  <img style={{ width: '100%', height: '100%' }} src={group} />
+               </div>
+               <div className='single-group'>
+                  <img style={{ width: '100%', height: '100%' }} src={group} />
+               </div>
+               <div className='single-group'>
+                  <img style={{ width: '100%', height: '100%' }} src={group} />
+               </div> */}
             </div>
+
          </div>
 
       </div>

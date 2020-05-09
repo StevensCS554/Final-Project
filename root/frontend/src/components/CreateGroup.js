@@ -12,64 +12,58 @@ export default function Creategroup() {
 
    async function createGroup() {
       const groupName = document.getElementById('groupName').value;
-      //const form = $(this).parent();
-      //const groupName = form.find("#groupName").value;
       if (!groupName) {
-         alert("Please input the groupName!")
+         alert("Please input the groupName!");
          return false;
       }
       const groupNotice = document.getElementById('groupNotice').value;
-      //const groupNotice = form.find("#groupNotice").value;
       if (!groupNotice) {
-         alert("Please input the groupNotice!")
+         alert("Please input the groupNotice!");
          return false;
       }
       const maxAge = document.getElementById('maxAge').value;
-      //const maxAge = form.find("#maxAge").value;
       if (!maxAge) {
-         alert("Please input the maxAge!")
+         alert("Please input the maxAge!");
          return false;
       }
       if (maxAge < 10 || maxAge > 100) {
-         alert("Max Age should be in range 10~100!")
+         alert("Max Age should be in range 10~100!");
          return false;
       }
       const minAge = document.getElementById('minAge').value;
-      //const minAge = form.find("#minAge").value;
       if (!minAge) {
-         alert("Please input the minAge!")
+         alert("Please input the minAge!");
          return false;
       }
       if (minAge < 10 || minAge > 100) {
-         alert("Min Age should be in range 10~100!")
+         alert("Min Age should be in range 10~100!");
          return false;
       }
       if (minAge > maxAge) {
-         alert("Min Age should not be bigger than max age!")
+         alert("Min Age should not be bigger than max age!");
          return false;
       }
       const maxGroupNo = document.getElementById('maxGroupNo').value;
-      //const maxGroupNo = form.find("#maxGroupNo").value;
       if (!maxGroupNo) {
-         alert("Please input the maxGroupNo!")
+         alert("Please input the maxGroupNo!");
          return false;
       }
       if (maxGroupNo <= 0) {
-         alert("Max group number should be bigger than 0!")
+         alert("Max group number should be bigger than 0!");
          return false;
       }
-      const response = await fetch("http://localhost:4000/group", {
+      const response = await fetch("http://localhost:4000/groups", {
          method: "POST",
          headers: {
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
-            name: groupName,
-            location: groupNotice,
-            manager: maxAge,
-            //minAge: minAge,
-            description: document.getElementById("gender").value
-            //maxGroupNo: maxGroupNo
+            groupName: groupName,
+            groupNotice: groupNotice,
+            maxAge: maxAge,
+            minAge: minAge,
+            gender: document.getElementById("gender").value,
+            maxGroupNo: maxGroupNo
          })
       });
       if (response.status == 200) {
@@ -131,7 +125,7 @@ export default function Creategroup() {
                      </div>
 
                   </form>
-                  <button type='submit' id='group-form-btn' className='standard-btn'>SUBMIT</button>
+                  <button id='group-form-btn' className='standard-btn'>SUBMIT</button>
 
                </div>
             </div>
