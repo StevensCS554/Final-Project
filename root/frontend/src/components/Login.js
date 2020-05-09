@@ -13,6 +13,7 @@ export default function Login() {
       const { email, password } = e.target.elements;
       try {
          await doSignInWithEmailAndPassword(email.value, password.value);
+         window.location.href = "http://localhost:3000";
       } catch (e) {
          alert(e);
       }
