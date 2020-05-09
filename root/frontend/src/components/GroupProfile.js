@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import defaultGroup from '../images/group-bg.jpg';
 import profile from '../images/team-bg.jpeg';
 import Navigation from './utilities/Navigation';
@@ -9,6 +10,8 @@ export default function Groupprofile() {
    const [groupData, setGroupData] = useState(undefined);
    const [manager, setManager] = useState(undefined);
    const [error, setError] = useState(undefined);
+   const [isManager, setIsManager] = useState(true);
+   const [isMember, setIsMember] = useState(true);
    const { currentUser } = useContext(AuthContext);
    useEffect(
       () => {
@@ -76,7 +79,7 @@ export default function Groupprofile() {
                   <div id='group-manager'>
                      <img src={profile} />
                      <p>Group Manager: {manager && manager.username}</p>
-                     <a href='#'>MESSAGE</a>
+                     {isManager ? (<Link>Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
                   </div>
 
                   {error && <h1 className='error'>{error}</h1>}
@@ -110,20 +113,8 @@ export default function Groupprofile() {
                         })}
                   </div>
                </div>
-
-               <div id='group-info'>
-                  {/* group info section */}
-                  <div id='group-info-container'>
-                     <div id='group-info-pic'>
-                        <img src={defaultGroup} />
-                     </div>
-                     <div id='group-info-name'>
-                        <p>Group Name</p>
-                     </div>
-                     <div id='group-info-notice'>
-                        <p>Group Notice</p>
-                     </div>
-                  </div>
+                   {/* </div>
+                </div> */}
 
                   {/* group posts section */}
                   <div id='group-info-posts'>
@@ -137,18 +128,30 @@ export default function Groupprofile() {
                                  <div id='group-info-posts-content'>
                                     <p>{post.content}</p>
                                  </div>
+                           {isManager && (<div id='btn-wrapper'><button className='standard-btn'>DELETE POST</button></div>)}
                               </div>
                            );
                         })}
                   </div>
+                  {(isManager || isMember) && (
+                  <div id='group-info-posts-area'>
+                     <label htmlFor='post-area'>Write Something...</label>
+                     <input type='text' id='post-area' />
+                     
+                     <button className='standard-btn'>CREATE POST</button>
+                  </div>)}  
                </div>
 
             </div>
-            <div id='join-group'>
-               <button className='standard-btn' onClick={handleJoinGroup}>JOIN GROUP</button>
-            </div>
+                        {(!isManager && !isMember) && (
+                           <div id='join-group'>
+                              <button className='standard-btn' onClick={handleJoinGroup} >JOIN GROUP</button>
+                           </div>)}
          </div>
          <Footer />
       </div>
    )
 }
+
+
+
