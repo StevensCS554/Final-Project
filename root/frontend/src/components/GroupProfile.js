@@ -7,6 +7,7 @@ import Footer from './utilities/Footer';
 import { AuthContext } from '../firebase/Auth';
 
 export default function GroupProfile() {
+
    const [groupData, setGroupData] = useState(undefined);
    const [manager, setManager] = useState(undefined);
    const [error, setError] = useState(undefined);
@@ -166,5 +167,7 @@ export default function GroupProfile() {
       </div>
    )
 }
+
+
 
 
