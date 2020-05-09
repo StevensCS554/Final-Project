@@ -73,6 +73,7 @@ export default function GroupProfile() {
             <Navigation />
             <div id='group-profile'>
                 <div id='group-profile-container'>
+                    {error && <h1 className='error'>{error}</h1>}
 
                     {/* group member section */}
                     <div id='group-member-list'>
@@ -82,7 +83,6 @@ export default function GroupProfile() {
                             {isManager ? (<Link>Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
                         </div>
 
-                        {error && <h1 className='error'>{error}</h1>}
                         <div id='group-members'>
                             {groupData &&
                                 groupData.user.map((userId) => {
