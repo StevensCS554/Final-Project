@@ -12,20 +12,16 @@ export default function Creategroup() {
 
    async function createGroup() {
       const groupName = document.getElementById('groupName').value;
-      //const form = $(this).parent();
-      //const groupName = form.find("#groupName").value;
       if (!groupName) {
          alert("Please input the groupName!")
          return false;
       }
       const groupNotice = document.getElementById('groupNotice').value;
-      //const groupNotice = form.find("#groupNotice").value;
       if (!groupNotice) {
          alert("Please input the groupNotice!")
          return false;
       }
       const maxAge = document.getElementById('maxAge').value;
-      //const maxAge = form.find("#maxAge").value;
       if (!maxAge) {
          alert("Please input the maxAge!")
          return false;
@@ -35,7 +31,6 @@ export default function Creategroup() {
          return false;
       }
       const minAge = document.getElementById('minAge').value;
-      //const minAge = form.find("#minAge").value;
       if (!minAge) {
          alert("Please input the minAge!")
          return false;
@@ -49,7 +44,6 @@ export default function Creategroup() {
          return false;
       }
       const maxGroupNo = document.getElementById('maxGroupNo').value;
-      //const maxGroupNo = form.find("#maxGroupNo").value;
       if (!maxGroupNo) {
          alert("Please input the maxGroupNo!")
          return false;
@@ -64,12 +58,12 @@ export default function Creategroup() {
             'Content-Type': 'application/json'
          },
          body: JSON.stringify({
-            name: groupName,
-            location: groupNotice,
-            manager: maxAge,
-            //minAge: minAge,
-            description: document.getElementById("gender").value
-            //maxGroupNo: maxGroupNo
+            groupName: groupName,
+            groupNotice: groupNotice,
+            maxAge: maxAge,
+            minAge: minAge,
+            gender: document.getElementById("gender").value,
+            maxGroupNo: maxGroupNo
          })
       });
       if (response.status == 200) {
