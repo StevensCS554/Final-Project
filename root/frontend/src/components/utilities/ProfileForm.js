@@ -19,33 +19,27 @@ export default function ProfileForm() {
       const reqBody = {};
       if (username != userData.username) {
          reqBody.username = username;
-         return false;
       }
       const gender = document.getElementById('gender').value;
       if (gender != userData.gender) {
          reqBody.gender = gender;
-         return false;
       }
       const age = document.getElementById('age').value;
       if (age != userData.age) {
          reqBody.age = age;
-         return false;
       }
       const zipcode = document.getElementById('zipcode').value;
       if (zipcode != userData.zipcode) {
          reqBody.zipcode = zipcode;
-         return false;
       }
       const cellphone = document.getElementById('cellphone').value;
       if (cellphone != userData.phone) {
          //front is cellphone and back is phone, lazy to synchronize XD
          reqBody.phone = cellphone;
-         return false;
       }
       const bio = document.getElementById('bio').value;
       if (bio != userData.bio) {
          reqBody.bio = bio;
-         return false;
       }
       if (Object.keys(reqBody).length === 0){
          alert('Please change some information!')
