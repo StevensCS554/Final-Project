@@ -7,13 +7,13 @@ import Footer from './utilities/Footer';
 import { AuthContext } from '../firebase/Auth';
 
 export default function GroupProfile() {
-
    const [groupData, setGroupData] = useState(undefined);
    const [manager, setManager] = useState(undefined);
    const [error, setError] = useState(undefined);
    const [isManager, setIsManager] = useState(true);
    const [isMember, setIsMember] = useState(true);
    const { currentUser } = useContext(AuthContext);
+   
    useEffect(
       () => {
          async function fetchGroupsData() {
