@@ -77,6 +77,26 @@
             margin-right: auto;
             .single-posts {
                background-color: rgb(212, 211, 211);
+               border-bottom: black 1px solid;
+               margin-bottom: 0.3rem;
+               padding-bottom: 0.3rem;
+               box-shadow: 1px 1px 1px 1px;
+               button {
+                  width: 70%;
+               }
+               #btn-wrapper {
+                  text-align: center;
+               }
+            }
+            &-content {
+               text-align: center;
+            }
+         }
+
+         &-posts-area {
+            text-align: center;
+            label {
+               display: block;
             }
          }
       }

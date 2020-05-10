@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import logo from '../../images/logo.png';
 import { AuthContext } from '../../firebase/Auth';
 import profile from '../../images/team-bg.jpeg'
@@ -38,7 +38,7 @@ export default function Navigation() {
                      <div>
                         <a href='#' onClick={() => {
                            doSignOut();
-                           alert('You have successfully signed out!')
+                           window.location.href='http://localhost:3000';
                         }} >LOGOUT</a>
                      </div>
                   </div>
