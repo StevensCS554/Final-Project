@@ -32,9 +32,8 @@ export default function Signup() {
 
    const handleSignup = async (e) => {
       e.preventDefault();
-      const { username, email, age, zipcode, gender, phone, bio, password } = e.target.elements;
+      const { username, email, password } = e.target.elements;
       try {
-         const username_v = username.value;
          const email_v = email.value;
          const age_v = Number.toString(parseInt(age.value));
          const zipcode_v = zipcode.value;
@@ -66,20 +65,17 @@ export default function Signup() {
             },
             body: JSON.stringify({
                name: username_v,
-               email: email_v,
-               age: age_v,
-               zipcode: zipcode_v,
-               gender: gender_v,
-               phone: phone_v,
-               bio: bio_v
+               email: email_v
             })
          });
+
+//do something with session
 
          if (response.status == 200) {
             alert('Succes! Redirect to landing page!');
          }
          else {
-            alert('Sorry, something went wrong! Redirect to landing page!');
+            alert('Sorry, something went wrong!');
             console.log(await response.json());
          }
          window.location.href = "http://localhost:3000/";
