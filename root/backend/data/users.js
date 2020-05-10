@@ -12,8 +12,7 @@ async function createUser(username, email, age, zipcode, gender, phone, bio){
       gender: gender,
       phone: phone,
       bio: bio,
-      myGroup: null,
-      groups: []
+      groups: null
    };
    const usersCollection = await users();
 
@@ -33,7 +32,6 @@ async function readUser(userId) {
 
    const usersCollection = await users();
    const findUser = await usersCollection.findOne({ _id: checkedId });
-   //console.log(findUser);
    if (findUser == null) throw "No User Exists With ID: " + checkedId;
    return findUser;
 }

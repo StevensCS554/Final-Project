@@ -1,6 +1,5 @@
 const mongoCollections = require("../config/mongoCollections");
 const groups = mongoCollections.groups;
-const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 // const ObjectID = require('mongodb').ObjectID;
 const userData = require('./users');
@@ -10,7 +9,7 @@ const userData = require('./users');
 async function getAll() {
    try {
       const groupsCollection = await groups();
-      const allGroup = groupsCollection.find({}).toArray();
+      const allGroup = groupsCollection.find({});
       return allGroup;
    } catch (e) {
       throw `` + e;
@@ -22,7 +21,8 @@ async function getById(id) {
    try {
       checkId(id);
       const groupsCollection = await groups();
-      const group = await groupsCollection.findOne({ _id: id });
+      console.log(id);
+      const group = groupsCollection.findOne({ _id: id });
       return group;
    } catch (e) {
       throw `` + e;
@@ -39,9 +39,8 @@ async function creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGro
          gender: gender,
          maxGroupNo: maxGroupNo,
          zipcode: zipcode,
-         users: [],
+         user: [],
          managerId: managerId,
-         posts: []
       }
       const groupsCollection = await groups();
       const insertedGroup = await groupsCollection.insertOne(newGroup);
@@ -104,29 +103,23 @@ async function deleteGroupById(id) {
 };
 
 // -----------------------Posts Section Added by Kuan -------------------
-async function joinGroup(userId, groupId) {
+async function joinGroup(username, groupId) {
    groupId = checkId(groupId);
-   userId = checkId(userId);
-   let group = await getById(groupId);
-   const user = await userData.readUser(userId);
+   const group = await getById(groupId);
+   const user = await userData.getUserByUserName(username);
    if (user.age >= group.maxAge || user.age <= group.minAge)
       throw 'Your age does not meet requirements!';
-   if (group.users.length >= group.maxGroupNo)
+   if (group.user.length >= group.maxGroupNo)
       throw 'Goup has met its max number!';
    if (group.gender !== 'none' && group.gender !== user.gender)
       throw 'Group requires a different gender!';
+
    const groupcollection = await groups();
    const updateInfo = await groupcollection.updateOne(
       { _id: groupId },
-      { $push: { users: user } }
+      { $push: { user: user._id } }
    );
-   const userCollection = await users();
-
-   const updateInfo2 = await userCollection.updateOne(
-      {_id: userId},
-      {$push: {groups: groupId}}
-   );
-   if (!updateInfo || !updateInfo2)
+   if (!updateInfo)
       throw 'Can\'t join in!'
    group = await getById(groupId);
    return group;
