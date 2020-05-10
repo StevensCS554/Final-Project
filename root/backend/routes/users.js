@@ -86,6 +86,18 @@ router.post("/", async (req, res) => {
     }
 });
 
+router.get("/", async (req, res) => {
+    try {
+        const newUsername = req.body.newUsername;
+        
+        const user = await usersData.readUserByName(newUsername);
+        if (user == null) res.json({noUser: true});
+        else res.json({noUser: false});
+    } catch (e) {
+        res.status(500).json(e);
+    }
+});
+
 router.get("/:id", async (req, res) => {
     try {
 

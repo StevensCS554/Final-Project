@@ -33,22 +33,18 @@ async function readUser(userId) {
 
    const usersCollection = await users();
    const findUser = await usersCollection.findOne({ _id: checkedId });
-   console.log(findUser);
+   //console.log(findUser);
    if (findUser == null) throw "No User Exists With ID: " + checkedId;
    return findUser;
 }
 
-// async function readAllUser(skip, take) {
-//   if (skip < 0) skip = 0;
-//   if (take < 0) take = 0;
-//   if (take > 100) take = 100;
-//   const usersCollection = await users();
-//   console.log(typeof usersCollection);
-//   let taskArray = await usersCollection.find({}).toArray();
-//   taskArray = taskArray.slice(skip, skip + take);
-//   if (taskArray.length == 0) return taskArray;
-//   return taskArray;
-// }
+async function readUserByName(newUsername) {
+  
+  if (!newUsername) throw 'No username provided!'
+  const usersCollection = await users();
+  let user = await usersCollection.findOne({ name: newUsername});
+  return user;
+}
 
 async function addGroup(userId, groupId) {
    const checkedUserId = checkId(userId);
@@ -149,4 +145,4 @@ function checkId(id) {
    else throw "Input Can't Be An Id!"
 }
 
-module.exports = { createUser, readUser, updateUser, removeGroup, addGroup, deleteUser }
+module.exports = { createUser, readUser, readUserByName, updateUser, removeGroup, addGroup, deleteUser }
