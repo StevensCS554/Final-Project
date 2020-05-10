@@ -14,20 +14,25 @@ export default function Signup() {
 
    const handleSignup = async (e) => {
       e.preventDefault();
-      const { username, email, password } = e.target.elements;
+      const { username, email, age, zipcode, gender, phone, bio, password } = e.target.elements;
       try {
-         const email_v = email.value;
-         const password_v = password.value;
          const username_v = username.value;
-         if (!email_v) {
-            throw 'No email provided!';
-         }
-         if (!password_v) {
-            throw 'No password provided!';
-         }
-         if (!username_v) {
-            throw 'No username provided!';
-         }
+         const email_v = email.value;
+         const age_v = age.value;
+         const zipcode_v = zipcode.value;
+         const gender_v = gender.value;
+         const phone_v = phone.value;
+         const bio_v = bio.value;  //Not sure what it is when no input, "" or null
+         const password_v = password.value;
+         
+         if (!username_v) throw 'No username provided!';
+         if (!email_v) throw 'No email provided!';
+         if (!age_v) throw 'No age provided!';
+         if (age_v < 10 || age_v > 100) throw 'No valid age provided!';
+         if (!zipcode_v) throw 'No zipcode provided!';
+         if (!gender_v) throw 'No gender provided!';  //unlikely
+         if (!phone_v) throw 'No phone provided!';
+         if (!password_v) throw 'No password provided!';
          await doCreateUserWithEmailAndPassword(email_v, password_v, username_v);
          const response = await fetch("http://localhost:4000/users", {
             method: "POST",
@@ -36,23 +41,54 @@ export default function Signup() {
             },
             body: JSON.stringify({
                name: username_v,
-               email: email_v
+               email: email_v,
+               age: age_v,
+               zipcode: zipcode_v,
+               gender: gender_v,
+               phone: phone_v,
+               bio: bio_v
             })
          });
-
-//do something with session
 
          if (response.status == 200) {
             alert('Succes! Redirect to landing page!');
          }
          else {
-            alert('Sorry, something went wrong!');
+            alert('Sorry, something went wrong! Redirect to landing page!');
             console.log(await response.json());
          }
          window.location.href = "http://localhost:3000/";
       } catch (e) {
          alert(e.message ? e.message : e);
       }
+   }
+
+   const usernameBlur = (e) => {
+      e.preventDefault();
+      const newUsername = e.target.value;
+      if (!newUsername || newUsername == "") return;
+      const response = await fetch("http://localhost:4000/users", {
+         method: "GET",
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+            groupName: groupName,
+            groupNotice: groupNotice,
+            maxAge: maxAge,
+            minAge: minAge,
+            gender: document.getElementById("gender").value,
+            maxGroupNo: maxGroupNo
+         })
+      });
+      if (response.status == 200) {
+         alert('Succes!');
+      }
+      else {
+         alert('Sorry, something went wrong!');
+         console.log(await response.json());
+      }
+      document
    }
 
    return (
@@ -67,7 +103,7 @@ export default function Signup() {
             <form onSubmit={handleSignup}>
                <div className='signup-input'>
                   <label htmlFor='username'>USERNAME</label>
-                  <input required type='text' name='username' />
+                  <input required type='text' name='username' onBlur={usernameBlur}/>
                </div>
                <div className='signup-input'>
                   <label htmlFor='email'>EMAIL</label>
