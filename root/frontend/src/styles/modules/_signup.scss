@@ -52,6 +52,24 @@
          margin-top: 1rem;
          margin-bottom: 1rem;
       }
+      div {
+         .title {
+            float: left;
+         }
+         .red-message, .green-message {
+            float: right;
+         }
+         .red-message {
+            color: red;
+         }
+         .green-message {
+            color: green;
+         }
+         input.error {
+            border-color: red;
+            box-shadow: none;
+         }
+      }
    }
 }
 #to-login {

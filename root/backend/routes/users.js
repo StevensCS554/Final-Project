@@ -78,7 +78,6 @@ router.post("/", async (req, res) => {
                 throw `You Must Provide A bio with string type! what you give:${typeof bio}`;
             }
         }
-        
         const newUser = await usersData.createUser(username, email, age, zipcode, gender, phone, bio);
         res.json(newUser);
     } catch (e) {
@@ -86,7 +85,19 @@ router.post("/", async (req, res) => {
     }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:newUsername", async (req, res) => {
+    try {
+        const newUsername = req.params.newUsername;
+        
+        const user = await usersData.readUserByName(newUsername);
+        if (user == null) res.json({noUser: true});
+        else res.json({noUser: false});
+    } catch (e) {
+        res.status(500).json(e);
+    }
+});
+
+router.get("/getbyid/:id", async (req, res) => {
     try {
 
         const id = req.params.id;
@@ -94,6 +105,19 @@ router.get("/:id", async (req, res) => {
 
         const user = await usersData.readUser(checkedId);
         res.json(user);
+    } catch (e) {
+        res.status(500).json(e);
+    }
+});
+
+router.get("/getbyemail/:newEmail", async (req, res) => {
+    try {
+
+        const newEmail = req.params.newEmail;
+
+        const user = await usersData.readUserByEmail(newEmail);
+        if (user == null) res.json({noEmail: true});
+        else res.json({noEmail: false});
     } catch (e) {
         res.status(500).json(e);
     }

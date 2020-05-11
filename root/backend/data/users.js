@@ -30,25 +30,27 @@ async function createUser(username, email, age, zipcode, gender, phone, bio){
 
 async function readUser(userId) {
    const checkedId = checkId(userId);
-
    const usersCollection = await users();
    const findUser = await usersCollection.findOne({ _id: checkedId });
    // console.log(findUser);
+   //console.log(findUser);
    if (findUser == null) throw "No User Exists With ID: " + checkedId;
    return findUser;
 }
 
-// async function readAllUser(skip, take) {
-//   if (skip < 0) skip = 0;
-//   if (take < 0) take = 0;
-//   if (take > 100) take = 100;
-//   const usersCollection = await users();
-//   console.log(typeof usersCollection);
-//   let taskArray = await usersCollection.find({}).toArray();
-//   taskArray = taskArray.slice(skip, skip + take);
-//   if (taskArray.length == 0) return taskArray;
-//   return taskArray;
-// }
+async function readUserByName(newUsername) {
+  if (!newUsername) throw 'No username provided!'
+  const usersCollection = await users();
+  let user = await usersCollection.findOne({ username: newUsername});
+  return user;
+}
+
+async function readUserByEmail(newEmail) {
+   if (!newEmail) throw 'No email provided!'
+   const usersCollection = await users();
+   let user = await usersCollection.findOne({ email: newEmail});
+   return user;
+ }
 
 async function addGroup(userId, groupId) {
    const checkedUserId = checkId(userId);
@@ -126,14 +128,39 @@ async function deleteUser(userId) {
 
 // --------------Added by Kuan-------------
 
-async function getUserByUserName(username) {
-   if (typeof username !== 'string')
-      throw 'Invalid username provided!';
-   const usersCollection = await getCollection();
-   const user = await usersCollection.findOne({ username: username });
-   if (!user)
-      return undefined;
+async function getAllUser() {
+   const usersCollection = await users();
+   let res = await usersCollection.find({}).toArray();
+   if (!res)
+      throw 'No users!';
+   return res;
+}
+
+async function getUserGroup(userId) {
+   const user = await readUser(userId);
+   return user.groups;
+}
+
+async function addUserProfile(userId, url) {
+   userId = checkId(userId);
+   if (!url)
+      throw 'No url provided!';
+   const usersCollection = await users();
+   const updateInfo = await usersCollection.updateOne(
+      {_id: userId},
+      {$set: {profileUrl: url}}
+   );
+   if (!updateInfo)
+      throw 'Can\'t update url';
+   let user = await readUser(userId);
    return user;
+}
+
+async function getUserProfileUrl(userId) {
+   const user = await readUser(userId);
+   if (user.profileUrl)
+      return user.profileUrl;
+   throw 'User doesn\'t have a profile yet!';
 }
 
 //-----------------------------------check--------------------------------------
@@ -149,4 +176,4 @@ function checkId(id) {
    else throw "Input Can't Be An Id!"
 }
 
-module.exports = { createUser, readUser, updateUser, removeGroup, addGroup, deleteUser }
+module.exports = { createUser, readUser, readUserByName, updateUser,readUserByEmail, removeGroup, addGroup, deleteUser, getAllUser, getUserGroup, getUserProfileUrl, addUserProfile }

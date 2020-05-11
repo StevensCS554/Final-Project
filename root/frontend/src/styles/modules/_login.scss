@@ -34,6 +34,16 @@
                box-shadow: -1px -1px;
             }
          }
+         div {
+            .red-message {
+               float: right;
+               color: red;
+            }
+            input.error {
+               border-color: red;
+               box-shadow: none;
+            }
+         }
       }
       button {
          margin: 1rem;
