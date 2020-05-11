@@ -121,22 +121,39 @@ async function deleteUser(userId) {
 
 // --------------Added by Kuan-------------
 
-async function getUserByUserName(username) {
-   if (typeof username !== 'string')
-      throw 'Invalid username provided!';
-   const usersCollection = await users();
-   const user = await usersCollection.findOne({ username: username });
-   if (!user)
-      return undefined;
-   return user;
-}
-
 async function getAllUser() {
    const usersCollection = await users();
    let res = await usersCollection.find({}).toArray();
    if (!res)
       throw 'No users!';
    return res;
+}
+
+async function getUserGroup(userId) {
+   const user = await readUser(userId);
+   return user.groups;
+}
+
+async function addUserProfile(userId, url) {
+   userId = checkId(userId);
+   if (!url)
+      throw 'No url provided!';
+   const usersCollection = await users();
+   const updateInfo = await usersCollection.updateOne(
+      {_id: userId},
+      {$set: {profileUrl: url}}
+   );
+   if (!updateInfo)
+      throw 'Can\'t update url';
+   let user = await readUser(userId);
+   return user;
+}
+
+async function getUserProfileUrl(userId) {
+   const user = await readUser(userId);
+   if (user.profileUrl)
+      return user.profileUrl;
+   throw 'User doesn\'t have a profile yet!';
 }
 
 //-----------------------------------check--------------------------------------
@@ -152,4 +169,4 @@ function checkId(id) {
    else throw "Input Can't Be An Id!"
 }
 
-module.exports = { createUser, readUser, readUserByName, updateUser, removeGroup, addGroup, deleteUser, getAllUser }
+module.exports = { createUser, readUser, readUserByName, updateUser, removeGroup, addGroup, deleteUser, getAllUser, getUserGroup, getUserProfileUrl, addUserProfile }
