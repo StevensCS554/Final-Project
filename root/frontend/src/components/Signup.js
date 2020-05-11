@@ -138,8 +138,9 @@ export default function Signup() {
       }
    }
 
-   const emailBlur = (e) => {
+   const emailBlur = async (e) => {
       e.preventDefault();
+      e.persist();
       const newEmail = e.target.value.trim();
       const message = document.getElementById('email-message');
       if (!newEmail || newEmail.length == 0) {
@@ -163,13 +164,37 @@ export default function Signup() {
             });
          }
          else {
-            message.innerHTML = 'Checked!';
-            message.className = 'green-message';
-            e.target.className = '';
-            setCheckParameter({
-               ...checkParameter,
-               email: true
+            const response = await fetch(`http://localhost:4000/users/getbyemail/${newEmail}`, {
+               method: "GET",
+               headers: {
+                  'Content-Type': 'application/json'
+               }
             });
+            if (response.status == 200) {
+               const res = await response.json();
+               if (!res.noEmail) {
+                  message.innerHTML = 'Sorry, this email has been used. Please try another one.';
+                  message.className = 'red-message';
+                  e.target.className = 'error';
+                  setCheckParameter({
+                     ...checkParameter,
+                     email: false
+                  });
+               }
+               else {
+                  message.innerHTML = 'Available Email.';
+                  message.className = 'green-message';
+                  e.target.className = '';
+                  setCheckParameter({
+                     ...checkParameter,
+                     email: true
+                  });
+               }
+            }
+            else {
+               alert('Sorry, something went wrong!');
+               console.log(await response.json());
+            }
          }
       }
    }

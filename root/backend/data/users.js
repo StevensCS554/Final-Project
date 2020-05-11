@@ -39,12 +39,18 @@ async function readUser(userId) {
 }
 
 async function readUserByName(newUsername) {
-  
   if (!newUsername) throw 'No username provided!'
   const usersCollection = await users();
-  let user = await usersCollection.findOne({ name: newUsername});
+  let user = await usersCollection.findOne({ username: newUsername});
   return user;
 }
+
+async function readUserByEmail(newEmail) {
+   if (!newEmail) throw 'No email provided!'
+   const usersCollection = await users();
+   let user = await usersCollection.findOne({ email: newEmail});
+   return user;
+ }
 
 async function addGroup(userId, groupId) {
    const checkedUserId = checkId(userId);
@@ -145,4 +151,4 @@ function checkId(id) {
    else throw "Input Can't Be An Id!"
 }
 
-module.exports = { createUser, readUser, readUserByName, updateUser, removeGroup, addGroup, deleteUser }
+module.exports = { createUser, readUser, readUserByName, readUserByEmail, updateUser, removeGroup, addGroup, deleteUser }
