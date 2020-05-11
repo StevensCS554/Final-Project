@@ -7,7 +7,7 @@ import Footer from './utilities/Footer';
 
 export default function Groupprofile() {
    const [isManager, setIsManager] = useState(true);
-   const [isMember, setIsMember] = useState(true);
+   const [isMember, setIsMember] = useState(false);
 
    return (
       <div>

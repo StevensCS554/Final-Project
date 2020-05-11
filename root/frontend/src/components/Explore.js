@@ -13,6 +13,7 @@ export default function Explore() {
 
    const {currentUser} = useContext(AuthContext);
    console.log(currentUser);
+
    return (
       <div>
          <Navigation />
@@ -50,7 +51,7 @@ export default function Explore() {
                }}>CLOSE GOOGLE MAP</button>
             </div>
          </div>
-         <Gallery />
+         <Gallery user={currentUser} />
          <Footer />
       </div>
    )
