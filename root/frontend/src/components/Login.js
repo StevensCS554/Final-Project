@@ -12,15 +12,53 @@ export default function Login() {
       e.preventDefault();
       const { email, password } = e.target.elements;
       try {
+         const email_v = email.value.trim();
+         const email_message = document.getElementById('email-message');
+         const password_v = password.value.trim();
+         const password_message = document.getElementById('password-message');
+         if (!email_v || email_v.length == 0) {
+            email_message.innerHTML = 'You have to enter email!';
+            email.className = 'error';
+            return;
+         }
+         else {
+            const regex = /^\S+@\S+\.\S+$/;
+            if (!regex.test(email_v)) {
+               email_message.innerHTML = 'Sorry, not an email!';
+               email.className = 'error';
+               return;
+            }
+            else {
+               email_message.innerHTML = '';
+               email.className = '';
+            }
+         }
+         if (!password_v || password_v.length == 0) {
+            password_message.innerHTML = 'You have to enter password!';
+            password.className = 'error';
+            return;
+         }
+         else {
+            const regex = /^[a-zA-Z0-9!"#$%&'+,-./:;<=>?@^_]+$/;
+            if (!regex.test(password_v)) {
+               password_message.innerHTML = 'Sorry, password can only contain numbers, letters and these characters: !"#$%&\'+,-./:;<=>?@^_.';
+               password.className = 'error';
+               return;
+            }
+            else {
+               password_message.innerHTML = '';
+               password.className = '';
+            }
+         }
          await doSignInWithEmailAndPassword(email.value, password.value);
-         window.location.href = "http://localhost:3000";
+         // window.location.href = "http://localhost:3000";
       } catch (e) {
-         alert(e);
+         alert(e.message ? e.message : e);
       }
    }
-   
+
    if (currentUser) {
-      return <Redirect to='/explore'/>
+      return <Redirect to='/explore' />
    }
    return (
       <div>
@@ -33,11 +71,11 @@ export default function Login() {
             <div id='login-form'>
                <form onSubmit={handleLogin}>
                   <div className='login-input'>
-                     <label htmlFor='email'>EMAIL</label>
+                     <label htmlFor='email'>EMAIL</label><label id='email-message' className='red-message'></label>
                      <input required name='email' type='email' />
                   </div>
                   <div className='login-input'>
-                     <label htmlFor='password'>PASSWORD</label>
+                     <label htmlFor='password'>PASSWORD</label><label id='password-message' className='red-message'></label>
                      <input required name='password' type='password' />
                   </div>
                   <div>

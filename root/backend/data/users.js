@@ -33,6 +33,7 @@ async function readUser(userId) {
    const checkedId = checkId(userId);
    const usersCollection = await users();
    const findUser = await usersCollection.findOne({ _id: checkedId });
+   // console.log(findUser);
    //console.log(findUser);
    if (findUser == null) throw "No User Exists With ID: " + checkedId;
    return findUser;
