@@ -127,16 +127,6 @@ async function deleteUser(userId) {
 
 // --------------Added by Kuan-------------
 
-async function getUserByUserName(username) {
-   if (typeof username !== 'string')
-      throw 'Invalid username provided!';
-   const usersCollection = await users();
-   const user = await usersCollection.findOne({ username: username });
-   if (!user)
-      return undefined;
-   return user;
-}
-
 async function getAllUser() {
    const usersCollection = await users();
    let res = await usersCollection.find({}).toArray();

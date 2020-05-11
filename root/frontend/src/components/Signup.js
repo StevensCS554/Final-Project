@@ -12,19 +12,20 @@ export default function Signup() {
       age: false,
       zipcode: false,
       phone: false,
-      password: false
+      password: false,
+      password2: false
    };
    const { currentUser } = useContext(AuthContext);
    const [checkParameter, setCheckParameter] = useState(iniCheckParameter);
 
    useEffect(() => {
-      if (checkParameter.username && checkParameter.email && checkParameter.age && checkParameter.zipcode && checkParameter.phone && checkParameter.password) {
+      if (checkParameter.username && checkParameter.email && checkParameter.age && checkParameter.zipcode && checkParameter.phone && checkParameter.password && checkParameter.password2) {
          document.getElementById('submit-btn').disabled = false;
       }
       else {
          document.getElementById('submit-btn').disabled = true;
       }
-   }, [checkParameter.username, checkParameter.email, checkParameter.age, checkParameter.zipcode, checkParameter.phone, checkParameter.password]);
+   }, [checkParameter.username, checkParameter.email, checkParameter.age, checkParameter.zipcode, checkParameter.phone, checkParameter.password, checkParameter.password2]);
 
    if (currentUser) {
       return <Redirect to='/explore' />
@@ -104,36 +105,48 @@ export default function Signup() {
          });
       }
       else {
-         const response = await fetch(`http://localhost:4000/users/${newUsername}`, {
-            method: "GET",
-            headers: {
-               'Content-Type': 'application/json'
-            }
-         });
-         if (response.status == 200) {
-            const res = await response.json();
-            if (!res.noUser) {
-               message.innerHTML = 'Sorry, this username has been used. Please try another one.';
-               message.className = 'red-message';
-               e.target.className = 'error';
-               setCheckParameter({
-                  ...checkParameter,
-                  username: false
-               });
-            }
-            else {
-               message.innerHTML = 'Available Username.';
-               message.className = 'green-message';
-               e.target.className = '';
-               setCheckParameter({
-                  ...checkParameter,
-                  username: true
-               });
-            }
+         const regex = /^[a-zA-Z0-9!"#$%&'+,-./:;<=>?@^_]+$/;
+         if (!regex.test(newUsername)) {
+            message.innerHTML = 'Sorry, newUsername can only contain numbers, letters and these characters: !"#$%&\'+,-./:;<=>?@^_.';
+            message.className = 'red-message';
+            e.target.className = 'error';
+            setCheckParameter({
+               ...checkParameter,
+               username: false
+            });
          }
          else {
-            alert('Sorry, something went wrong!');
-            console.log(await response.json());
+            const response = await fetch(`http://localhost:4000/users/${newUsername}`, {
+               method: "GET",
+               headers: {
+                  'Content-Type': 'application/json'
+               }
+            });
+            if (response.status == 200) {
+               const res = await response.json();
+               if (!res.noUser) {
+                  message.innerHTML = 'Sorry, this username has been used. Please try another one.';
+                  message.className = 'red-message';
+                  e.target.className = 'error';
+                  setCheckParameter({
+                     ...checkParameter,
+                     username: false
+                  });
+               }
+               else {
+                  message.innerHTML = 'Available Username.';
+                  message.className = 'green-message';
+                  e.target.className = '';
+                  setCheckParameter({
+                     ...checkParameter,
+                     username: true
+                  });
+               }
+            }
+            else {
+               alert('Sorry, something went wrong!');
+               console.log(await response.json());
+            }
          }
       }
    }
@@ -267,7 +280,7 @@ export default function Signup() {
             e.target.className = 'error';
             setCheckParameter({
                ...checkParameter,
-               age: false
+               zipcode: false
             });
          }
          else {
@@ -314,7 +327,7 @@ export default function Signup() {
             e.target.className = 'error';
             setCheckParameter({
                ...checkParameter,
-               age: false
+               phone: false
             });
          }
          else {
@@ -371,7 +384,7 @@ export default function Signup() {
                e.target.className = 'error';
                setCheckParameter({
                   ...checkParameter,
-                  phone: false
+                  password: false
                });
             }
             else {
@@ -380,7 +393,7 @@ export default function Signup() {
                e.target.className = '';
                setCheckParameter({
                   ...checkParameter,
-                  phone: true
+                  password: true
                });
             }
          }
@@ -397,7 +410,7 @@ export default function Signup() {
          e.target.className = 'error';
          setCheckParameter({
             ...checkParameter,
-            password: false
+            password2: false
          });
       }
       else {
@@ -407,7 +420,7 @@ export default function Signup() {
             e.target.className = 'error';
             setCheckParameter({
                ...checkParameter,
-               password: false
+               password2: false
             });
          }
          else {
@@ -416,7 +429,7 @@ export default function Signup() {
             e.target.className = '';
             setCheckParameter({
                ...checkParameter,
-               password: true
+               password2: true
             });
          }
       }
