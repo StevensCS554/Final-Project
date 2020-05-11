@@ -30,7 +30,6 @@ async function createUser(username, email, age, zipcode, gender, phone, bio){
 
 async function readUser(userId) {
    const checkedId = checkId(userId);
-
    const usersCollection = await users();
    const findUser = await usersCollection.findOne({ _id: checkedId });
    //console.log(findUser);
@@ -131,11 +130,19 @@ async function deleteUser(userId) {
 async function getUserByUserName(username) {
    if (typeof username !== 'string')
       throw 'Invalid username provided!';
-   const usersCollection = await getCollection();
+   const usersCollection = await users();
    const user = await usersCollection.findOne({ username: username });
    if (!user)
       return undefined;
    return user;
+}
+
+async function getAllUser() {
+   const usersCollection = await users();
+   let res = await usersCollection.find({}).toArray();
+   if (!res)
+      throw 'No users!';
+   return res;
 }
 
 //-----------------------------------check--------------------------------------
@@ -151,4 +158,4 @@ function checkId(id) {
    else throw "Input Can't Be An Id!"
 }
 
-module.exports = { createUser, readUser, readUserByName, readUserByEmail, updateUser, removeGroup, addGroup, deleteUser }
+module.exports = { createUser, readUser, readUserByName, readUserByEmail, updateUser, removeGroup, addGroup, deleteUser, getAllUser }

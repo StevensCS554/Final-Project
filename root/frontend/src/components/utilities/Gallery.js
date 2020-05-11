@@ -1,13 +1,14 @@
 import React, { useState, useRef, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../firebase/Auth';
 import $ from 'jquery';
 import profile from '../../images/team-bg.jpeg';
 import group from '../../images/group-bg.jpg';
 
-export default function Gallery() {
+export default function Gallery(props) {
    const [userGroup, setUserGroup] = useState(undefined);
-   const { currentUser } = useContext(AuthContext);
+   const [user, setUser] = useState(props.user);
+
+   
 
    const toggle1Ref = useRef();
    const toggle2Ref = useRef();
@@ -15,19 +16,16 @@ export default function Gallery() {
 
    const handleToggle1 = () => {
       const el = toggle1Ref.current;
-      console.log(el);
       $(el).slideToggle();
    }
 
    const handleToggle2 = () => {
       const el = toggle2Ref.current;
-      console.log(el);
       $(el).slideToggle();
    }
 
    const handleToggle3 = () => {
       const el = toggle3Ref.current;
-      console.log(el);
       $(el).slideToggle();
    }
 
@@ -38,15 +36,15 @@ export default function Gallery() {
             <div id='to-scroll'>
 
                <div id='explore-gallery-sidebar-profile'>
-                  {currentUser && (
+                  {user && (
                      <div id='explore-gallery-sidebar-profile-header'>
                         <img src={profile} />
-                        <p>Username</p>
+                        <p>{user.displayName}</p>
                         <Link to='/userprofile/1'><p>CHANGE PROFILE</p></Link>
                      </div>
                   )}
 
-                  {currentUser && (
+                  {user && (
                      <div id='explore-gallery-sidebar-usergroup'>
                         <button onClick={() => handleToggle3()} className='click-to-reveal'>MY GROUP</button>
                         {userGroup && (
@@ -64,7 +62,7 @@ export default function Gallery() {
                      </div>
                   )}
 
-                  {currentUser && (
+                  {user && (
                      <div id='explore-gallery-sidebar-usergroups'>
                         <button onClick={() => handleToggle1()} className='click-to-reveal'>THE GROUP YOU ARE IN</button>
                         <div style={{ display: 'none' }} ref={toggle1Ref}>
