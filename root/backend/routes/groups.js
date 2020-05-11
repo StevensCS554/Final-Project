@@ -1,10 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const { ObjectId } = require("mongodb");
+const ObjectId = require("mongodb").ObjectID;
 //middleware
 // const middleware 	= require("../middleware");
 const data = require('../data');
 const groupsData = data.groupsData;
+
+// Get single group !!
+router.get("/:groupId", async (req, res) => {
+   try {
+      const id = req.params.groupId;
+      const checkedId = checkId(id);
+
+      const targetGroup = await groupsData.getById(checkedId);
+      console.log(targetGroup);
+      res.json(targetGroup);
+   } catch (e) {
+      res.status(500).json(e);
+   }
+});
 
 //index Get all groups
 router.get("/", async (req, res) => {
@@ -84,19 +98,6 @@ router.post("/:userId", async (req, res) => {
    }
 });
 
-// Get single group !!
-router.get("/:groupId", async (req, res) => {
-   try {
-
-      const id = req.params.groupId;
-      const checkedId = checkId(id);
-
-      const targetGroup = await groupsData.getById(checkedId);
-      res.json(targetGroup);
-   } catch (e) {
-      res.status(500).json(e);
-   }
-});
 
 //update group
 router.put("/:id", async (req, res) => {
@@ -191,14 +192,22 @@ router.post('/:groupId/:userId', async (req, res) => {
 //-----------------------------------check--------------------------------------
 //helper
 function checkId(id) {
-   if (!id) throw "You Must Provide A Id!";
-   if (id._bsontype == "ObjectID") {
-      return id;
+   try{
+      if (!id) throw "You Must Provide A Id!";
+      if (id._bsontype == "ObjectID") {
+         return id;
+      }
+      else if (typeof id == "string") {
+         if(ObjectId.isValid(id))
+            return ObjectId(id);
+         else{
+            throw `not valid id: ${id}`
+         }
+      }
+      else throw "Input Can't Be An Id!"
+   }catch(e){
+      throw e;
    }
-   else if (typeof id == "string") {
-      return ObjectId(id);
-   }
-   else throw "Input Can't Be An Id!"
 }
 
 module.exports = router;

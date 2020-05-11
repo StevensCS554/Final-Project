@@ -23,6 +23,7 @@ async function getById(id) {
       checkId(id);
       const groupsCollection = await groups();
       const group = await groupsCollection.findOne({ _id: id });
+      if(group == null) throw `can not find the group with id: ${id}`;
       return group;
    } catch (e) {
       throw `` + e;
