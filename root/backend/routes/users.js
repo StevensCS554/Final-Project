@@ -97,7 +97,7 @@ router.get("/:newUsername", async (req, res) => {
     }
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/getbyid/:id", async (req, res) => {
     try {
 
         const id = req.params.id;
@@ -105,6 +105,19 @@ router.get("/:id", async (req, res) => {
 
         const user = await usersData.readUser(checkedId);
         res.json(user);
+    } catch (e) {
+        res.status(500).json(e);
+    }
+});
+
+router.get("/getbyemail/:newEmail", async (req, res) => {
+    try {
+
+        const newEmail = req.params.newEmail;
+
+        const user = await usersData.readUserByEmail(newEmail);
+        if (user == null) res.json({noEmail: true});
+        else res.json({noEmail: false});
     } catch (e) {
         res.status(500).json(e);
     }
