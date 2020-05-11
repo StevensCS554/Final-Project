@@ -13,7 +13,6 @@ router.get("/:groupId", async (req, res) => {
       const checkedId = checkId(id);
 
       const targetGroup = await groupsData.getById(checkedId);
-      console.log(targetGroup);
       res.json(targetGroup);
    } catch (e) {
       res.status(500).json(e);
