@@ -6,7 +6,6 @@ import Footer from './utilities/Footer';
 import { AuthContext } from '../firebase/Auth';
 import { withGoogleMap, withScriptjs } from 'react-google-maps';
 
-
 const WrappedMap = withScriptjs(withGoogleMap(Map));
 
 export default function Explore() {

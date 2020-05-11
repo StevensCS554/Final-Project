@@ -22,7 +22,7 @@ async function getById(id) {
    try {
       checkId(id);
       const groupsCollection = await groups();
-      const group = await groupsCollection.findOne({ _id: id });
+      const group = await groupsCollection.findOne({ _id:  id});
       return group;
    } catch (e) {
       throw `` + e;

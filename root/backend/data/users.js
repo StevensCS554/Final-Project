@@ -3,7 +3,8 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 
-async function createUser(username, email, age, zipcode, gender, phone, bio){
+
+async function createUser(username, email, age, zipcode, gender, phone, bio) {
    const addUser = {
       username: username,
       email: email,
@@ -38,18 +39,18 @@ async function readUser(userId) {
 }
 
 async function readUserByName(newUsername) {
-  if (!newUsername) throw 'No username provided!'
-  const usersCollection = await users();
-  let user = await usersCollection.findOne({ username: newUsername});
-  return user;
+   if (!newUsername) throw 'No username provided!'
+   const usersCollection = await users();
+   let user = await usersCollection.findOne({ username: newUsername });
+   return user;
 }
 
 async function readUserByEmail(newEmail) {
    if (!newEmail) throw 'No email provided!'
    const usersCollection = await users();
-   let user = await usersCollection.findOne({ email: newEmail});
+   let user = await usersCollection.findOne({ email: newEmail });
    return user;
- }
+}
 
 async function addGroup(userId, groupId) {
    const checkedUserId = checkId(userId);
@@ -135,28 +136,46 @@ async function getAllUser() {
    return res;
 }
 
-async function getUserGroup(userId) {
-   const user = await readUser(userId);
-   return user.groups;
+async function getUserGroup(username) {
+   const groupData = require('./index').groupsData; // why the fuck ???
+   const user = await readUserByName(username);
+   let groups = user.groups;
+   let res = [];
+
+   for (let i = 0; i < groups.length; i++) {
+      const groupInfo = {
+         groupId: undefined,
+         groupName: undefined
+      };
+      groupInfo.groupId = groups[i];
+      const group = await groupData.getById(groups[i]);
+
+      groupInfo.groupName = group.groupName;
+      res.push(groupInfo);
+   }
+   return res;
 }
 
-async function addUserProfile(userId, url) {
-   userId = checkId(userId);
+async function getUserOwnGroup() {
+   
+}
+
+async function addUserProfile(username, url) {
    if (!url)
       throw 'No url provided!';
    const usersCollection = await users();
    const updateInfo = await usersCollection.updateOne(
-      {_id: userId},
-      {$set: {profileUrl: url}}
+      { username: username },
+      { $set: { profileUrl: url } }
    );
    if (!updateInfo)
       throw 'Can\'t update url';
-   let user = await readUser(userId);
+   let user = await readUserByName(username);
    return user;
 }
 
-async function getUserProfileUrl(userId) {
-   const user = await readUser(userId);
+async function getUserProfileUrl(username) {
+   const user = await readUser(username);
    if (user.profileUrl)
       return user.profileUrl;
    throw 'User doesn\'t have a profile yet!';
@@ -175,4 +194,4 @@ function checkId(id) {
    else throw "Input Can't Be An Id!"
 }
 
-module.exports = { createUser, readUser, readUserByName, updateUser,readUserByEmail, removeGroup, addGroup, deleteUser, getAllUser, getUserGroup, getUserProfileUrl, addUserProfile }
+module.exports = { createUser, readUser, readUserByName, updateUser, readUserByEmail, removeGroup, addGroup, deleteUser, getAllUser, getUserGroup, getUserProfileUrl, addUserProfile }

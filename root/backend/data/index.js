@@ -3,5 +3,5 @@ const usersData = require("./users");
 
 module.exports = {
    groupsData: groupsData,
-   usersData: usersData,
+   usersData: usersData
 }

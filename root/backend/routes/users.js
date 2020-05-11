@@ -7,6 +7,7 @@ const { ObjectId } = require("mongodb");
 const data = require('../data');
 const usersData = data.usersData;
 
+
 // //index
 // router.get("/", async (req, res) => {
 //     try {
@@ -237,6 +238,21 @@ router.post('/upload', async(req, res) => {
       })
    });
 });
+
+router.get('/groups/:username', async(req, res) => {
+   console.log(req.params.username);
+   try {
+      const groups = await usersData.getUserGroup(req.params.username);
+      res.status(200).json({
+         groups: groups
+      })
+   } catch(e) {
+      console.log(e);
+      res.status(502).json({
+         error: e
+      })
+   }
+})
 
 
 //-----------------------------------check--------------------------------------
