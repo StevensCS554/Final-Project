@@ -10,7 +10,7 @@ import { AuthContext } from '../firebase/Auth';
 export default function Groupprofile(props) {
    const { currentUser } = useContext(AuthContext);
    const [groupData, setGroupData] = useState(undefined);
-   const [isManager, setIsManager] = useState(true);
+   const [isManager, setIsManager] = useState(false);
    const [isMember, setIsMember] = useState(false);
    const [manager, setManager] = useState(undefined);
    // const [error, setError] = useState(undefined);
@@ -53,15 +53,18 @@ export default function Groupprofile(props) {
    //get the user by userID in groupData
    async function fetchUserData(userId) {
       try {
-         const user = await fetch(`http://localhost:4000/users/${userId}`, {
+         // alert(`fetch for the user with id: ${userId}`);
+         const user = await fetch(`http://localhost:4000/users/getbyid/${userId}`, {
             method: "GET",
             headers: {
                'Content-Type': 'application/json'
             }
          });
-         //TODO: error handle! 
+         //: error handle! 
          if (user.ok == false) throw `error i user info fetching`
-         return await user.json();
+         const resolved = await user.json();
+         // alert(resolved.email);
+         return resolved;
       } catch (e) {
          throw e;
       }
@@ -71,6 +74,8 @@ export default function Groupprofile(props) {
    async function managerAuthorization(group) {
       try {
          const managerData = await fetchUserData(group.managerId);
+         // alert(`manager email`+managerData.email)
+         // alert(`currentUser email`+currentUser.email)
          setManager(managerData);
          // alert(currentUser.email);//for User check: https://firebase.google.com/docs/reference/js/firebase.User#properties
          if (managerData.email === currentUser.email) {
@@ -111,9 +116,7 @@ export default function Groupprofile(props) {
          if (deleteResult.ok == false) {
             throw `fail to delete user`
          }
-         else {
-            document.getElementById(userId).style.display = "none";
-         }
+         document.getElementById(userId).style.display = "none";
          return;
       } catch (e) {
          throw e;
@@ -143,62 +146,51 @@ export default function Groupprofile(props) {
 
    async function handleCreatPost(e) {
       alert("handleCreatPost");
-      // try {
-      //    const { postContent } = e.target.elements;
-      //    const time = "Just Now(Hard Code)";
-      //    const joinResult = await fetch(`http://localhost:4000/${groupData._id}/post/`, {
-      //       method: "POST",
-      //       headers: {
-      //          'Content-Type': 'application/json'
-      //       },
-      //       body: JSON.stringify({
-      //          postContent: postContent,
-      //          time: time
-      //       })
-      //    });
-      //    //error handle! 
-      //    if (joinResult.ok == false) {
-      //       throw `fail to delete user`
-      //    }
-      //    setIsMember(true);
-      //    return;
-      // } catch (e) {
-      //    throw e;
-      // }
+      try {
+         const { postContent } = e.target.elements;
+         const time = "Just Now(Hard Code)";
+         const Result = await fetch(`http://localhost:4000/${groupData._id}/post/`, {
+            method: "POST",
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({// createPost(groupId, username, content, time)
+               username: currentUser.displayName,
+               content: postContent.value.trim(),
+               time: time
+            })
+         });
+         //error handle! 
+         if (Result.ok == false) {
+            throw `fail to create post`
+         }
+         //TODO: refresh:
+         return;
+      } catch (e) {
+         throw e;
+      }
    }
 
    async function handleDeletePost(postId) {
       alert("handleDeletePost" + postId);
-      // try {
-      //    const { postContent } = e.target.elements;
-      //    const time = "Just Now(Hard Code)";
-      //    const Result = await fetch(`http://localhost:4000/${groupData._id}/post`, {
-      //       method: "DELETE",
-      //       headers: {
-      //          'Content-Type': 'application/json'
-      //       }
-      //    });
-      //    //error handle! 
-      //    if (Result.ok == false) {
-      //       throw `fail to delete Post`
-      //    }
-      //    setIsMember(true);
-      //    return;
-      // } catch (e) {
-      //    throw e;
-      // }
+      try {
+         const Result = await fetch(`http://localhost:4000/${groupData._id}/post/${postId}`, {
+            method: "DELETE",
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         //error handle! 
+         if (Result.ok == false) {
+            throw `fail to delete Post`
+         }
+         document.getElementById(postId).style.display = "none";
+         return;
+      } catch (e) {
+         throw e;
+      }
    }
 
-
-   // if (error) {
-   //    return (
-   //       <div>
-   //          <Navigation />
-   //          {error}
-   //          <Footer />
-   //       </div>
-   //    )
-   // } else {
    return (
       <div>
          <Navigation />
@@ -258,7 +250,7 @@ export default function Groupprofile(props) {
                            //    time: time
                            // };
                            return (
-                              <div className='single-posts'>
+                              <div className='single-posts' id={post._id}>
                                  <div id='group-info-posts-header'>
                                     <p>{post.time} + {post.username}</p>
                                  </div>
@@ -275,12 +267,12 @@ export default function Groupprofile(props) {
                   {
                      (isManager || isMember) &&
                      (
-                        <form onSubmit={(e) => handleCreatPost(e)}>
+                        <form onSubmit={handleCreatPost}>
                            <div id='group-info-posts-area'>
                               <label htmlFor='post-area'>Write Something...</label>
                               <input type='text' id='post-area' required name='postContent' />
 
-                              <button className='standard-btn' onClick={() => handleCreatPost()}>CREATE POST</button>
+                              <button className='standard-btn' type='submit' >CREATE POST</button>
                            </div>
                         </form>
                      )
