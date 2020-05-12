@@ -1,12 +1,28 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom';
+// import getProfile from './getProfile';
+import axios from 'axios';
 import logo from '../../images/logo.png';
 import { AuthContext } from '../../firebase/Auth';
-import profile from '../../images/team-bg.jpeg'
+// import profile from '../../images/team-bg.jpeg'
 import { doSignOut } from '../../firebase/FirebaseFunctions';
 
 export default function Navigation() {
    const { currentUser } = useContext(AuthContext);
+   const [userProfile, setUserProfile] = useState(null);
+
+   useEffect(() => {
+      async function getUrl() {
+         try {
+            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+            const { url } = data;
+            setUserProfile(url);
+         } catch (e) {
+            alert(e);
+         }
+      }
+      getUrl();
+   }, []);
 
 
    return (
@@ -28,7 +44,7 @@ export default function Navigation() {
             {currentUser &&
                (<div id='navbar-link-profile'>
                   <div id='div1'>
-                     <p>Welcome Back!</p><Link to='/userprofile/1'><img src={profile} /></Link>
+                     <p>Welcome Back!</p><Link to='/userprofile/1'><img src={userProfile} /></Link>
                   </div>
 
                   <div id='div2'>
@@ -38,7 +54,7 @@ export default function Navigation() {
                      <div>
                         <a href='#' onClick={() => {
                            doSignOut();
-                           window.location.href='http://localhost:3000';
+                           window.location.href = 'http://localhost:3000';
                         }} >LOGOUT</a>
                      </div>
                   </div>
