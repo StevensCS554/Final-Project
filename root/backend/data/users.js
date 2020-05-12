@@ -158,7 +158,7 @@ async function getUserGroup(username) {
 }
 
 async function getUserOwnGroup() {
-   
+
 }
 
 async function addUserProfile(username, url) {
@@ -179,7 +179,7 @@ async function getUserProfileUrl(username) {
    const user = await readUser(username);
    if (user.profileUrl)
       return user.profileUrl;
-   throw 'User doesn\'t have a profile yet!';
+   return user.gender;
 }
 
 //-----------------------------------check--------------------------------------

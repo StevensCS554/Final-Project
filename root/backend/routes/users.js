@@ -264,6 +264,19 @@ router.get('/groups/:username', async(req, res) => {
          error: e
       })
    }
+});
+
+router.get('/profile/:username', async(req, res) => {
+   try {
+      const result = await usersData.getUserProfileUrl(req.params.username);
+      res.status(200).json({
+         result: result 
+      })
+   } catch(e) {
+      res.status(500).json({
+         error: e
+      })
+   }
 })
 
 
