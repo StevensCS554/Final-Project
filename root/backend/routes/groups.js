@@ -149,7 +149,7 @@ router.put("/:id", async (req, res) => {
    }
 });
 
-//destory campground route
+//delete the group
 router.delete("/:id", async (req, res) => {
    try {
 
@@ -171,7 +171,7 @@ router.delete("/:id", async (req, res) => {
 
 // -----------------------Posts Section Added by Kuan -------------------
 // Add a user to a group
-router.post('/:groupId/:userId', async (req, res) => {
+router.put('/:groupId/:userId', async (req, res) => {
    let groupId = req.params.groupId;
    let userId = req.params.userId;
    try {
@@ -183,6 +183,22 @@ router.post('/:groupId/:userId', async (req, res) => {
       res.status(500).json({
          error: e
       })
+   }
+})
+
+// delete a user from a group
+router.delete('/:groupId/:userId', async (req, res) => {
+   console.log("deleting user from group");
+   try {
+      let groupId = req.params.groupId;
+      let userId = req.params.userId;
+      groupId = checkId(groupId);
+      userId = checkId(userId);
+
+      const group = await groupsData.deleteMember(userId, groupId);
+      res.status(200).json(group);
+   } catch(e) {
+      res.status(500).json(e);
    }
 })
 

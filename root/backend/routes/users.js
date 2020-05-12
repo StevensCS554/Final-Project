@@ -207,6 +207,7 @@ router.delete("/:id", async (req, res) => {
 
 })
 
+// Add a group to a user
 router.put("/:userId/:groupId", async (req, res) =>{
     try {
         const checkedUserId = checkId(req.params.userId);
@@ -219,13 +220,16 @@ router.put("/:userId/:groupId", async (req, res) =>{
     }
 })
 
+// delete a group from a user
 router.delete("/:userId/:groupId", async (req, res) =>{
     try {
-        const checkedUserId = checkId(req.params.userId);
-        const checkedGroupId = checkId(req.params.groupId);
+        let groupId = req.params.groupId;
+        let userId = req.params.userId;
+        groupId = checkId(groupId);
+        userId = checkId(userId);
 
-        const removedUser = await usersData.removeGroup(checkedUserId, checkedGroupId);
-        res.json(removedUser);
+        const removedUser = await usersData.removeGroup(userId, groupId);
+        res.status(200).json(removedUser);
     } catch (e) {
         res.status(500).json(e);
     }

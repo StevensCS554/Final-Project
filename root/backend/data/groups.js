@@ -120,36 +120,41 @@ async function joinGroup(userId, groupId) {
       const groupcollection = await groups();
       const updateInfo = await groupcollection.updateOne(
          { _id: groupId },
-         { $push: { users: user } }
+         { $push: { users: userId.toString() } }
       );
       const userCollection = await users();
 
       const updateInfo2 = await userCollection.updateOne(
          { _id: userId },
-         { $push: { groups: groupId } }
+         { $push: { groups: groupId.toString() } }
       );
       if (!updateInfo || !updateInfo2)
          throw 'Can\'t join in!'
       group = await getById(groupId);
       return group;
    } catch (e) {
-      throw e + `in function joinGroup(userId, groupId)`;
+      throw e + ` joinGroup`;
    }
 
 }
 
 async function deleteMember(groupId, userId) {
-   groupId = checkId(groupId);
-   userId = checkId(userId);
-   const groupcollection = await groups();
-   const updateInfo = await groupcollection.updateOne(
-      { _id: groupId },
-      { $pull: { user: userId } }
-   );
-   if (!updateInfo)
-      throw 'Can\'t delete user!';
-   const group = await getById(groupId);
-   return group;
+   try {
+      groupId = checkId(groupId);
+      userId = checkId(userId);
+      const groupcollection = await groups();
+      const updateInfo = await groupcollection.updateOne(
+         { _id: groupId },
+         { $pull: { user: userId.toString() } }
+      );
+      if (!updateInfo)
+         throw 'Can\'t delete user!';
+      const group = await getById(groupId);
+      return group;
+   } catch (e) {
+      throw e;
+   }
+
 }
 
 async function createPost(groupId, username, content, time) {
