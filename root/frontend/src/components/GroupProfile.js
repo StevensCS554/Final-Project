@@ -16,8 +16,8 @@ export default function Groupprofile(props) {
    const [memberList, setMemberList] = useState(undefined);
    // const [error, setError] = useState(undefined);
 
-   useEffect(
-      async () => {
+   useEffect(() => {
+      async function groupProfile(){
          try {
             const group = await fetchGroupData();
             setGroupData(group);// not update immidately
@@ -31,9 +31,9 @@ export default function Groupprofile(props) {
          } catch (e) {
             alert(e);
          }
-
-      },
-      [props.match.params.groupId, currentUser]
+      }
+      groupProfile();
+   }, [props.match.params.groupId, currentUser]
    );
 
    //get the group by groupId in the path.
@@ -80,7 +80,7 @@ export default function Groupprofile(props) {
       try {
          const userList = [];
          // alert(group.users.length);
-         for(const userId of group.users){
+         for (const userId of group.users) {
             const userData = await fetchUserData(userId);
             userList.push(userData);
          }
@@ -182,21 +182,21 @@ export default function Groupprofile(props) {
             }
          });
          if (user.ok == false) {
-            throw `fail to find user${user.json().then((error) => {
+            throw `fail to find user${await user.json().then((error) => {
                return error;
             })}`
          }
          user = await user.json();
 
-         const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${user._id}`, {
-            method: "PUT",
+         const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${user._id}?_method=PUT`, {
+            method: "POST",
             headers: {
                'Content-Type': 'application/json'
             }
          });
          //error handle! 
          if (groupResult.ok == false) {
-            throw `fail to add user to group${groupResult.json().then((error) => {
+            throw `fail to add user to group ${await groupResult.json().then((error) => {
                return error.error;
             })}`
          }
@@ -217,14 +217,14 @@ export default function Groupprofile(props) {
          setIsMember(true);
          return;
       } catch (e) {
-         alert(`error: ${e}`);
+         alert(`error-error: ${e}`);
       }
    }
 
    //remove member from group
    async function handleMemberDelete(userId) {
       try {
-         alert("handleMemberDelete "+ groupData._id + " " + userId);
+         alert("handleMemberDelete " + groupData._id + " " + userId);
          const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${userId}`, {
             method: "DELETE",
             headers: {
@@ -233,7 +233,7 @@ export default function Groupprofile(props) {
          });
          //error handle! 
          if (groupResult.ok == false) {
-            throw `fail to delete user from group ${groupResult.json().then((error) => {
+            throw `fail to delete user from group ${await groupResult.json().then((error) => {
                return error;
             })}`
          }
@@ -247,7 +247,7 @@ export default function Groupprofile(props) {
          });
          //error handle! 
          if (userResult.ok == false) {
-            throw `fail to delete group from user ${userResult.json().then((error) => {
+            throw `fail to delete group from user ${await userResult.json().then((error) => {
                return error;
             })}`
          }
@@ -256,7 +256,7 @@ export default function Groupprofile(props) {
          document.getElementById(userId).style.display = "none";
          return;
       } catch (e) {
-         alert(`error: ${e}`);
+         alert(`error-error: ${e}`);
       }
    }
 
@@ -359,7 +359,3 @@ export default function Groupprofile(props) {
       </div>
    )
 }
-
-
-
-
