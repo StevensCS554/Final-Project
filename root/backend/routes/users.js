@@ -89,10 +89,10 @@ router.post("/", async (req, res) => {
 router.get("/:newUsername", async (req, res) => {
     try {
         const newUsername = req.params.newUsername;
-        
+
         const user = await usersData.readUserByName(newUsername);
-        if (user == null) res.json({noUser: true});
-        else res.json({noUser: false});
+        if (user == null) res.json({ noUser: true });
+        else res.json({ noUser: false });
     } catch (e) {
         res.status(500).json(e);
     }
@@ -117,8 +117,8 @@ router.get("/getbyemail/:newEmail", async (req, res) => {
         const newEmail = req.params.newEmail;
 
         const user = await usersData.readUserByEmail(newEmail);
-        if (user == null) res.json({noEmail: true});
-        else res.json({noEmail: false});
+        if (user == null) res.json({ noEmail: true });
+        else res.json({ noEmail: false });
     } catch (e) {
         res.status(500).json(e);
     }
@@ -127,7 +127,7 @@ router.get("/getbyemail/:newEmail", async (req, res) => {
 router.get("/getuserbyemail/:email", async (req, res) => {
     try {
         const email = req.params.email;
-        
+
         const user = await usersData.readUserByEmail(email);
         if (user == null) throw `user not found with email: ${email}`;
         else res.status(200).json(user);
@@ -186,7 +186,7 @@ router.put("/:id", async (req, res) => {
                 throw `You Must Provide A bio with string type! what you give:${typeof bio}`;
             }
         }
-        
+
         const updatedUser = await usersData.updateUser(checkedId, username, email, age, zipcode, gender, phone, bio);
         res.json(updatedUser);
 
@@ -208,7 +208,7 @@ router.delete("/:id", async (req, res) => {
 })
 
 // Add a group to a user
-router.put("/:userId/:groupId", async (req, res) =>{
+router.put("/:userId/:groupId", async (req, res) => {
     try {
         const checkedUserId = checkId(req.params.userId);
         const checkedGroupId = checkId(req.params.groupId);
@@ -221,7 +221,7 @@ router.put("/:userId/:groupId", async (req, res) =>{
 })
 
 // delete a group from a user
-router.delete("/:userId/:groupId", async (req, res) =>{
+router.delete("/:userId/:groupId", async (req, res) => {
     try {
         let groupId = req.params.groupId;
         let userId = req.params.userId;
@@ -236,52 +236,65 @@ router.delete("/:userId/:groupId", async (req, res) =>{
 })
 
 // User Image file upload route!!! Added by Kuan //
-router.post('/upload', async(req, res) => {
-   if (req.files.file === null)
-      return res.status(400).json({msg: 'No file uploaded!'});
+router.post('/upload', async (req, res) => {
+    if (req.files.file === null)
+        return res.status(400).json({ msg: 'No file uploaded!' });
 
-   const file = req.files.file;
-   const date = new Date();
-   const newName = date + file.name;
-   file.mv(path.resolve(`../frontend/src/upload/users/${newName}`), err => {
-      if (err) {
-         console.log(err);
-         return res.status(500).json({e: err});
-      }
-      res.status(500).json({
-         filename: file.name,
-         filepath: `/uploads/users/${newName}`
-      })
-   });
+    const file = req.files.file;
+    const date = new Date();
+    const newName = date + file.name;
+    file.mv(path.resolve(`../frontend/src/upload/users/${newName}`), err => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ e: err });
+        }
+        res.status(500).json({
+            filename: file.name,
+            filepath: `/uploads/users/${newName}`
+        })
+    });
 });
 
-router.get('/groups/:username', async(req, res) => {
-   console.log(req.params.username);
-   try {
-      const groups = await usersData.getUserGroup(req.params.username);
-      res.status(200).json({
-         groups: groups
-      })
-   } catch(e) {
-      console.log(e);
-      res.status(502).json({
-         error: e
-      })
-   }
+router.get('/groups/:username', async (req, res) => {
+    console.log(req.params.username);
+    try {
+        const groups = await usersData.getUserGroup(req.params.username);
+        res.status(200).json({
+            groups: groups
+        })
+    } catch (e) {
+        console.log(e);
+        res.status(502).json({
+            error: e
+        })
+    }
 });
 
-router.get('/profile/:username', async(req, res) => {
-   try {
-      const result = await usersData.getUserProfileUrl(req.params.username);
-      res.status(200).json({
-         result: result 
-      })
-   } catch(e) {
-      res.status(500).json({
-         error: e
-      })
-   }
-})
+router.get('/profile/:username', async (req, res) => {
+    try {
+        const url = await usersData.getUserProfileUrl(req.params.username);
+        res.status(200).json({
+            url: url
+        })
+    } catch (e) {
+        res.status(500).json({
+            error: e
+        })
+    }
+});
+
+router.post('/profile/:username', async (req, res) => {
+    try {
+        await usersData.updateUserProfile(req.params.username, req.body.url);
+        res.status(200).json({
+            msg: 'success!'
+        })
+    } catch (e) {
+        res.status(500).json({
+            error: e
+        })
+    }
+});
 
 
 //-----------------------------------check--------------------------------------
@@ -291,9 +304,9 @@ function checkId(id) {
         return id;
     }
     else if (typeof id == "string") {
-        if(ObjectId.isValid(id))
+        if (ObjectId.isValid(id))
             return ObjectId(id);
-        else{
+        else {
             throw `not valid id: ${id}`
         }
     }

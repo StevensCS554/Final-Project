@@ -26,7 +26,10 @@ async function createUser(username, email, age, zipcode, gender, phone, bio) {
       insertedUserId = insertInfo.insertedId;
    }
    else insertedUserId = findUser._id.toString();
-   return await readUser(insertedUserId);
+   if (gender === 'male')
+      return await addUserProfile(username, 'https://firebasestorage.googleapis.com/v0/b/web-ii-project.appspot.com/o/male-default.jpg?alt=media&token=b83059a3-cbd3-46ec-87c6-95ab47e96825');
+   if (gender === 'female')
+      return await addUserProfile(username, 'https://firebasestorage.googleapis.com/v0/b/web-ii-project.appspot.com/o/female-default.jpeg?alt=media&token=3fffae84-3579-4e86-a931-01a181360c4d');
 }
 
 async function readUser(userId) {
@@ -176,10 +179,21 @@ async function addUserProfile(username, url) {
 }
 
 async function getUserProfileUrl(username) {
-   const user = await readUser(username);
+   const user = await readUserByName(username);
    if (user.profileUrl)
       return user.profileUrl;
-   return user.gender;
+   throw 'No url provided error!';
+}
+
+async function updateUserProfile(username, url) {
+   const usersCollection = await users();
+   const updateInfo = await usersCollection.updateOne(
+      {username: username},
+      {$set: {profileUrl: url}}
+   );
+   if (!updateInfo)
+      throw 'Can\'t update profile url!';
+   return await readUserByName(username);
 }
 
 //-----------------------------------check--------------------------------------
@@ -195,4 +209,4 @@ function checkId(id) {
    else throw "Input Can't Be An Id!"
 }
 
-module.exports = { createUser, readUser, readUserByName, updateUser, readUserByEmail, removeGroup, addGroup, deleteUser, getAllUser, getUserGroup, getUserProfileUrl, addUserProfile }
+module.exports = { createUser, readUser, readUserByName, updateUser, readUserByEmail, removeGroup, addGroup, deleteUser, getAllUser, getUserGroup, getUserProfileUrl, addUserProfile, updateUserProfile }
