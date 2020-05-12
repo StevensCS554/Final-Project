@@ -10,8 +10,7 @@ const WrappedMap = withScriptjs(withGoogleMap(Map));
 
 export default function Explore() {
 
-   const {currentUser} = useContext(AuthContext);
-   console.log(currentUser);
+   const { currentUser } = useContext(AuthContext);
 
    return (
       <div>
