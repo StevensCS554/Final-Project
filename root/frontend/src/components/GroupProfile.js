@@ -74,8 +74,6 @@ export default function Groupprofile(props) {
    async function managerAuthorization(group) {
       try {
          const managerData = await fetchUserData(group.managerId);
-         // alert(`manager email`+managerData.email)
-         // alert(`currentUser email`+currentUser.email)
          setManager(managerData);
          // alert(currentUser.email);//for User check: https://firebase.google.com/docs/reference/js/firebase.User#properties
          if (managerData.email === currentUser.email) {
@@ -93,6 +91,8 @@ export default function Groupprofile(props) {
             return;
          group.users.map(async (userId) => {
             const user = await fetchUserData(userId);
+            alert(user.email);
+            alert(currentUser.email);
             if (user.email === currentUser.email) {
                setIsMember(true);
                return;
@@ -103,10 +103,11 @@ export default function Groupprofile(props) {
       }
    }
 
+   //remove member from group
    async function handleMemberDelete(userId) {
       alert("handleMemberDelete route may not finished yet");
       try {
-         const deleteResult = await fetch(`http://localhost:4000/${groupData._id}/${userId}`, {
+         const deleteResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${userId}`, {
             method: "DELETE",
             headers: {
                'Content-Type': 'application/json'
@@ -123,27 +124,7 @@ export default function Groupprofile(props) {
       }
    }
 
-   async function handleJoinGroup(userId) {
-      // `http://localhost:4000/users/${groupId}/${userId}`
-      alert("handleJoinGroup" + userId);
-      try {
-         const joinResult = await fetch(`http://localhost:4000/${groupData._id}/${userId}`, {
-            method: "POST",
-            headers: {
-               'Content-Type': 'application/json'
-            }
-         });
-         //error handle! 
-         if (joinResult.ok == false) {
-            throw `fail to delete user`
-         }
-         setIsMember(true);
-         return;
-      } catch (e) {
-         throw e;
-      }
-   }
-
+   //creat an new post in group
    async function handleCreatPost(e) {
       alert("handleCreatPost");
       try {
@@ -165,12 +146,14 @@ export default function Groupprofile(props) {
             throw `fail to create post`
          }
          //TODO: refresh:
+         window.location.reload();
          return;
       } catch (e) {
          throw e;
       }
    }
 
+   //delete the post in group
    async function handleDeletePost(postId) {
       alert("handleDeletePost" + postId);
       try {
@@ -190,6 +173,56 @@ export default function Groupprofile(props) {
          throw e;
       }
    }
+
+   //add the current user to the group:
+   async function handleJoinGroup(email) {
+      alert("handleJoinGroup with: " + email);
+      try {
+         let user = await fetch(`http://localhost:4000/users/getuserbyemail/${email}`, {
+            method: "GET",
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         if (user.ok == false) {
+            throw `fail to find user${await user.json().then((error) => {
+               return error;
+            })}`
+         }
+         user = await user.json();
+
+         const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${user._id}`, {
+            method: "POST",
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         //error handle! 
+         if (groupResult.ok == false) {
+            throw `fail to add user to group${await groupResult.json().then((error) => {
+               return error.error;
+            })}`
+         }
+         const userResult = await fetch(`http://localhost:4000/users/${user._id}/${groupData._id}`, {
+            method: "POST",
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         //error handle! 
+         if (userResult.ok == false) {
+            throw `fail to add group to user ${await userResult.json().then((error) => {
+               return error;
+            })}`
+         }
+
+         setIsMember(true);
+         return;
+      } catch (e) {
+         alert(`error: ${e}`);
+      }
+   }
+
 
    return (
       <div>
@@ -283,7 +316,7 @@ export default function Groupprofile(props) {
 
             {(!isManager && !isMember) && (
                <div id='join-group'>
-                  <button className='standard-btn' onClick={() => handleJoinGroup()}>JOIN GROUP</button>
+                  <button className='standard-btn' onClick={() => handleJoinGroup(currentUser.email)}>JOIN GROUP</button>
                </div>)}
 
          </div>

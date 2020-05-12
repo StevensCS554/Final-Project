@@ -124,6 +124,18 @@ router.get("/getbyemail/:newEmail", async (req, res) => {
     }
 });
 
+router.get("/getuserbyemail/:email", async (req, res) => {
+    try {
+        const email = req.params.email;
+        
+        const user = await usersData.readUserByEmail(email);
+        if (user == null) throw `user not found with email: ${email}`;
+        else res.status(200).json(user);
+    } catch (e) {
+        res.status(500).json(e);
+    }
+});
+
 router.put("/:id", async (req, res) => {
     try {
 
@@ -262,7 +274,11 @@ function checkId(id) {
         return id;
     }
     else if (typeof id == "string") {
-        return ObjectId(id);
+        if(ObjectId.isValid(id))
+            return ObjectId(id);
+        else{
+            throw `not valid id: ${id}`
+        }
     }
     else throw "Input Can't Be An Id!"
 }

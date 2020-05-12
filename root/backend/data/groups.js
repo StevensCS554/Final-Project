@@ -23,7 +23,7 @@ async function getById(id) {
       checkId(id);
       const groupsCollection = await groups();
       const group = await groupsCollection.findOne({ _id: id });
-      if(group == null) throw `can not find the group with id: ${id}`;
+      if (group == null) throw `can not find the group with id: ${id}`;
       return group;
    } catch (e) {
       throw `` + e;
@@ -106,31 +106,36 @@ async function deleteGroupById(id) {
 
 // -----------------------Posts Section Added by Kuan -------------------
 async function joinGroup(userId, groupId) {
-   groupId = checkId(groupId);
-   userId = checkId(userId);
-   let group = await getById(groupId);
-   const user = await userData.readUser(userId);
-   if (user.age >= group.maxAge || user.age <= group.minAge)
-      throw 'Your age does not meet requirements!';
-   if (group.users.length >= group.maxGroupNo)
-      throw 'Goup has met its max number!';
-   if (group.gender !== 'none' && group.gender !== user.gender)
-      throw 'Group requires a different gender!';
-   const groupcollection = await groups();
-   const updateInfo = await groupcollection.updateOne(
-      { _id: groupId },
-      { $push: { users: user } }
-   );
-   const userCollection = await users();
+   try {
+      groupId = checkId(groupId);
+      userId = checkId(userId);
+      let group = await getById(groupId);
+      const user = await userData.readUser(userId);
+      if (user.age >= group.maxAge || user.age <= group.minAge)
+         throw 'Your age does not meet requirements!';
+      if (group.users.length >= group.maxGroupNo)
+         throw 'Goup has met its max number!';
+      if (group.gender !== 'none' && group.gender !== user.gender)
+         throw 'Group requires a different gender!';
+      const groupcollection = await groups();
+      const updateInfo = await groupcollection.updateOne(
+         { _id: groupId },
+         { $push: { users: user } }
+      );
+      const userCollection = await users();
 
-   const updateInfo2 = await userCollection.updateOne(
-      {_id: userId},
-      {$push: {groups: groupId}}
-   );
-   if (!updateInfo || !updateInfo2)
-      throw 'Can\'t join in!'
-   group = await getById(groupId);
-   return group;
+      const updateInfo2 = await userCollection.updateOne(
+         { _id: userId },
+         { $push: { groups: groupId } }
+      );
+      if (!updateInfo || !updateInfo2)
+         throw 'Can\'t join in!'
+      group = await getById(groupId);
+      return group;
+   } catch (e) {
+      throw e + `in function joinGroup(userId, groupId)`;
+   }
+
 }
 
 async function deleteMember(groupId, userId) {
