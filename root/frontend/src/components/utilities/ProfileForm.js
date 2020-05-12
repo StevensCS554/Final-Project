@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-import profile from '../../images/team-bg.jpeg';
+import React, { useState, useEffect, useContext } from 'react';
+import axios from 'axios';
 import { storage } from '../../firebase/Firebase';
+import { AuthContext } from '../../firebase/Auth';
 // can't import images outside src folder
 
 export default function ProfileForm() {
+   const { currentUser } = useContext(AuthContext);
    const [userProfile, setUserProfile] = useState('');
    const [profileUrl, setProfileUrl] = useState(null);
    const [userData, setUserData] = useState(null);
@@ -12,7 +13,17 @@ export default function ProfileForm() {
    useEffect(() => {
       document.getElementById("user-form-btn").addEventListener("click", updateUser);
       // document.getElementById("upload-profile-btn").addEventListener("click", createGroup);
-   }, []);
+      async function getUrl() {
+         try {
+            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+            const { url } = data;
+            setProfileUrl(url);
+         } catch (e) {
+            alert(e);
+         }
+      }
+      getUrl();
+   }, [profileUrl]);
 
    async function updateUser() {
       const username = document.getElementById('username').value;
@@ -77,8 +88,14 @@ export default function ProfileForm() {
             alert(error);
          },
          () => {
-            storage.ref('images').child(newName).getDownloadURL().then(url => {
+            storage.ref('images').child(newName).getDownloadURL().then(async url => {
                setProfileUrl(url);
+               try {
+                  await axios.post(`http://localhost:4000/users/profile/${currentUser.displayName}`,
+                     { url: url });
+               } catch (e) {
+                  alert(e);
+               }
             });
          }
       );
@@ -89,7 +106,7 @@ export default function ProfileForm() {
          <div id='profile-form'>
             <form id='profile-form-pic' onSubmit={submitForm1}>
                <div id='profile-form-pic-img'>
-                  {profileUrl ? <img src={profileUrl} /> : <img style={{}} src={profile} />}
+                  <img src={profileUrl} />
                </div>
                <input type='file' id='userprofile' onChange={uploadFile} />
                <label htmlFor='userprofile' />

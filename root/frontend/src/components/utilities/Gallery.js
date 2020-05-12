@@ -1,18 +1,31 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../firebase/Auth'
 import axios from 'axios';
 import $ from 'jquery';
-import profile from '../../images/team-bg.jpeg';
 import group from '../../images/group-bg.jpg';
 
 export default function Gallery(props) {
+   const { currentUser } = useContext(AuthContext);
    const [userGroup, setUserGroup] = useState(undefined);
    const [user, setUser] = useState(props.user);
    const [userGroups, setUserGroups] = useState(undefined);
    const [userOwnGroup, setUserOwnGroup] = useState(null);
+   const [userProfile, setUserProfile] = useState(null);
+
    let li = null;
 
    useEffect(() => {
+      async function getUrl() {
+         try {
+            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+            const { url } = data;
+            setUserProfile(url);
+         } catch (e) {
+            alert(e);
+         }
+      }
+      getUrl();
       getGroups();
    }, []);
 
@@ -63,7 +76,7 @@ export default function Gallery(props) {
                   <div id='explore-gallery-sidebar-profile'>
                      {user && (
                         <div id='explore-gallery-sidebar-profile-header'>
-                           <img src={profile} />
+                           <img src={userProfile} />
                            <p>{user.displayName}</p>
                            <Link to='/userprofile/1'><p>CHANGE PROFILE</p></Link>
                         </div>
