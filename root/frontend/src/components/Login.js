@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext,useState } from 'react';
 import Navigation from './utilities/Navigation';
 import { doSignInWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { Redirect } from 'react-router-dom';
@@ -51,7 +51,7 @@ export default function Login() {
             }
          }
          await doSignInWithEmailAndPassword(email.value, password.value);
-         // window.location.href = "http://localhost:3000";
+         window.location.href = "http://localhost:3000/explore";
       } catch (e) {
          alert(e.message ? e.message : e);
       }
@@ -62,7 +62,7 @@ export default function Login() {
    }
    return (
       <div>
-         <Navigation />
+         {/* <Navigation /> */}
          <div id='login-container'>
             <div id='login-header'>
                <p>Login</p>

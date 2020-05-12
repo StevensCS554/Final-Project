@@ -186,8 +186,24 @@ router.post('/:groupId/:userId', async (req, res) => {
    }
 })
 
-// Get group members
-
+// Get group of the user
+router.get('/group/:username', async(req, res) => {
+   try {
+      const group = await data.usersData.getUserOwnGroup(req.params.username)
+      if (group === null)
+         return res.status(200).json({
+            groupName: null
+         })
+      res.status(200).json({
+         groupName: group.groupName,
+         groupId: group._id
+      });
+   } catch(e) {
+      res.status(500).json({
+         error: e
+      })
+   }
+})
 //-----------------------------------check--------------------------------------
 //helper
 function checkId(id) {

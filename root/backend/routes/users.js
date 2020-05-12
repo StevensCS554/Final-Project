@@ -20,6 +20,9 @@ const usersData = data.usersData;
 
 //create
 router.post("/", async (req, res) => {
+   console.log(req.session);
+   console.log(req.cookies);
+
    try {
 
       const username = req.body.username;
@@ -239,15 +242,16 @@ router.post('/upload', async (req, res) => {
    });
 });
 
+// Get groups user in
 router.get('/groups/:username', async (req, res) => {
-   console.log(req.params.username);
+   console.log('df' + req.params.username);
    try {
       const groups = await usersData.getUserGroup(req.params.username);
       res.status(200).json({
          groups: groups
       })
    } catch (e) {
-      console.log(e);
+      console.log('groups' + e);
       res.status(502).json({
          error: e
       })
@@ -279,6 +283,19 @@ router.post('/profile/:username', async (req, res) => {
       })
    }
 });
+
+router.get('/', async (req, res) => {
+   try {
+      const users = await usersData.getAllUser();
+      res.status(200).json({
+         users: users
+      });
+   } catch (e) {
+      res.status(500).json({
+         error: e
+      })
+   }
+})
 
 
 //-----------------------------------check--------------------------------------

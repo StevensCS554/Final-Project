@@ -28,7 +28,7 @@ export default function Signup() {
    }, [checkParameter.username, checkParameter.email, checkParameter.age, checkParameter.zipcode, checkParameter.phone, checkParameter.password, checkParameter.password2]);
 
    if (currentUser) {
-      return <Redirect to='/explore' />
+      return <Redirect to='/login' />
    }
 
    const handleSignup = async (e) => {
@@ -59,7 +59,8 @@ export default function Signup() {
          // if (!gender_v) throw 'No gender provided!';  //unlikely
          // if (!phone_v) throw 'No phone provided!';
          // if (!password_v) throw 'No password provided!';
-         await doCreateUserWithEmailAndPassword(email_v, password_v, username_v);
+        await doCreateUserWithEmailAndPassword(email_v, password_v, username_v);
+   
          const response = await fetch("http://localhost:4000/users", {
             method: "POST",
             headers: {
@@ -77,7 +78,6 @@ export default function Signup() {
          });
 
          if (response.status == 200) {
-            alert('Succes! Redirect to login page!');
             window.location.href = "http://localhost:3000/login";
          }
          else {

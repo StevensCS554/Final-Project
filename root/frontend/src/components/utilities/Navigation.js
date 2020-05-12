@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 // import getProfile from './getProfile';
 import axios from 'axios';
 import logo from '../../images/logo.png';
@@ -13,12 +13,14 @@ export default function Navigation() {
 
    useEffect(() => {
       async function getUrl() {
-         try {
-            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
-            const { url } = data;
-            setUserProfile(url);
-         } catch (e) {
-            alert(e);
+         if (currentUser && currentUser.displayName) {
+            try {
+               const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+               const { url } = data;
+               setUserProfile(url);
+            } catch (e) {
+               alert(e);
+            }
          }
       }
       getUrl();
@@ -44,7 +46,7 @@ export default function Navigation() {
             {currentUser &&
                (<div id='navbar-link-profile'>
                   <div id='div1'>
-                     <p>Welcome Back!</p><Link to='/userprofile/1'><img src={userProfile} /></Link>
+                     <p>Welcome {currentUser.displayName}!</p><Link to='/userprofile/1'><img src={userProfile} /></Link>
                   </div>
 
                   <div id='div2'>
@@ -58,26 +60,6 @@ export default function Navigation() {
                         }} >LOGOUT</a>
                      </div>
                   </div>
-
-                  {/* logout pupup form */}
-                  {/* <div id='logout-pupup'>
-                     <p>Are you sure to logout?</p>
-                     <div id='logout-pupup-btns'>
-                        <div id='signout-button'>
-                           <button onClick={() => {
-                              doSignOut()
-                              alert('success logout')
-                           }}>Yes</button>
-                        </div>
-                        <div id='logout-pupup-btns-y'>
-                           <button onClick={() => {
-                              const logout = document.querySelector('#logout-pupup');
-                              logout.style.opacity = '0';
-                           }}>No</button>
-                        </div>
-                     </div>
-                  </div> */}
-
 
                </div>)
             }
