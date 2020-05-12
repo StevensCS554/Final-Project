@@ -400,7 +400,7 @@ export default function Signup() {
       }
    }
 
-   const confirmPasswordBlur = (e) => {
+   const confirmPasswordChange = (e) => {
       e.preventDefault();
       const confPassword = e.target.value;
       const message = document.getElementById('password2-message');
@@ -485,7 +485,7 @@ export default function Signup() {
                </div>
                <div className='signup-input'>
                   <label htmlFor='password2' className='title'>CONFIRM PASSWORD</label><label id='password2-message' className=''></label>
-                  <input required type='password' name='password2' onBlur={confirmPasswordBlur} />
+                  <input required type='password' name='password2' onChange={confirmPasswordChange} />
                </div>
                <div className='signup-btn'>
                   <button className='standard-btn' type='submit' id='submit-btn' >SUBMIT</button>
