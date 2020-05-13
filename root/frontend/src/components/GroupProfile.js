@@ -61,7 +61,8 @@ export default function Groupprofile(props) {
          });
          //error handle! 
          //fetch function: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-         if (group.ok == false) throw `error in group info fetching`
+         if (!group.ok) 
+            throw `error in group info fetching`;
          return await group.json();
       } catch (e) {
          throw e;
@@ -79,7 +80,7 @@ export default function Groupprofile(props) {
             }
          });
          //: error handle! 
-         if (user.ok == false)
+         if (user.ok === false)
             throw `error in user info fetching: ${userId}`
          const resolved = await user.json();
          // alert(resolved.email);
@@ -153,7 +154,7 @@ export default function Groupprofile(props) {
             })
          });
          //error handle! 
-         if (Result.ok == false) {
+         if (Result.ok === false) {
             throw `fail to create post`
          }
          //TODO: refresh:
@@ -175,7 +176,7 @@ export default function Groupprofile(props) {
             }
          });
          //error handle! 
-         if (Result.ok == false) {
+         if (Result.ok === false) {
             throw `fail to delete Post`
          }
          document.getElementById(postId).style.display = "none";
@@ -195,7 +196,7 @@ export default function Groupprofile(props) {
                'Content-Type': 'application/json'
             }
          });
-         if (user.ok == false) {
+         if (user.ok === false) {
             throw `fail to find user${await user.json().then((error) => {
                return error;
             })}`
@@ -238,7 +239,7 @@ export default function Groupprofile(props) {
    //remove member from group
    async function handleMemberDelete(userId) {
       try {
-         alert("handleMemberDelete groupData._id: " + `http://localhost:4000/groups/${groupData._id}/${userId}`);
+         // alert("handleMemberDelete groupData._id: " + `http://localhost:4000/groups/${groupData._id}/${userId}`);
          // const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${userId}`, {
          //    method: 'DELETE',
          //    headers: {
@@ -256,8 +257,7 @@ export default function Groupprofile(props) {
             url: `http://localhost:4000/groups/${groupData._id}/${userId}`
          });
          //error handle! 
-         // if()
-         console.log(groupResult.data)
+         alert(groupResult.data);
          alert(`deleted user from group`);
 
          const userResult = await fetch(`http://localhost:4000/users/${userId}/${groupData._id}`, {
@@ -267,7 +267,7 @@ export default function Groupprofile(props) {
             }
          });
          //error handle! 
-         if (userResult.ok == false) {
+         if (userResult.ok === false) {
             throw `fail to delete group from user ${await userResult.json().then((error) => {
                return error;
             })}`
@@ -278,7 +278,7 @@ export default function Groupprofile(props) {
 
          return;
       } catch (e) {
-         alert(`error-error: ${e}`);
+         alert(`-error: ${e}`);
       }
    }
 
@@ -291,7 +291,7 @@ export default function Groupprofile(props) {
                {/* group member section */}
                <div id='group-member-list'>
                   <div id='group-manager'>
-                     <img src={userProfile} />
+                     <img src={userProfile} alt="manager avatar"/>
                      <p>Group Manager: {manager && manager.username}</p>
                      {isManager ? (<Link to='/edit-group/:userId' >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
                   </div>
