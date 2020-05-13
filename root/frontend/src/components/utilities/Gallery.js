@@ -7,7 +7,6 @@ import groupbg from '../../images/group-bg.jpg';
 
 export default function Gallery(props) {
    const { currentUser } = useContext(AuthContext);
-   const [userGroup, setUserGroup] = useState(undefined);
    const [user, setUser] = useState(props.user);
    const [userGroups, setUserGroups] = useState(undefined);
    const [userOwnGroup, setUserOwnGroup] = useState(null);
@@ -15,18 +14,18 @@ export default function Gallery(props) {
    const [userProfile, setUserProfile] = useState(null);
    const [localGroups, setLocalGroups] = useState(null);
    const [allLocalGroups, setAllLocalGroups] = useState(null);
-   const [isLeftOver, setIsLeftOver] = useState(false);
-   const [take, setTake] = useState(6);
-   const [skip, setSkip] = useState(0);
-   const [isNext, setIsNext] = useState(false);
+   const [numLeftOver, setNoLeftOver] = useState(1);
+   const [pageNo, setPageNo] = useState(0);
    let li = null;
+   let take = 6;
+   let skip = 0;
 
    useEffect(() => {
 
       getUrl();
       getGroups();
       getUserGroup();
-      getLocalGroups();
+      getLocalGroups(take, skip);
       getAllLocalGroups();
    }, []);
 
@@ -67,12 +66,14 @@ export default function Gallery(props) {
       }
    }
 
-   const getLocalGroups = async () => {
+   const getLocalGroups = async (take, skip) => {
       try {
-         const { data } = await axios.get(`http://localhost:4000/groups/local/07307?take=6&skip=0`);
-         const { groups, isLeftOver } = data;
+         const { data } = await axios.get(`http://localhost:4000/groups/local/07307?take=${take}&skip=${skip}`);
+         const { groups, numLeftOver } = data;
          setLocalGroups(groups);
-         setIsLeftOver(isLeftOver);
+         setNoLeftOver(numLeftOver);
+         console.log(take, skip);
+
       } catch (e) {
          alert(e);
       }
@@ -83,11 +84,24 @@ export default function Gallery(props) {
          const { data } = await axios.get(`http://localhost:4000/groups/local-groups/07307`);
          const { groups } = data;
          setAllLocalGroups(groups);
-         if (groups.length > 6)
-            setIsNext(true);
       } catch (e) {
          alert(e);
       }
+   }
+
+   const handleNextPage = async () => {
+      setPageNo(pageNo + 1);
+      if (numLeftOver < 6)
+         take = numLeftOver;
+      skip += 6;
+      getLocalGroups(take, skip);
+   }
+
+   const handlePrePage = async () => {
+      setPageNo(pageNo - 1);
+      take = 6;
+      skip -= 6;
+      getLocalGroups(take, skip);
    }
 
    const toggle1Ref = useRef();
@@ -182,7 +196,7 @@ export default function Gallery(props) {
                      return (
                         <Link to={`/group-profile/${group._id}`}>
                            <div className='single-group'>
-                              <img style={{ width: '100%', height: '100%' }} src={groupbg} />
+                              <img style={{ width: '100%', height: '100%' }} src={group.groupProfileUrl} />
                               <div className='single-group-overlay'>
                                  <p>{group.groupName}</p>
                               </div>
@@ -191,8 +205,23 @@ export default function Gallery(props) {
                      )
                   })}
                </div>
+
+               <div id='gallery-btn-area' style={{ textAlign: 'center' }}>
+                  <div>
+                     {pageNo > 0 && (
+                        <button onClick={handlePrePage} className='standard-btn'>PREVIOUS PAGE</button>
+                     )}
+                  </div>
+
+                  <div>
+                     {numLeftOver > 0 && (
+                        <button onClick={handleNextPage} className='standard-btn'>NEXT PAGE</button>
+                     )}
+                  </div>
+               </div>
+
             </div>
-            
+
          </div>
       </div>
    )
