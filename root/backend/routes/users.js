@@ -90,156 +90,172 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/:newUsername", async (req, res) => {
-   try {
-      const newUsername = req.params.newUsername;
+    try {
+        const newUsername = req.params.newUsername;
 
-      const user = await usersData.readUserByName(newUsername);
-      if (user == null) res.json({ noUser: true });
-      else res.json({ noUser: false });
-   } catch (e) {
-      res.status(500).json(e);
-   }
+        const user = await usersData.readUserByName(newUsername);
+        if (user == null) res.json({ noUser: true });
+        else res.json({ noUser: false });
+    } catch (e) {
+        res.status(500).json(e);
+    }
 });
 
 router.get("/getbyid/:id", async (req, res) => {
-   try {
+    try {
 
-      const id = req.params.id;
-      const checkedId = checkId(id);
+        const id = req.params.id;
+        const checkedId = checkId(id);
 
-      const user = await usersData.readUser(checkedId);
-      res.json(user);
-   } catch (e) {
-      res.status(500).json(e);
-   }
+        const user = await usersData.readUser(checkedId);
+        res.json(user);
+    } catch (e) {
+        res.status(500).json(e);
+    }
 });
 
 router.get("/getbyemail/:newEmail", async (req, res) => {
-   try {
+    try {
 
-      const newEmail = req.params.newEmail;
+        const newEmail = req.params.newEmail;
 
-      const user = await usersData.readUserByEmail(newEmail);
-      if (user == null) res.json({ noEmail: true });
-      else res.json({ noEmail: false });
-   } catch (e) {
-      res.status(500).json(e);
-   }
+        const user = await usersData.readUserByEmail(newEmail);
+        if (user == null) res.json({ noEmail: true });
+        else res.json({ noEmail: false });
+    } catch (e) {
+        res.status(500).json(e);
+    }
+});
+
+router.get("/getuserbyemail/:email", async (req, res) => {
+    try {
+        const email = req.params.email;
+
+        const user = await usersData.readUserByEmail(email);
+        if (user == null) throw `user not found with email: ${email}`;
+        else res.status(200).json(user);
+    } catch (e) {
+        res.status(500).json(e);
+    }
 });
 
 router.put("/:id", async (req, res) => {
-   try {
+    try {
 
-      const id = req.params.id;
-      const username = req.body.username;
-      const email = req.body.email;
-      const age = req.body.age;
-      const zipcode = req.body.zipcode;
-      const gender = req.body.gender;
-      const phone = req.body.phone;
-      const bio = req.body.bio;
+        const id = req.params.id;
+        const username = req.body.username;
+        const email = req.body.email;
+        const age = req.body.age;
+        const zipcode = req.body.zipcode;
+        const gender = req.body.gender;
+        const phone = req.body.phone;
+        const bio = req.body.bio;
 
-      // required
-      const checkedId = checkId(id);
-      //optional
-      if (username) {
-         if (typeof username !== 'string') {
-            throw `You Must Provide A username with string type! what you give:${typeof username}`;
-         }
-      }
-      if (email) {
-         if (typeof email !== 'string') {
-            throw `You Must Provide A email with string type! what you give:${typeof email}`;
-         }
-      }
-      if (age) {
-         if (isNaN(age)) {
-            throw `You Must Provide A age with number type! what you give:${typeof age}`;
-         }
-      }
-      if (zipcode) {
-         if (typeof zipcode !== 'string') {
-            throw `You Must Provide A zipcode with string type! what you give:${typeof zipcode}`;
-         }
-      }
-      if (gender) {
-         if (typeof gender !== 'string') {
-            throw `You Must Provide A gender with string type! what you give:${typeof gender}`;
-         }
-      }
-      if (phone) {
-         if (typeof phone !== 'string') {
-            throw `You Must Provide A phone with string type! what you give:${typeof phone}`;
-         }
-      }
-      if (bio) {
-         if (typeof bio !== 'string') {
-            throw `You Must Provide A bio with string type! what you give:${typeof bio}`;
-         }
-      }
+        // required
+        const checkedId = checkId(id);
+        //optional
+        if (username) {
+            if (typeof username !== 'string') {
+                throw `You Must Provide A username with string type! what you give:${typeof username}`;
+            }
+        }
+        if (email) {
+            if (typeof email !== 'string') {
+                throw `You Must Provide A email with string type! what you give:${typeof email}`;
+            }
+        }
+        if (age) {
+            if (isNaN(age)) {
+                throw `You Must Provide A age with number type! what you give:${typeof age}`;
+            }
+        }
+        if (zipcode) {
+            if (typeof zipcode !== 'string') {
+                throw `You Must Provide A zipcode with string type! what you give:${typeof zipcode}`;
+            }
+        }
+        if (gender) {
+            if (typeof gender !== 'string') {
+                throw `You Must Provide A gender with string type! what you give:${typeof gender}`;
+            }
+        }
+        if (phone) {
+            if (typeof phone !== 'string') {
+                throw `You Must Provide A phone with string type! what you give:${typeof phone}`;
+            }
+        }
+        if (bio) {
+            if (typeof bio !== 'string') {
+                throw `You Must Provide A bio with string type! what you give:${typeof bio}`;
+            }
+        }
 
-      const updatedUser = await usersData.updateUser(checkedId, username, email, age, zipcode, gender, phone, bio);
-      res.json(updatedUser);
+        const updatedUser = await usersData.updateUser(checkedId, username, email, age, zipcode, gender, phone, bio);
+        res.json(updatedUser);
 
-   } catch (e) {
-      res.status(500).json(e);
-   }
+    } catch (e) {
+        res.status(500).json(e);
+    }
 });
 
 router.delete("/:id", async (req, res) => {
-   try {
-      const checkedId = checkId(req.params.id);
+    try {
+        const checkedId = checkId(req.params.id);
 
-      const deletedUser = await usersData.deleteGroupById(checkedId);
-      res.json(deletedUser);
-   } catch (e) {
-      res.status(500).json(e);
-   }
+        const deletedUser = await usersData.deleteGroupById(checkedId);
+        res.json(deletedUser);
+    } catch (e) {
+        res.status(500).json(e);
+    }
 
 })
 
+// Add a group to a user
 router.put("/:userId/:groupId", async (req, res) => {
-   try {
-      const checkedUserId = checkId(req.params.userId);
-      const checkedGroupId = checkId(req.params.groupId);
+    try {
+        const checkedUserId = checkId(req.params.userId);
+        const checkedGroupId = checkId(req.params.groupId);
 
-      const addedUser = await usersData.addGroup(checkedUserId, checkedGroupId);
-      res.json(addedUser);
-   } catch (e) {
-      res.status(500).json(e);
-   }
+        const addedUser = await usersData.addGroup(checkedUserId, checkedGroupId);
+        res.json(addedUser);
+    } catch (e) {
+        res.status(500).json(e);
+    }
 })
 
+// delete a group from a user
 router.delete("/:userId/:groupId", async (req, res) => {
-   try {
-      const checkedUserId = checkId(req.params.userId);
-      const checkedGroupId = checkId(req.params.groupId);
+    try {
+        let groupId = req.params.groupId;
+        let userId = req.params.userId;
+        groupId = checkId(groupId);
+        userId = checkId(userId);
 
-      const removedUser = await usersData.removeGroup(checkedUserId, checkedGroupId);
-      res.json(removedUser);
-   } catch (e) {
-      res.status(500).json(e);
-   }
+        const removedUser = await usersData.removeGroup(userId, groupId);
+        res.status(200).json(removedUser);
+    } catch (e) {
+        res.status(500).json(e);
+    }
 })
 
 // User Image file upload route!!! Added by Kuan //
 router.post('/upload', async (req, res) => {
-   if (req.files.file === null)
-      return res.status(400).json({ msg: 'No file uploaded!' });
+    if (req.files.file === null)
+        return res.status(400).json({ msg: 'No file uploaded!' });
 
-   const file = req.files.file;
-   const date = new Date();
-   const newName = date + file.name;
-   file.mv(path.resolve(`../frontend/src/upload/users/${newName}`), err => {
-      if (err) {
-         console.log(err);
-         return res.status(500).json({ e: err });
-      }
-      res.status(500).json({
-         filename: file.name,
-         filepath: `/uploads/users/${newName}`
-      })
-   });
+    const file = req.files.file;
+    const date = new Date();
+    const newName = date + file.name;
+    file.mv(path.resolve(`../frontend/src/upload/users/${newName}`), err => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ e: err });
+        }
+        res.status(500).json({
+            filename: file.name,
+            filepath: `/uploads/users/${newName}`
+        })
+    });
 });
 
 // Get groups user in
@@ -259,29 +275,29 @@ router.get('/groups/:username', async (req, res) => {
 });
 
 router.get('/profile/:username', async (req, res) => {
-   try {
-      const url = await usersData.getUserProfileUrl(req.params.username);
-      res.status(200).json({
-         url: url
-      })
-   } catch (e) {
-      res.status(500).json({
-         error: e
-      })
-   }
+    try {
+        const url = await usersData.getUserProfileUrl(req.params.username);
+        res.status(200).json({
+            url: url
+        })
+    } catch (e) {
+        res.status(500).json({
+            error: e
+        })
+    }
 });
 
 router.post('/profile/:username', async (req, res) => {
-   try {
-      await usersData.updateUserProfile(req.params.username, req.body.url);
-      res.status(200).json({
-         msg: 'success!'
-      })
-   } catch (e) {
-      res.status(500).json({
-         error: e
-      })
-   }
+    try {
+        await usersData.updateUserProfile(req.params.username, req.body.url);
+        res.status(200).json({
+            msg: 'success!'
+        })
+    } catch (e) {
+        res.status(500).json({
+            error: e
+        })
+    }
 });
 
 router.get('/', async (req, res) => {
@@ -300,14 +316,18 @@ router.get('/', async (req, res) => {
 
 //-----------------------------------check--------------------------------------
 function checkId(id) {
-   if (!id) throw "You Must Provide A Id!";
-   if (id._bsontype == "ObjectID") {
-      return id;
-   }
-   else if (typeof id == "string") {
-      return ObjectId(id);
-   }
-   else throw "Input Can't Be An Id!"
+    if (!id) throw "You Must Provide A Id!";
+    if (id._bsontype == "ObjectID") {
+        return id;
+    }
+    else if (typeof id == "string") {
+        if (ObjectId.isValid(id))
+            return ObjectId(id);
+        else {
+            throw `not valid id: ${id}`
+        }
+    }
+    else throw "Input Can't Be An Id!"
 }
 
 module.exports = router;

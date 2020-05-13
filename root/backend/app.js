@@ -18,8 +18,8 @@ app.use(session({
    }
 }));
 
-// const configMiddleware = require("./middleware");
-// configMiddleware(app);
+const configMiddleware = require("./middleware");
+configMiddleware(app);
 
 const configRoute = require("./routes");
 configRoute(app);

@@ -113,45 +113,55 @@ async function deleteGroupById(id) {
 
 // -----------------------Posts Section Added by Kuan -------------------
 async function joinGroup(userId, groupId) {
-   groupId = checkId(groupId);
-   userId = checkId(userId);
-   let group = await getById(groupId);
-   const user = await userData.readUser(userId);
-   if (user.age >= group.maxAge || user.age <= group.minAge)
-      throw 'Your age does not meet requirements!';
-   if (group.users.length >= group.maxGroupNo)
-      throw 'Goup has met its max number!';
-   if (group.gender !== 'none' && group.gender !== user.gender)
-      throw 'Group requires a different gender!';
-   const groupcollection = await groups();
-   const updateInfo = await groupcollection.updateOne(
-      { _id: groupId },
-      { $push: { users: user } }
-   );
-   const userCollection = await users();
+   try {
+      groupId = checkId(groupId);
+      userId = checkId(userId);
+      let group = await getById(groupId);
+      const user = await userData.readUser(userId);
+      if (user.age >= group.maxAge || user.age <= group.minAge)
+         throw 'Your age does not meet requirements!';
+      if (group.users.length >= group.maxGroupNo)
+         throw 'Goup has met its max number!';
+      if (group.gender !== 'none' && group.gender !== user.gender)
+         throw 'Group requires a different gender!';
+      const groupcollection = await groups();
+      const updateInfo = await groupcollection.updateOne(
+         { _id: groupId },
+         { $push: { users: userId.toString() } }
+      );
+      const userCollection = await users();
 
-   const updateInfo2 = await userCollection.updateOne(
-      { _id: userId },
-      { $push: { groups: groupId } }
-   );
-   if (!updateInfo || !updateInfo2)
-      throw 'Can\'t join in!'
-   group = await getById(groupId);
-   return group;
+      const updateInfo2 = await userCollection.updateOne(
+         { _id: userId },
+         { $push: { groups: groupId.toString() } }
+      );
+      if (!updateInfo || !updateInfo2)
+         throw 'Can\'t join in!'
+      group = await getById(groupId);
+      return group;
+   } catch (e) {
+      throw e + ` joinGroup`;
+   }
+
 }
 
 async function deleteMember(groupId, userId) {
-   groupId = checkId(groupId);
-   userId = checkId(userId);
-   const groupcollection = await groups();
-   const updateInfo = await groupcollection.updateOne(
-      { _id: groupId },
-      { $pull: { user: userId } }
-   );
-   if (!updateInfo)
-      throw 'Can\'t delete user!';
-   const group = await getById(groupId);
-   return group;
+   try {
+      groupId = checkId(groupId);
+      userId = checkId(userId);
+      const groupcollection = await groups();
+      const updateInfo = await groupcollection.updateOne(
+         { _id: groupId },
+         { $pull: { users: userId.toString() } }
+      );
+      if (!updateInfo)
+         throw 'Can\'t delete user!';
+      const group = await getById(groupId);
+      return group;
+   } catch (e) {
+      throw e;
+   }
+
 }
 
 async function createPost(groupId, username, content, time) {
@@ -195,7 +205,11 @@ function checkId(id) {
       return id;
    }
    else if (typeof id == "string") {
-      return ObjectId(id);
+      if (ObjectId.isValid(id))
+         return ObjectId(id);
+      else {
+         throw `not valid id: ${id}`
+      }
    }
    else throw "Input Can't Be An Id!"
 }
