@@ -167,7 +167,28 @@ router.delete("/:id", async (req, res) => {
 
 })
 
+//add post to the group
+router.post('/post/:groupId', async (req, res) => {
+   try {
+      let groupId = req.params.groupId;
+      const username = req.body.username;
+      const content = req.body.content;
+      const time = req.body.time;
 
+      // error check
+      groupId = checkId(groupId);
+      if (content) {
+         if (typeof content !== 'string') {
+            throw `You Must Provide A content with string type! what you give:${typeof content}`;
+         }
+      }
+
+      const postResult = await groupsData.createPost(groupId, username, content, time);
+      res.status(200).json(postResult);
+   } catch (e) {
+      res.status(500).json(e);
+   }
+})
 // -----------------------Posts Section Added by Kuan -------------------
 // Add a user to a group
 router.post('/:groupId/:userId', async (req, res) => {
@@ -178,7 +199,7 @@ router.post('/:groupId/:userId', async (req, res) => {
       userId = checkId(userId);
       const group = await groupsData.joinGroup(userId, groupId);
       res.status(200).json(group);
-   } catch(e) {
+   } catch (e) {
       res.status(500).json({
          error: e
       })
@@ -195,7 +216,22 @@ router.delete('/:groupId/:userId', async (req, res) => {
 
       const group = await groupsData.deleteMember(groupId, userId);
       res.status(200).json(group);
-   } catch(e) {
+   } catch (e) {
+      res.status(500).json(e);
+   }
+})
+
+//delete an post from group
+router.delete('/post/:groupId/:postId', async (req, res)=>{
+   try {
+      let groupId = req.params.groupId;
+      let postId = req.params.postId;
+      groupId = checkId(groupId);
+      postId = checkId(postId);
+      
+      const group = await groupsData.deletePost(groupId, postId);
+      res.status(200).json(group);
+   } catch (e) {
       res.status(500).json(e);
    }
 })
@@ -203,7 +239,7 @@ router.delete('/:groupId/:userId', async (req, res) => {
 // Get group members
 
 // Get group of the user
-router.get('/group/:username', async(req, res) => {
+router.get('/group/:username', async (req, res) => {
    try {
       const group = await data.usersData.getUserOwnGroup(req.params.username)
       if (group === null)
@@ -214,7 +250,7 @@ router.get('/group/:username', async(req, res) => {
          groupName: group.groupName,
          groupId: group._id
       });
-   } catch(e) {
+   } catch (e) {
       res.status(500).json({
          error: e
       })
@@ -223,20 +259,20 @@ router.get('/group/:username', async(req, res) => {
 //-----------------------------------check--------------------------------------
 //helper
 function checkId(id) {
-   try{
+   try {
       if (!id) throw "You Must Provide A Id!";
       if (id._bsontype == "ObjectID") {
          return id;
       }
       else if (typeof id == "string") {
-         if(ObjectId.isValid(id))
+         if (ObjectId.isValid(id))
             return ObjectId(id);
-         else{
+         else {
             throw `not valid id: ${id}`
          }
       }
       else throw "Input Can't Be An Id!"
-   }catch(e){
+   } catch (e) {
       throw e;
    }
 }
