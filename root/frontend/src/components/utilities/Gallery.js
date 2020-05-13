@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../firebase/Auth'
 import axios from 'axios';
 import $ from 'jquery';
-import group from '../../images/group-bg.jpg';
+import groupbg from '../../images/group-bg.jpg';
 
 export default function Gallery(props) {
    const { currentUser } = useContext(AuthContext);
@@ -13,25 +13,34 @@ export default function Gallery(props) {
    const [userOwnGroup, setUserOwnGroup] = useState(null);
    const [ownGroupId, setOwnGroupId] = useState(null);
    const [userProfile, setUserProfile] = useState(null);
-
+   const [localGroups, setLocalGroups] = useState(null);
+   const [allLocalGroups, setAllLocalGroups] = useState(null);
+   const [isLeftOver, setIsLeftOver] = useState(false);
+   const [take, setTake] = useState(6);
+   const [skip, setSkip] = useState(0);
+   const [isNext, setIsNext] = useState(false);
    let li = null;
 
    useEffect(() => {
-      async function getUrl() {
-         if (currentUser && currentUser.displayName) {
-            try {
-               const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
-               const { url } = data;
-               setUserProfile(url);
-            } catch (e) {
-               alert(`get url` + e);
-            }
-         }
-      };
+
       getUrl();
       getGroups();
       getUserGroup();
+      getLocalGroups();
+      getAllLocalGroups();
    }, []);
+
+   async function getUrl() {
+      if (currentUser && currentUser.displayName) {
+         try {
+            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+            const { url } = data;
+            setUserProfile(url);
+         } catch (e) {
+            alert(`get url` + e);
+         }
+      }
+   };
 
    const getGroups = async () => {
       if (user && user.displayName) {
@@ -49,13 +58,35 @@ export default function Gallery(props) {
       if (user && user.displayName) {
          try {
             const { data } = await axios.get(`http://localhost:4000/groups/group/${user.displayName}`);
-            console.log(data);
             const { groupName, groupId } = data;
             setUserOwnGroup(groupName);
             setOwnGroupId(groupId);
          } catch (e) {
             alert('get user group' + e);
          }
+      }
+   }
+
+   const getLocalGroups = async () => {
+      try {
+         const { data } = await axios.get(`http://localhost:4000/groups/local/07307?take=6&skip=0`);
+         const { groups, isLeftOver } = data;
+         setLocalGroups(groups);
+         setIsLeftOver(isLeftOver);
+      } catch (e) {
+         alert(e);
+      }
+   }
+
+   const getAllLocalGroups = async () => {
+      try {
+         const { data } = await axios.get(`http://localhost:4000/groups/local-groups/07307`);
+         const { groups } = data;
+         setAllLocalGroups(groups);
+         if (groups.length > 6)
+            setIsNext(true);
+      } catch (e) {
+         alert(e);
       }
    }
 
@@ -131,9 +162,9 @@ export default function Gallery(props) {
                      <button onClick={() => handleToggle2()} className='click-to-reveal'>GROUPS WITHIN 07307</button>
                      <div style={{ display: 'none' }} ref={toggle2Ref}>
                         <ul>
-                           <li>Group 1</li>
-                           <li>Group 2</li>
-                           <li>Group 3</li>
+                           {allLocalGroups && allLocalGroups.map((group) => {
+                              return <Link to={`/group-profile/${group._id}`}><li key={group._id}>{group.groupName}</li></Link>
+                           })}
                         </ul>
                      </div>
                   </div>
@@ -147,46 +178,21 @@ export default function Gallery(props) {
                   <div className='energy-bar'></div>
                </div>
                <div id='explore-gallery-groups'>
-                  <div className='single-group'>
-                     <img style={{ width: '100%', height: '100%' }} src={group} />
-                     <div className='single-group-overlay'>
-                        <p>group name dsf </p>
-                     </div>
-                  </div>
-                  <div className='single-group'>
-                     <img style={{ width: '100%', height: '100%' }} src={group} />
-                     <div className='single-group-overlay'>
-                        <p>group name dsf </p>
-                     </div>
-                  </div>
-                  <div className='single-group'>
-                     <img style={{ width: '100%', height: '100%' }} src={group} />
-                     <div className='single-group-overlay'>
-                        <p>group name dsf </p>
-                     </div>
-                  </div>
-                  <div className='single-group'>
-                     <img style={{ width: '100%', height: '100%' }} src={group} />
-                     <div className='single-group-overlay'>
-                        <p>group name dsf </p>
-                     </div>
-                  </div>
-                  <div className='single-group'>
-                     <img style={{ width: '100%', height: '100%' }} src={group} />
-                     <div className='single-group-overlay'>
-                        <p>group name dsf </p>
-                     </div>
-                  </div>
-                  <div className='single-group'>
-                     <img style={{ width: '100%', height: '100%' }} src={group} />
-                     <div className='single-group-overlay'>
-                        <p>group name dsf </p>
-                     </div>
-                  </div>
+                  {localGroups && localGroups.map((group) => {
+                     return (
+                        <Link to={`/group-profile/${group._id}`}>
+                           <div className='single-group'>
+                              <img style={{ width: '100%', height: '100%' }} src={groupbg} />
+                              <div className='single-group-overlay'>
+                                 <p>{group.groupName}</p>
+                              </div>
+                           </div>
+                        </Link>
+                     )
+                  })}
                </div>
-
             </div>
-
+            
          </div>
       </div>
    )

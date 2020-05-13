@@ -12,20 +12,20 @@ export default function Navigation() {
    const [userProfile, setUserProfile] = useState(null);
 
    useEffect(() => {
-      async function getUrl() {
-         if (currentUser && currentUser.displayName) {
-            try {
-               const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
-               const { url } = data;
-               setUserProfile(url);
-            } catch (e) {
-               alert(e);
-            }
-         }
-      }
       getUrl();
    }, []);
 
+   async function getUrl() {
+      if (currentUser && currentUser.displayName) {
+         try {
+            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+            const { url } = data;
+            setUserProfile(url);
+         } catch (e) {
+            alert(e);
+         }
+      }
+   }
 
    return (
       <div className='navigation-bar'>
