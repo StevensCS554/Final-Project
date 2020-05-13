@@ -165,9 +165,7 @@ router.delete("/:id", async (req, res) => {
    } catch (e) {
       res.status(500).json(e);
    }
-
 })
-
 
 // -----------------------Posts Section Added by Kuan -------------------
 // Add a user to a group
@@ -179,7 +177,7 @@ router.post('/:groupId/:userId', async (req, res) => {
       userId = checkId(userId);
       const group = await groupsData.joinGroup(userId, groupId);
       res.status(200).json(group);
-   } catch(e) {
+   } catch (e) {
       res.status(500).json({
          error: e
       })
@@ -187,7 +185,7 @@ router.post('/:groupId/:userId', async (req, res) => {
 })
 
 // Get group of the user
-router.get('/group/:username', async(req, res) => {
+router.get('/group/:username', async (req, res) => {
    try {
       const group = await data.usersData.getUserOwnGroup(req.params.username)
       if (group === null)
@@ -198,7 +196,27 @@ router.get('/group/:username', async(req, res) => {
          groupName: group.groupName,
          groupId: group._id
       });
-   } catch(e) {
+   } catch (e) {
+      res.status(500).json({
+         error: e
+      })
+   }
+});
+
+router.get('/local/:zipcode', async (req, res) => {
+   let { take, skip } = req.query;
+   if (take)
+      take = parseInt(take);
+   if (skip)
+      skip = parseInt(skip);
+   try {
+      const data = await groupsData.getLocalGroups(req.params.zipcode, take, skip);
+      const { groups, isLeftOver } = data;
+      res.status(200).json({
+         groups: groups,
+         isLeftOver: isLeftOver
+      })
+   } catch (e) {
       res.status(500).json({
          error: e
       })
@@ -207,20 +225,20 @@ router.get('/group/:username', async(req, res) => {
 //-----------------------------------check--------------------------------------
 //helper
 function checkId(id) {
-   try{
+   try {
       if (!id) throw "You Must Provide A Id!";
       if (id._bsontype == "ObjectID") {
          return id;
       }
       else if (typeof id == "string") {
-         if(ObjectId.isValid(id))
+         if (ObjectId.isValid(id))
             return ObjectId(id);
-         else{
+         else {
             throw `not valid id: ${id}`
          }
       }
       else throw "Input Can't Be An Id!"
-   }catch(e){
+   } catch (e) {
       throw e;
    }
 }

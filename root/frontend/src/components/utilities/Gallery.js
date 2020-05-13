@@ -13,25 +13,29 @@ export default function Gallery(props) {
    const [userOwnGroup, setUserOwnGroup] = useState(null);
    const [ownGroupId, setOwnGroupId] = useState(null);
    const [userProfile, setUserProfile] = useState(null);
-
+   const [localGroups, setLocalGroup] = useState(null);
+   const [isLeftOver, setIsLeftOver] = useState(false);
    let li = null;
 
    useEffect(() => {
-      async function getUrl() {
-         if (currentUser && currentUser.displayName) {
-            try {
-               const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
-               const { url } = data;
-               setUserProfile(url);
-            } catch (e) {
-               alert(`get url` + e);
-            }
-         }
-      };
+      
       getUrl();
       getGroups();
       getUserGroup();
+      getLocalGroups();
    }, []);
+
+   async function getUrl() {
+      if (currentUser && currentUser.displayName) {
+         try {
+            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+            const { url } = data;
+            setUserProfile(url);
+         } catch (e) {
+            alert(`get url` + e);
+         }
+      }
+   };
 
    const getGroups = async () => {
       if (user && user.displayName) {
@@ -49,13 +53,23 @@ export default function Gallery(props) {
       if (user && user.displayName) {
          try {
             const { data } = await axios.get(`http://localhost:4000/groups/group/${user.displayName}`);
-            console.log(data);
             const { groupName, groupId } = data;
             setUserOwnGroup(groupName);
             setOwnGroupId(groupId);
          } catch (e) {
             alert('get user group' + e);
          }
+      }
+   }
+
+   const getLocalGroups = async () => {
+      try {
+         const { data } = await axios.get(`http://localhost:4000/groups/local/07307?take=6&skip=0`);
+         const { groups, isLeftOver } = data;
+         setLocalGroup(groups);
+         setIsLeftOver(isLeftOver);
+      } catch (e) {
+         alert(e);
       }
    }
 
@@ -131,9 +145,9 @@ export default function Gallery(props) {
                      <button onClick={() => handleToggle2()} className='click-to-reveal'>GROUPS WITHIN 07307</button>
                      <div style={{ display: 'none' }} ref={toggle2Ref}>
                         <ul>
-                           <li>Group 1</li>
-                           <li>Group 2</li>
-                           <li>Group 3</li>
+                           {localGroups && localGroups.map((group) => {
+                              return <Link to={`/group-profile/${group._id}`}><li key={group._id}>{group.groupName}</li></Link>
+                           })}
                         </ul>
                      </div>
                   </div>

@@ -10,7 +10,7 @@ import axios from 'axios';
 
 export default function Groupprofile(props) {
    const { currentUser } = useContext(AuthContext);
-   
+
    const [groupData, setGroupData] = useState(undefined);
    const [isManager, setIsManager] = useState(true);
    const [isMember, setIsMember] = useState(false);
@@ -34,6 +34,9 @@ export default function Groupprofile(props) {
       [props.match.params.groupId, currentUser, isMember]
    );
 
+   async function some() {
+      
+   }
    async function getUrl() {
       try {
          const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)

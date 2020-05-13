@@ -51,8 +51,8 @@ async function creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGro
       managerId = checkId(managerId);
       const groupId = checkId(insertedGroup.insertedId);
       const updateInfo = await userCollection.updateOne(
-         {_id: managerId},
-         {$set: {myGroup: groupId}}
+         { _id: managerId },
+         { $set: { myGroup: groupId } }
       )
       return newGroup;
    } catch (e) {
@@ -154,6 +154,27 @@ async function deleteMember(groupId, userId) {
    return group;
 }
 
+async function getLocalGroups(zipcode, take=6, skip=0) {
+   const groups = await getAll();
+   let res = [];
+   for (let i = 0; i < groups.length; i++) {
+      if (groups[i].zipcode === zipcode)
+         res.push(groups[i]);
+   }
+   let output = {
+      groups: [],
+      isLeftOver: false
+   };
+
+   let j = 0;
+   for (j = skip; j < res.length && j <= take; j++) {
+      output.groups.push(res[j]);
+   }
+   if (j < res.length - 1)
+      output.isLeftOver = true;
+   return output;
+}
+
 async function createPost(groupId, username, content, time) {
    if (typeof username !== 'string' || typeof content !== 'string')
       throw 'Invalid username or content!!';
@@ -201,5 +222,6 @@ function checkId(id) {
 }
 
 module.exports = {
-   getAll, getById, creatGroup, updateGroup, deleteGroupById, createPost, getPosts, deleteMember, joinGroup
+   getAll, getById, creatGroup, updateGroup, deleteGroupById, 
+   createPost, getPosts, deleteMember, joinGroup, getLocalGroups
 };
