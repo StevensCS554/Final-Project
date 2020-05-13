@@ -141,7 +141,7 @@ export default function Groupprofile(props) {
       alert("handleCreatPost");
       try {
          const { postContent } = e.target.elements;
-         const time = "Just Now(Hard Code)";
+         const time = Date.now();
          const Result = await fetch(`http://localhost:4000/groups/${groupData._id}/post/`, {
             method: "POST",
             headers: {
@@ -240,25 +240,23 @@ export default function Groupprofile(props) {
    async function handleMemberDelete(userId) {
       try {
          // alert("handleMemberDelete groupData._id: " + `http://localhost:4000/groups/${groupData._id}/${userId}`);
-         // const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${userId}`, {
-         //    method: 'DELETE',
-         //    headers: {
-         //        'Content-Type': 'application/json'
-         //    }
-         // });
-         // //error handle! 
-         // if (groupResult.ok == false) {
-         //    throw `fail to delete user from group! status:${groupResult.status}, statusText:${groupResult.statusText} message: ${await groupResult.json().then((error) => {
-         //       return error;
-         //    })}`
-         // }
-         const groupResult = await axios({//https://www.npmjs.com/package/axios#response-schema
-            method: 'delete',
-            url: `http://localhost:4000/groups/${groupData._id}/${userId}`
+         const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${userId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
          });
          //error handle! 
-         alert(groupResult.data);
-         alert(`deleted user from group`);
+         if (groupResult.ok == false) {
+            throw `fail to delete user from group! status:${groupResult.status}, statusText:${groupResult.statusText} message: ${await groupResult.json().then((error) => {
+               return error;
+            })}`
+         }
+         // const groupResult = await axios({//https://www.npmjs.com/package/axios#response-schema
+         //    method: 'DELETE',
+         //    url: `http://localhost:4000/groups/${groupData._id}/${userId}`
+         // });
+         // alert(`deleted user from group`);
 
          const userResult = await fetch(`http://localhost:4000/users/${userId}/${groupData._id}`, {
             method: "DELETE",
@@ -268,14 +266,12 @@ export default function Groupprofile(props) {
          });
          //error handle! 
          if (userResult.ok === false) {
-            throw `fail to delete group from user ${await userResult.json().then((error) => {
+            throw `fail to delete group from user! status:${userResult.status}, statusText:${userResult.statusText} message: ${await userResult.json().then((error) => {
                return error;
             })}`
          }
-         alert(`deleted group from user`);
 
          document.getElementById(userId).style.display = "none";
-
          return;
       } catch (e) {
          alert(`-error: ${e}`);

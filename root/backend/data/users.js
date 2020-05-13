@@ -26,9 +26,9 @@ async function createUser(username, email, age, zipcode, gender, phone, bio) {
    }
    else insertedUserId = findUser._id.toString();
    if (gender === 'male')
-      return await addUserProfile(username, 'https://firebasestorage.googleapis.com/v0/b/web-ii-project.appspot.com/o/male-default.jpg?alt=media&token=b83059a3-cbd3-46ec-87c6-95ab47e96825');
+      return await addUserProfile(username, 'https://firebasestorage.googleapis.com/v0/b/cs554fbauth.appspot.com/o/male-default.jpg?alt=media&token=3abd37e7-6cea-4540-bd0b-4446b2cb0924');
    if (gender === 'female')
-      return await addUserProfile(username, 'https://firebasestorage.googleapis.com/v0/b/web-ii-project.appspot.com/o/female-default.jpeg?alt=media&token=3fffae84-3579-4e86-a931-01a181360c4d');
+      return await addUserProfile(username, 'https://firebasestorage.googleapis.com/v0/b/cs554fbauth.appspot.com/o/female-default.jpeg?alt=media&token=6ebc5265-ee83-44a4-be1c-089ce7b79852');
 }
 
 async function readUser(userId) {

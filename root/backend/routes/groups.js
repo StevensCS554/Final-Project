@@ -173,7 +173,6 @@ router.delete("/:id", async (req, res) => {
 router.post('/:groupId/:userId', async (req, res) => {
    let groupId = req.params.groupId;
    let userId = req.params.userId;
-   console.log("Adding a user to a group "+ groupId+ ` ` + userId);
    try {
       groupId = checkId(groupId);
       userId = checkId(userId);
@@ -188,7 +187,6 @@ router.post('/:groupId/:userId', async (req, res) => {
 
 // delete a user from a group
 router.delete('/:groupId/:userId', async (req, res) => {
-   console.log("deleting user from group");
    try {
       let groupId = req.params.groupId;
       let userId = req.params.userId;
