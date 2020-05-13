@@ -12,7 +12,6 @@ export default function Navigation() {
    const [userProfile, setUserProfile] = useState(null);
 
    useEffect(() => {
-      
       getUrl();
    }, []);
 

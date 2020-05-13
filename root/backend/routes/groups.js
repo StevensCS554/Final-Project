@@ -221,6 +221,7 @@ router.get('/group/:username', async (req, res) => {
    }
 });
 
+// get certain amount of groups in zipcode
 router.get('/local/:zipcode', async (req, res) => {
    let { take, skip } = req.query;
    if (take)
@@ -228,7 +229,7 @@ router.get('/local/:zipcode', async (req, res) => {
    if (skip)
       skip = parseInt(skip);
    try {
-      const data = await groupsData.getLocalGroups(req.params.zipcode, take, skip);
+      const data = await groupsData.getCertainLocalGroups(req.params.zipcode, take, skip);
       const { groups, isLeftOver } = data;
       res.status(200).json({
          groups: groups,
@@ -239,7 +240,22 @@ router.get('/local/:zipcode', async (req, res) => {
          error: e
       })
    }
+});
+
+// get all groups within a zipcode
+router.get('/local-groups/:zipcode', async(req, res) => {
+   try {
+      const groups = await groupsData.getAllLocalGroups(req.params.zipcode);
+      res.status(200).json({
+         groups: groups
+      })
+   } catch(e) {
+      res.status(500).json({
+         error: e
+      })
+   }
 })
+
 //-----------------------------------check--------------------------------------
 //helper
 function checkId(id) {

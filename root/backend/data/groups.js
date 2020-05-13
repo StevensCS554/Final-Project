@@ -113,6 +113,7 @@ async function deleteGroupById(id) {
 
 // -----------------------Posts Section Added by Kuan -------------------
 async function joinGroup(userId, groupId) {
+   const userData = require('./users');
    try {
       groupId = checkId(groupId);
       userId = checkId(userId);
@@ -164,7 +165,7 @@ async function deleteMember(groupId, userId) {
 
 }
 
-async function getLocalGroups(zipcode, take=6, skip=0) {
+async function getCertainLocalGroups(zipcode, take = 6, skip = 0) {
    const groups = await getAll();
    let res = [];
    for (let i = 0; i < groups.length; i++) {
@@ -177,7 +178,7 @@ async function getLocalGroups(zipcode, take=6, skip=0) {
    };
 
    let j = 0;
-   for (j = skip; j < res.length && j <= take; j++) {
+   for (j = skip; j < res.length && j < take; j++) {
       output.groups.push(res[j]);
    }
    if (j < res.length - 1)
@@ -185,10 +186,20 @@ async function getLocalGroups(zipcode, take=6, skip=0) {
    return output;
 }
 
+async function getAllLocalGroups(zipcode) {
+   const groups = await getAll();
+   let res = [];
+   for (let i = 0; i < groups.length; i++) {
+      if (groups[i].zipcode === zipcode)
+         res.push(groups[i]);
+   }
+   return res;
+}
+
 async function createPost(groupId, username, content, time) {
    if (typeof username !== 'string' || typeof content !== 'string')
       throw 'Invalid username or content!!';
-
+   const userData = require('./users');
    groupId = checkId(groupId);
    const user = await userData.getUserByUserName(username);
    if (user === undefined)
@@ -236,6 +247,7 @@ function checkId(id) {
 }
 
 module.exports = {
-   getAll, getById, creatGroup, updateGroup, deleteGroupById, 
-   createPost, getPosts, deleteMember, joinGroup, getLocalGroups
+   getAll, getById, creatGroup, updateGroup, deleteGroupById,
+   createPost, getPosts, deleteMember, joinGroup, getCertainLocalGroups,
+   getAllLocalGroups
 };

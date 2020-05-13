@@ -38,10 +38,7 @@ export default function Groupprofile(props) {
       groupProfile();
    }, [props.match.params.groupId, currentUser, isMember]
    );
-
-   async function some() {
-      
-   }
+   
    async function getUrl() {
       try {
          const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
