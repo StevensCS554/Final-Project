@@ -5,11 +5,11 @@ const app = express();
 
 // app.use(methodOverride('_method'));
 
-app.use((request, response, next) => {
-    const now = new Date();
-    console.log(now.toUTCString() + " " + request.method + " " + request.originalUrl);
-    next();
-});
+// app.use((request, response, next) => {
+//     const now = new Date();
+//     console.log(now.toUTCString() + " " + request.method + " " + request.originalUrl);
+//     next();
+// });
 
 // // Use the session middleware: create a session-cookie across all the router.
 // // session(options)

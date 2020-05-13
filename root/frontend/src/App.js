@@ -10,6 +10,7 @@ import Login from './components/Login';
 import CreateGroup from './components/CreateGroup';
 import UserProfile from './components/UserProfile';
 import GroupProfile from './components/GroupProfile';
+import GroupSetting from './components/GroupSetting';
 
 function App() {
    return (
@@ -23,6 +24,7 @@ function App() {
                <PrivateRoute path='/userprofile/:userId' component={UserProfile} />
                <PrivateRoute path='/create-group/:userId' component={CreateGroup} />
                <PrivateRoute path='/group-profile/:groupId' component={GroupProfile} />
+               <PrivateRoute path='/edit-group/:userId' component={GroupSetting} />
             </div>
          </Router>
       </AuthProvider>

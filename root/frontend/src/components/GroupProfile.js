@@ -289,7 +289,7 @@ export default function Groupprofile(props) {
                   <div id='group-manager'>
                      <img src={userProfile} alt="manager avatar"/>
                      <p>Group Manager: {manager && manager.username}</p>
-                     {isManager ? (<Link to='/edit-group/:userId' >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
+                     {isManager ? (<Link to='/edit-group/5eb714c7fcd5921c04761505' >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
                   </div>
 
                   {/* group member list*/}

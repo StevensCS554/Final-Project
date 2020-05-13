@@ -55,7 +55,8 @@ async function creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGro
          { _id: managerId },
          { $set: { myGroup: groupId } }
       )
-      return newGroup;
+      await addGroupProfile(groupId, 'https://firebasestorage.googleapis.com/v0/b/web-ii-project.appspot.com/o/group-default.jpg?alt=media&token=f94064fa-9da1-4052-9eaa-44591752cfd9');
+      return await getById(groupId);
    } catch (e) {
       throw `` + e;
    }
@@ -172,17 +173,20 @@ async function getCertainLocalGroups(zipcode, take = 6, skip = 0) {
       if (groups[i].zipcode === zipcode)
          res.push(groups[i]);
    }
+   if (take > res.length)
+      take = 6;
+   if (skip < 0)
+      skip = 0;
    let output = {
       groups: [],
-      isLeftOver: false
+      numLeftOver: 0
    };
 
    let j = 0;
-   for (j = skip; j < res.length && j < take; j++) {
+   for (j = skip; j < res.length && j < skip + take; j++) {
       output.groups.push(res[j]);
    }
-   if (j < res.length - 1)
-      output.isLeftOver = true;
+   output.numLeftOver = res.length - j;
    return output;
 }
 
@@ -229,6 +233,27 @@ async function getPosts(groupId) {
    return res;
 }
 
+async function addGroupProfile(groupId, url) {
+   groupId = checkId(groupId);
+   const groupsCollection = await groups();
+   const updateInfo = await groupsCollection.updateOne(
+      {_id: groupId},
+      {$set: {groupProfileUrl: url}}
+   );
+   if (!updateInfo)
+      throw 'Can\'t update group profile!';
+}
+
+async function getGroupByManager(managerId) {
+   const groupsCollection = await groups();
+   const group = await groupsCollection.findOne(
+      {managerId: managerId}
+   );
+   if (!group)
+      throw 'There is no such group!';
+   return group;
+}
+
 //-----------------------------------check--------------------------------------
 
 function checkId(id) {
@@ -249,5 +274,5 @@ function checkId(id) {
 module.exports = {
    getAll, getById, creatGroup, updateGroup, deleteGroupById,
    createPost, getPosts, deleteMember, joinGroup, getCertainLocalGroups,
-   getAllLocalGroups
+   getAllLocalGroups, addGroupProfile, getGroupByManager
 };

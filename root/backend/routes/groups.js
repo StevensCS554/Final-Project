@@ -226,12 +226,13 @@ router.get('/local/:zipcode', async (req, res) => {
       take = parseInt(take);
    if (skip)
       skip = parseInt(skip);
+
    try {
       const data = await groupsData.getCertainLocalGroups(req.params.zipcode, take, skip);
-      const { groups, isLeftOver } = data;
+      const { groups, numLeftOver } = data;
       res.status(200).json({
          groups: groups,
-         isLeftOver: isLeftOver
+         numLeftOver: numLeftOver
       })
    } catch (e) {
       res.status(500).json({
@@ -252,7 +253,22 @@ router.get('/local-groups/:zipcode', async(req, res) => {
          error: e
       })
    }
-})
+});
+
+router.get('/manager/:managerId', async(req, res) => {
+   try {
+      console.log(req.params);
+      const group = await groupsData.getGroupByManager(req.params.managerId);
+      res.status(200).json({
+         group: group
+      });
+   } catch(e) {
+      console.log(e);
+      res.status(500).json({
+         error: e
+      })
+   }
+});
 
 //-----------------------------------check--------------------------------------
 //helper
