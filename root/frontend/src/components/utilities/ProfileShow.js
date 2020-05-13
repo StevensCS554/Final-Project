@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // can't import images outside src folder
+import profile from '../../images/team-bg.jpeg';
+
 
 export default function ProfileForm(props) {
     const [userData, setUserData] = useState(undefined);
@@ -8,20 +10,20 @@ export default function ProfileForm(props) {
         // document.getElementById("upload-profile-btn").addEventListener("click", createGroup);
         async function get() {
             try {
-                // alert(`fetch for the user with id: ${userId}`);
-                //       const user = await fetch(`http://localhost:4000/users/getbyid/${userId}`, {
-                //          method: "GET",
-                //          headers: {
-                //             'Content-Type': 'application/json'
-                //          }
-                //       });
-                //       //: error handle! 
-                //       if (user.ok === false)
-                //          throw `error in user info fetching: ${userId}`
-                //       const resolved = await user.json();
-                //       // alert(resolved.email);
-                //       return resolved;
-                alert(props.username);
+                const user = await fetch(`http://localhost:4000/users/getUserByUsername/${props.username}`, {
+                    method: "GET",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                // error handle! 
+                if (!user.ok)
+                    throw `error in user info fetching with name! status:${user.status}, statusText:${user.statusText} message:${await user.json().then((error) => {
+                        return error;
+                    })}`
+                const resolved = await user.json();
+                setUserData(resolved);
+                return;
             } catch (e) {
                 alert(e);
             }
@@ -30,50 +32,18 @@ export default function ProfileForm(props) {
     }, [props.username]);
 
     return (
-        <p> view other's profile</p>
-        //   <div id='profile-form-container'>
-        //      <div id='profile-form'>
-        //         <form id='profile-form-pic' onSubmit={submitForm1}>
-        //            <div id='profile-form-pic-img'>
-        //               <img src={profileUrl} />
-        //            </div>
-        //            <input type='file' id='userprofile' onChange={uploadFile} />
-        //            <label htmlFor='userprofile' />
-        //            <input className='standard-btn' type='submit' value='CHANGE AVATAR' />
-        //         </form>
-        //         <form id='profile-form-f'>
-        //            <div className='form-group'>
-        //               <label htmlFor='username'>Username</label>
-        //               <input type='text' name='username' id='username' />
-        //            </div>
-        //            <div className='form-group' id='gender-input'>
-        //               <label htmlFor="gender">Gender</label>
-        //               <select name="gender" id="gender">
-        //                  <option value="male">Male</option>
-        //                  <option value="female" value>Female</option>
-        //                  <option value="other">Other</option>
-        //               </select>
-        //            </div>
-        //            <div className='form-group' id='age-input'>
-        //               <label htmlFor='age'>Age</label>
-        //               <input type='number' name='age' id='age' />
-        //            </div>
-        //            <div className='form-group' id='zipcode-input'>
-        //               <label htmlFor='zipcode'>Zip Code</label>
-        //               <input type='text' name='zipcode' id='zipcode' />
-        //            </div>
-        //            <div className='form-group'>
-        //               <label htmlFor='cellphone'>Cell Phone</label>
-        //               <input type='tel' name='cellphone' id='cellphone' />
-        //            </div>
-        //            <div className='form-group'>
-        //               <label htmlFor='bio'>Bio</label>
-        //               <input type='tel' name='bio' id='bio' />
-        //            </div>
-
-        //            <button id='user-form-btn' className='standard-btn'>SAVE CHANGES</button>
-        //         </form>
-        //      </div>
-        //   </div>
+        <div id='profileShow-container'>
+            <div id='profileShow-img'>
+                <img src={userData && userData.profileUrl || profile} alt="user avatar" />
+            </div>
+            <div id='profileShow-info'>
+                <p type='text' name='username' id='username'>{userData && userData.username}</p>
+                <p name="gender" id="gender">{userData && userData.gender}</p>
+                <p type='number' name='age' id='age' >{userData && userData.age}</p>
+                <p type='text' name='zipcode' id='zipcode' >{userData && userData.zipcode}</p>
+                <p type='tel' name='cellphone' id='cellphone' >{userData && userData.phone}</p>
+                <p type='tel' name='bio' id='bio' >{userData && userData.bio}</p>
+            </div>
+        </div>
     )
 }
