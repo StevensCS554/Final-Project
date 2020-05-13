@@ -4,6 +4,7 @@ const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 // const ObjectID = require('mongodb').ObjectID;
 // const middleware = require("../middleware");
+const userData = require('./users');
 
 //get all the group
 async function getAll() {
