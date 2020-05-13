@@ -1,0 +1,18 @@
+#profileShow-container {
+    margin: 3rem auto;
+    padding: 3rem auto;
+    border: 100px dashed $pro_light_purple;
+}
+
+#profileShow{
+    margin: 3rem auto;
+
+    &-img{
+        margin: 3rem auto;
+        background-color: $pro_light_purple;
+    }
+    &-info{
+        margin: 3rem auto;
+        background-color: $pro_light_purple;
+    }
+}

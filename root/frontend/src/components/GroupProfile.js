@@ -38,16 +38,15 @@ export default function Groupprofile(props) {
    }, [props.match.params.groupId, currentUser, isMember]
    );
 
-   async function getUrl(username) {
-      try {
-         const { data } = await axios.get(`http://localhost:4000/users/profile/${username}`)
-         const { url } = data;
-         return url;
-      } catch (e) {
-         alert(e.error);
-      }
-   }
-
+   // async function getUrl(username) {
+   //    try {
+   //       const { data } = await axios.get(`http://localhost:4000/users/profile/${username}`)
+   //       const { url } = data;
+   //       return url;
+   //    } catch (e) {
+   //       alert(e.error);
+   //    }
+   // }
 
    //get the group by groupId in the path.
    async function fetchGroupData() {
@@ -96,19 +95,6 @@ export default function Groupprofile(props) {
          // alert(group.users.length);
          for (const userId of group.users) {
             let userData = await fetchUserData(userId);
-            // const avatarUrl = await getUrl(userData.username);
-            // userData = {
-            //    username: userData.username,
-            //    email: userData.email,
-            //    age: userData.age,
-            //    zipcode: userData.zipcode,
-            //    gender: userData.gender,
-            //    phone: userData.phone,
-            //    bio: userData.bio,
-            //    myGroup: userData.myGroup,
-            //    groups: userData.groups,
-            //    profileUrl: avatarUrl
-            // }
             userList.push(userData);
          }
          return userList;
@@ -121,19 +107,6 @@ export default function Groupprofile(props) {
    async function managerFetchAndAuthorization(group) {
       try {
          let managerData = await fetchUserData(group.managerId);
-         // const avatarUrl = await getUrl(managerData.username);
-         // managerData = {
-         //    username: managerData.username,
-         //    email: managerData.email,
-         //    age: managerData.age,
-         //    zipcode: managerData.zipcode,
-         //    gender: managerData.gender,
-         //    phone: managerData.phone,
-         //    bio: managerData.bio,
-         //    myGroup: managerData.myGroup,
-         //    groups: managerData.groups,
-         //    profileUrl: avatarUrl
-         // }
          setManager(managerData);
          // alert(currentUser.email);//for User check: https://firebase.google.com/docs/reference/js/firebase.User#properties
          if (managerData.email === currentUser.email) {
@@ -310,8 +283,10 @@ export default function Groupprofile(props) {
                {/* group member section */}
                <div id='group-member-list'>
                   <div id='group-manager'>
-                     <img src={manager && manager.profileUrl || profile} alt="manager avatar" />
-                     <p>Group Manager: {manager && manager.username}</p>
+                     <Link to={manager && `/userprofile/${manager.username}` || `/group-profile/${props.match.params.groupId}`} >
+                        <img src={manager && manager.profileUrl || profile} alt="manager avatar" />
+                        <p>Group Manager: {manager && manager.username}</p>
+                     </Link>
                      {isManager ? (<Link to='/edit-group/5eb714c7fcd5921c04761505' >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
                   </div>
 
@@ -320,8 +295,10 @@ export default function Groupprofile(props) {
                      return (
                         <div id={user._id} className='group-members'>
                            <div className='single-group-member'>
-                              <p>{user.username}</p>
-                              <img src={user && user.profileUrl || profile} alt="user avatar" />
+                              <Link to={`/userprofile/${user.username}`} >
+                                 <p>{user.username}</p>
+                                 <img src={user && user.profileUrl || profile} alt="user avatar" />
+                              </Link>
                               <div id='group-members-links'>
                                  <a href='#'>MESSAGE</a>
                                  {isManager && (<a href='#' onClick={() => handleMemberDelete(user._id)}>DELETE</a>)}

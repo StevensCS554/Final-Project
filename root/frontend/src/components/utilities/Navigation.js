@@ -46,7 +46,7 @@ export default function Navigation() {
             {currentUser &&
                (<div id='navbar-link-profile'>
                   <div id='div1'>
-                     <p>Welcome {currentUser.displayName}!</p><Link to='/userprofile/1'><img src={userProfile} /></Link>
+                     <p>Welcome {currentUser.displayName}!</p><Link to={`/userprofile/${currentUser.displayName}`}><img src={userProfile} /></Link>
                   </div>
 
                   <div id='div2'>
