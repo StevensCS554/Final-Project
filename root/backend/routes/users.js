@@ -322,7 +322,6 @@ router.post('/profile/:username', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-<<<<<<< HEAD
    try {
       const users = await usersData.getAllUser();
       res.status(200).json({
@@ -346,18 +345,6 @@ router.get('/getUserByName/:username', async(req, res) => {
          error: e
       })
    }
-=======
-    try {
-        const users = await usersData.getAllUser();
-        res.status(200).json({
-            users: users
-        });
-    } catch (e) {
-        res.status(500).json({
-            error: e
-        })
-    }
->>>>>>> ad78b0c7b6d1b7f31ef6ed5073575d0d3f12bd73
 })
 
 
