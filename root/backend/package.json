@@ -10,9 +10,11 @@
    "author": "Agile Monsters",
    "license": "ISC",
    "dependencies": {
+      "cookie-parser": "^1.4.5",
       "express": "^4.17.1",
       "express-fileupload": "^1.1.7-alpha.3",
       "method-override": "^3.0.0",
+      "express-session": "^1.17.1",
       "mongodb": "^3.5.6"
    },
    "devDependencies": {

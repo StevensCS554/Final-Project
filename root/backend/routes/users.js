@@ -20,70 +20,73 @@ const usersData = data.usersData;
 
 //create
 router.post("/", async (req, res) => {
-    try {
+   console.log(req.session);
+   console.log(req.cookies);
 
-        const username = req.body.username;
-        const email = req.body.email;
-        const age = req.body.age;
-        const zipcode = req.body.zipcode;
-        const gender = req.body.gender;
-        const phone = req.body.phone;
-        const bio = req.body.bio;
+   try {
 
-        //required
-        if (username) {
-            if (typeof username !== 'string') {
-                throw `You Must Provide A username with string type! what you give:${typeof username}`;
-            }
-        } else {
-            throw "You Must Provide A username!";
-        }
-        if (email) {
-            if (typeof email !== 'string') {
-                throw `You Must Provide A email with string type! what you give:${typeof email}`;
-            }
-        } else {
-            throw "You Must Provide A email!";
-        }
-        if (age) {
-            if (isNaN(age)) {
-                throw `You Must Provide A age with number type! what you give:${typeof age}`;
-            }
-        } else {
-            throw "You Must Provide A age!";
-        }
-        if (zipcode) {
-            if (typeof zipcode !== 'string') {
-                throw `You Must Provide A zipcode with string type! what you give:${typeof zipcode}`;
-            }
-        } else {
-            throw "You Must Provide A zipcode!";
-        }
-        if (gender) {
-            if (typeof gender !== 'string') {
-                throw `You Must Provide A gender with string type! what you give:${typeof gender}`;
-            }
-        } else {
-            throw "You Must Provide A gender!";
-        }
-        if (phone) {
-            if (typeof phone !== 'string') {
-                throw `You Must Provide A phone with string type! what you give:${typeof phone}`;
-            }
-        } else {
-            throw "You Must Provide A phone!";
-        }
-        //optional
-        if (bio) {
-            if (typeof bio !== 'string') {
-                throw `You Must Provide A bio with string type! what you give:${typeof bio}`;
-            }
-        }
-        const newUser = await usersData.createUser(username, email, age, zipcode, gender, phone, bio);
-        res.json(newUser);
-    } catch (e) {
-        res.status(500).json(e);
-    }
+      const username = req.body.username;
+      const email = req.body.email;
+      const age = req.body.age;
+      const zipcode = req.body.zipcode;
+      const gender = req.body.gender;
+      const phone = req.body.phone;
+      const bio = req.body.bio;
+
+      //required
+      if (username) {
+         if (typeof username !== 'string') {
+            throw `You Must Provide A username with string type! what you give:${typeof username}`;
+         }
+      } else {
+         throw "You Must Provide A username!";
+      }
+      if (email) {
+         if (typeof email !== 'string') {
+            throw `You Must Provide A email with string type! what you give:${typeof email}`;
+         }
+      } else {
+         throw "You Must Provide A email!";
+      }
+      if (age) {
+         if (isNaN(age)) {
+            throw `You Must Provide A age with number type! what you give:${typeof age}`;
+         }
+      } else {
+         throw "You Must Provide A age!";
+      }
+      if (zipcode) {
+         if (typeof zipcode !== 'string') {
+            throw `You Must Provide A zipcode with string type! what you give:${typeof zipcode}`;
+         }
+      } else {
+         throw "You Must Provide A zipcode!";
+      }
+      if (gender) {
+         if (typeof gender !== 'string') {
+            throw `You Must Provide A gender with string type! what you give:${typeof gender}`;
+         }
+      } else {
+         throw "You Must Provide A gender!";
+      }
+      if (phone) {
+         if (typeof phone !== 'string') {
+            throw `You Must Provide A phone with string type! what you give:${typeof phone}`;
+         }
+      } else {
+         throw "You Must Provide A phone!";
+      }
+      //optional
+      if (bio) {
+         if (typeof bio !== 'string') {
+            throw `You Must Provide A bio with string type! what you give:${typeof bio}`;
+         }
+      }
+      const newUser = await usersData.createUser(username, email, age, zipcode, gender, phone, bio);
+      res.json(newUser);
+   } catch (e) {
+      res.status(500).json(e);
+   }
 });
 
 router.get("/:newUsername", async (req, res) => {
@@ -255,19 +258,20 @@ router.post('/upload', async (req, res) => {
     });
 });
 
+// Get groups user in
 router.get('/groups/:username', async (req, res) => {
-    console.log(req.params.username);
-    try {
-        const groups = await usersData.getUserGroup(req.params.username);
-        res.status(200).json({
-            groups: groups
-        })
-    } catch (e) {
-        console.log(e);
-        res.status(502).json({
-            error: e
-        })
-    }
+   console.log('df' + req.params.username);
+   try {
+      const groups = await usersData.getUserGroup(req.params.username);
+      res.status(200).json({
+         groups: groups
+      })
+   } catch (e) {
+      console.log('groups' + e);
+      res.status(502).json({
+         error: e
+      })
+   }
 });
 
 router.get('/profile/:username', async (req, res) => {
@@ -295,6 +299,19 @@ router.post('/profile/:username', async (req, res) => {
         })
     }
 });
+
+router.get('/', async (req, res) => {
+   try {
+      const users = await usersData.getAllUser();
+      res.status(200).json({
+         users: users
+      });
+   } catch (e) {
+      res.status(500).json({
+         error: e
+      })
+   }
+})
 
 
 //-----------------------------------check--------------------------------------

@@ -3,7 +3,6 @@ const groups = mongoCollections.groups;
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 // const ObjectID = require('mongodb').ObjectID;
-const userData = require('./users');
 // const middleware = require("../middleware");
 
 //get all the group
@@ -31,6 +30,7 @@ async function getById(id) {
 };
 
 async function creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGroupNo, zipcode, managerId) {
+   const userData = require('./users');
    try {
       const newGroup = {
          groupName: groupName,
@@ -47,6 +47,13 @@ async function creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGro
       const groupsCollection = await groups();
       const insertedGroup = await groupsCollection.insertOne(newGroup);
       // if(insertedGroup.id)
+      const userCollection = await users();
+      managerId = checkId(managerId);
+      const groupId = checkId(insertedGroup.insertedId);
+      const updateInfo = await userCollection.updateOne(
+         {_id: managerId},
+         {$set: {myGroup: groupId}}
+      )
       return newGroup;
    } catch (e) {
       throw `` + e;

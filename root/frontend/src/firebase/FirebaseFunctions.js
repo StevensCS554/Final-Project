@@ -2,8 +2,8 @@ import firebase from 'firebase/app';
 // Reference from lecture code 
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
-	await firebase.auth().createUserWithEmailAndPassword(email, password);
-	firebase.auth().currentUser.updateProfile({ displayName: displayName });
+   await firebase.auth().createUserWithEmailAndPassword(email, password);
+	firebase.auth().currentUser.updateProfile({ displayName: displayName, isLoggedIn: false });
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {

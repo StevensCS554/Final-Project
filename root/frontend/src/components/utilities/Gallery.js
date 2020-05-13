@@ -11,39 +11,51 @@ export default function Gallery(props) {
    const [user, setUser] = useState(props.user);
    const [userGroups, setUserGroups] = useState(undefined);
    const [userOwnGroup, setUserOwnGroup] = useState(null);
+   const [ownGroupId, setOwnGroupId] = useState(null);
    const [userProfile, setUserProfile] = useState(null);
 
    let li = null;
 
    useEffect(() => {
       async function getUrl() {
-         try {
-            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
-            const { url } = data;
-            setUserProfile(url);
-         } catch (e) {
-            alert(e);
+         if (currentUser && currentUser.displayName) {
+            try {
+               const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+               const { url } = data;
+               setUserProfile(url);
+            } catch (e) {
+               alert(`get url` + e);
+            }
          }
-      }
+      };
       getUrl();
       getGroups();
+      getUserGroup();
    }, []);
 
    const getGroups = async () => {
-      try {
-         const { data } = await axios.get(`http://localhost:4000/users/groups/${user.displayName}`);
-         const { groups } = data;
-         setUserGroups(groups);
-      } catch (e) {
-         console.log(e);
+      if (user && user.displayName) {
+         try {
+            const { data } = await axios.get(`http://localhost:4000/users/groups/${user.displayName}`);
+            const { groups } = data;
+            setUserGroups(groups);
+         } catch (e) {
+            alert('get groups' + e);
+         }
       }
    }
 
    const getUserGroup = async () => {
-      try {
-         const { data } = await axios.get(`http://localhost:4000/`)
-      } catch (e) {
-         console.log(e);
+      if (user && user.displayName) {
+         try {
+            const { data } = await axios.get(`http://localhost:4000/groups/group/${user.displayName}`);
+            console.log(data);
+            const { groupName, groupId } = data;
+            setUserOwnGroup(groupName);
+            setOwnGroupId(groupId);
+         } catch (e) {
+            alert('get user group' + e);
+         }
       }
    }
 
@@ -85,13 +97,13 @@ export default function Gallery(props) {
                      {user && (
                         <div id='explore-gallery-sidebar-usergroup'>
                            <button onClick={() => handleToggle3()} className='click-to-reveal'>MY GROUP</button>
-                           {userGroup && (
+                           {userOwnGroup && (
                               <div style={{ display: 'none' }} ref={toggle3Ref}>
                                  <p>Manage Your Group</p>
-                                 <p>User Group</p>
+                                 <Link to={`/group-profile/${ownGroupId}`}>{userOwnGroup}</Link>
                               </div>
                            )}
-                           {!userGroup && (
+                           {!userOwnGroup && (
                               <div style={{ display: 'none' }} ref={toggle3Ref}>
                                  <p>You don't have a group yet!</p>
                                  <Link to='/create-group/1'><button className='standard-btn'>CREATE YOUR OWN GROUP</button></Link>

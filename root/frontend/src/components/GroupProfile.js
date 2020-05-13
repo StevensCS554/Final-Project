@@ -10,11 +10,13 @@ import axios from 'axios';
 
 export default function Groupprofile(props) {
    const { currentUser } = useContext(AuthContext);
+   
    const [groupData, setGroupData] = useState(undefined);
    const [isManager, setIsManager] = useState(false);
    const [isMember, setIsMember] = useState(false);
    const [manager, setManager] = useState(undefined);
    const [memberList, setMemberList] = useState(undefined);
+   const [userProfile, setUserProfile] = useState(null);
    // const [error, setError] = useState(undefined);
 
    useEffect(() => {
@@ -27,8 +29,8 @@ export default function Groupprofile(props) {
             setMemberList(users);
 
             await managerAuthorization(group);
-
             await membershipAuthorization(group);
+            await getUrl();
          } catch (e) {
             alert(e);
          }
@@ -36,6 +38,17 @@ export default function Groupprofile(props) {
       groupProfile();
    }, [props.match.params.groupId, currentUser, isMember]
    );
+
+   async function getUrl() {
+      try {
+         const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+         const { url } = data;
+         setUserProfile(url);
+      } catch (e) {
+         alert(e);
+      }
+   }
+
 
    //get the group by groupId in the path.
    async function fetchGroupData() {
@@ -278,7 +291,7 @@ export default function Groupprofile(props) {
                {/* group member section */}
                <div id='group-member-list'>
                   <div id='group-manager'>
-                     <img src={profile} />
+                     <img src={userProfile} />
                      <p>Group Manager: {manager && manager.username}</p>
                      {isManager ? (<Link to='/edit-group/:userId' >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
                   </div>

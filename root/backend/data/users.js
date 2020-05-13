@@ -3,7 +3,6 @@ const mongoCollections = require("../config/mongoCollections");
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 
-
 async function createUser(username, email, age, zipcode, gender, phone, bio) {
    const addUser = {
       username: username,
@@ -139,7 +138,7 @@ async function getAllUser() {
       throw 'No users!';
    return res;
 }
-
+// Get groups user in
 async function getUserGroup(username) {
    const groupData = require('./index').groupsData; // why the fuck ???
    const user = await readUserByName(username);
@@ -160,8 +159,14 @@ async function getUserGroup(username) {
    return res;
 }
 
-async function getUserOwnGroup() {
+async function getUserOwnGroup(username) {
+   const user = await readUserByName(username);
+   if (user.myGroup === null)
+      return null;
 
+   const groupData = require('./groups');
+   const group = await groupData.getById(user.myGroup);
+   return group;
 }
 
 async function addUserProfile(username, url) {
@@ -209,4 +214,7 @@ function checkId(id) {
    else throw "Input Can't Be An Id!"
 }
 
-module.exports = { createUser, readUser, readUserByName, updateUser, readUserByEmail, removeGroup, addGroup, deleteUser, getAllUser, getUserGroup, getUserProfileUrl, addUserProfile, updateUserProfile }
+module.exports = { createUser, readUser, readUserByName, 
+   updateUser, readUserByEmail, removeGroup, addGroup, deleteUser,
+    getAllUser, getUserGroup, getUserProfileUrl, addUserProfile,
+     updateUserProfile,getUserOwnGroup };
