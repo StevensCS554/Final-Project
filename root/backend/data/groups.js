@@ -205,7 +205,7 @@ async function createPost(groupId, username, content, time) {
       throw 'Invalid username or content!!';
    const userData = require('./users');
    groupId = checkId(groupId);
-   const user = await userData.getUserByUserName(username);
+   const user = await userData.readUserByName(username);
    if (user === undefined)
       throw 'Invalid user !!!';
 
@@ -224,6 +224,25 @@ async function createPost(groupId, username, content, time) {
    if (!updateInfo)
       throw "Can't add post!";
    return newPost;
+}
+
+async function deletePost(groupId, postId) {
+   try {
+      groupId = checkId(groupId);
+      postId = checkId(postId);
+      const groupsCollection = await groups();
+      // const group = await groupsCollection.findOne({ _id: groupId });
+      const group = await groupsCollection.updateOne(
+         { _id: groupId },
+         { $pull: { posts: { _id : postId}} }
+      );
+      if (group === null)
+         throw 'Invalid group !!!';
+      return;
+   } catch (e) {
+      throw e;
+   }
+
 }
 
 async function getPosts(groupId) {
@@ -273,6 +292,6 @@ function checkId(id) {
 
 module.exports = {
    getAll, getById, creatGroup, updateGroup, deleteGroupById,
-   createPost, getPosts, deleteMember, joinGroup, getCertainLocalGroups,
+   createPost, getPosts, deletePost, deleteMember, joinGroup, getCertainLocalGroups,
    getAllLocalGroups, addGroupProfile, getGroupByManager
 };

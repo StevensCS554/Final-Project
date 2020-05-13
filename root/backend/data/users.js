@@ -77,7 +77,7 @@ async function removeGroup(userId, groupId) {
 
    const usersCollection = await users();
    const updatedUser = await usersCollection.updateOne({ _id: checkedUserId }, { $pull: { groups: checkedGroupId.toString() } });
-   if (updatedUser.modifiedCount === 0) throw "Can't Remove Comment with ID: " + checkedGroupId;
+   if (updatedUser.modifiedCount === 0) throw `Can't Remove group:${checkedGroupId} from user:${checkedUserId} in removeGroup mongodb function`;
    return await readUser(checkedUserId);
 }
 
@@ -125,7 +125,7 @@ async function deleteUser(userId) {
    const usersCollection = await users();
 
    const deleteUser = await usersCollection.deleteOne({ _id: checkedId });
-   if (!deleteUser.result) throw "Can't Delete Comment with ID: " + checkedId;
+   if (!deleteUser.result) throw "Can't Delete user with ID: " + checkedId;
    return true;
 }
 

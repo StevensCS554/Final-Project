@@ -166,6 +166,28 @@ router.delete("/:id", async (req, res) => {
    }
 })
 
+//add post to the group
+router.post('/post/:groupId', async (req, res) => {
+   try {
+      let groupId = req.params.groupId;
+      const username = req.body.username;
+      const content = req.body.content;
+      const time = req.body.time;
+
+      // error check
+      groupId = checkId(groupId);
+      if (content) {
+         if (typeof content !== 'string') {
+            throw `You Must Provide A content with string type! what you give:${typeof content}`;
+         }
+      }
+
+      const postResult = await groupsData.createPost(groupId, username, content, time);
+      res.status(200).json(postResult);
+   } catch (e) {
+      res.status(500).json(e);
+   }
+})
 // -----------------------Posts Section Added by Kuan -------------------
 // Add a user to a group
 router.post('/:groupId/:userId', async (req, res) => {
@@ -193,7 +215,22 @@ router.delete('/:groupId/:userId', async (req, res) => {
 
       const group = await groupsData.deleteMember(groupId, userId);
       res.status(200).json(group);
-   } catch(e) {
+   } catch (e) {
+      res.status(500).json(e);
+   }
+})
+
+//delete an post from group
+router.delete('/post/:groupId/:postId', async (req, res)=>{
+   try {
+      let groupId = req.params.groupId;
+      let postId = req.params.postId;
+      groupId = checkId(groupId);
+      postId = checkId(postId);
+      
+      const group = await groupsData.deletePost(groupId, postId);
+      res.status(200).json(group);
+   } catch (e) {
       res.status(500).json(e);
    }
 })

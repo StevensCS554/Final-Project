@@ -28,9 +28,8 @@ export default function Groupprofile(props) {
             const users = await fetchAllMeberData(group);
             setMemberList(users);
 
-            await managerAuthorization(group);
+            await managerFetchAndAuthorization(group);
             await membershipAuthorization(group);
-            await getUrl();
          } catch (e) {
             alert(e);
          }
@@ -38,14 +37,14 @@ export default function Groupprofile(props) {
       groupProfile();
    }, [props.match.params.groupId, currentUser, isMember]
    );
-   
-   async function getUrl() {
+
+   async function getUrl(username) {
       try {
-         const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+         const { data } = await axios.get(`http://localhost:4000/users/profile/${username}`)
          const { url } = data;
-         setUserProfile(url);
+         return url;
       } catch (e) {
-         alert(e);
+         alert(e.error);
       }
    }
 
@@ -61,7 +60,7 @@ export default function Groupprofile(props) {
          });
          //error handle! 
          //fetch function: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-         if (!group.ok) 
+         if (!group.ok)
             throw `error in group info fetching`;
          return await group.json();
       } catch (e) {
@@ -96,7 +95,20 @@ export default function Groupprofile(props) {
          const userList = [];
          // alert(group.users.length);
          for (const userId of group.users) {
-            const userData = await fetchUserData(userId);
+            let userData = await fetchUserData(userId);
+            // const avatarUrl = await getUrl(userData.username);
+            // userData = {
+            //    username: userData.username,
+            //    email: userData.email,
+            //    age: userData.age,
+            //    zipcode: userData.zipcode,
+            //    gender: userData.gender,
+            //    phone: userData.phone,
+            //    bio: userData.bio,
+            //    myGroup: userData.myGroup,
+            //    groups: userData.groups,
+            //    profileUrl: avatarUrl
+            // }
             userList.push(userData);
          }
          return userList;
@@ -106,9 +118,22 @@ export default function Groupprofile(props) {
    }
 
    //Authorization the current user for the manager role
-   async function managerAuthorization(group) {
+   async function managerFetchAndAuthorization(group) {
       try {
-         const managerData = await fetchUserData(group.managerId);
+         let managerData = await fetchUserData(group.managerId);
+         // const avatarUrl = await getUrl(managerData.username);
+         // managerData = {
+         //    username: managerData.username,
+         //    email: managerData.email,
+         //    age: managerData.age,
+         //    zipcode: managerData.zipcode,
+         //    gender: managerData.gender,
+         //    phone: managerData.phone,
+         //    bio: managerData.bio,
+         //    myGroup: managerData.myGroup,
+         //    groups: managerData.groups,
+         //    profileUrl: avatarUrl
+         // }
          setManager(managerData);
          // alert(currentUser.email);//for User check: https://firebase.google.com/docs/reference/js/firebase.User#properties
          if (managerData.email === currentUser.email) {
@@ -138,11 +163,11 @@ export default function Groupprofile(props) {
 
    //creat an new post in group
    async function handleCreatPost(e) {
-      alert("handleCreatPost");
+      e.preventDefault();
       try {
          const { postContent } = e.target.elements;
-         const time = Date.now();
-         const Result = await fetch(`http://localhost:4000/groups/${groupData._id}/post/`, {
+         const time = new Date().toUTCString();
+         const Result = await fetch(`http://localhost:4000/groups/post/${groupData._id}`, {
             method: "POST",
             headers: {
                'Content-Type': 'application/json'
@@ -154,35 +179,38 @@ export default function Groupprofile(props) {
             })
          });
          //error handle! 
-         if (Result.ok === false) {
-            throw `fail to create post`
+         if (!Result.ok) {
+            throw `fail to create post! status:${Result.status}, statusText:${Result.statusText} message: ${await Result.json().then((error) => {
+               return error;
+            })}`
          }
          //TODO: refresh:
          window.location.reload();
          return;
       } catch (e) {
-         throw e;
+         alert(`-error: ${e}`);
       }
    }
 
    //delete the post in group
    async function handleDeletePost(postId) {
-      alert("handleDeletePost" + postId);
       try {
-         const Result = await fetch(`http://localhost:4000/groups/${groupData._id}/post/${postId}`, {
+         const Result = await fetch(`http://localhost:4000/groups/post/${groupData._id}/${postId}`, {
             method: "DELETE",
             headers: {
                'Content-Type': 'application/json'
             }
          });
          //error handle! 
-         if (Result.ok === false) {
-            throw `fail to delete Post`
+         if (!Result.ok) {
+            throw `fail to delete post! status:${Result.status}, statusText:${Result.statusText} message: ${await Result.json().then((error) => {
+               return error;
+            })}`
          }
          document.getElementById(postId).style.display = "none";
          return;
       } catch (e) {
-         throw e;
+         alert(`-error: ${e}`);
       }
    }
 
@@ -243,7 +271,7 @@ export default function Groupprofile(props) {
          const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${userId}`, {
             method: 'DELETE',
             headers: {
-                'Content-Type': 'application/json'
+               'Content-Type': 'application/json'
             }
          });
          //error handle! 
@@ -252,11 +280,6 @@ export default function Groupprofile(props) {
                return error;
             })}`
          }
-         // const groupResult = await axios({//https://www.npmjs.com/package/axios#response-schema
-         //    method: 'DELETE',
-         //    url: `http://localhost:4000/groups/${groupData._id}/${userId}`
-         // });
-         // alert(`deleted user from group`);
 
          const userResult = await fetch(`http://localhost:4000/users/${userId}/${groupData._id}`, {
             method: "DELETE",
@@ -287,7 +310,7 @@ export default function Groupprofile(props) {
                {/* group member section */}
                <div id='group-member-list'>
                   <div id='group-manager'>
-                     <img src={userProfile} alt="manager avatar"/>
+                     <img src={manager && manager.profileUrl || profile} alt="manager avatar" />
                      <p>Group Manager: {manager && manager.username}</p>
                      {isManager ? (<Link to='/edit-group/5eb714c7fcd5921c04761505' >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
                   </div>
@@ -298,7 +321,7 @@ export default function Groupprofile(props) {
                         <div id={user._id} className='group-members'>
                            <div className='single-group-member'>
                               <p>{user.username}</p>
-                              <img src={profile} />
+                              <img src={user && user.profileUrl || profile} alt="user avatar" />
                               <div id='group-members-links'>
                                  <a href='#'>MESSAGE</a>
                                  {isManager && (<a href='#' onClick={() => handleMemberDelete(user._id)}>DELETE</a>)}
@@ -315,7 +338,7 @@ export default function Groupprofile(props) {
                   {/* group info section */}
                   <div id='group-info-container'>
                      <div id='group-info-pic'>
-                        <img src={defaultGroup} />
+                        <img src={groupData && groupData.profileUrl || defaultGroup} alt="group avatar" />
                      </div>
                      <div id='group-info-name'>
                         <p>Group Name: {groupData && groupData.groupName}</p>
@@ -338,7 +361,8 @@ export default function Groupprofile(props) {
                            return (
                               <div className='single-posts' id={post._id}>
                                  <div id='group-info-posts-header'>
-                                    <p>{post.time} + {post.username}</p>
+                                    <span className=""> Time:{post.time} </span>
+                                    <span className=""> Post by:{post.username} </span>
                                  </div>
                                  <div id='group-info-posts-content'>
                                     <p>{post.content}</p>
@@ -351,8 +375,7 @@ export default function Groupprofile(props) {
                   </div>
 
                   {
-                     (isManager || isMember) &&
-                     (
+                     (isManager || isMember) && (
                         <form onSubmit={handleCreatPost}>
                            <div id='group-info-posts-area'>
                               <label htmlFor='post-area'>Write Something...</label>
@@ -360,17 +383,24 @@ export default function Groupprofile(props) {
 
                               <button className='standard-btn' type='submit' >CREATE POST</button>
                            </div>
-                        </form>
-                     )
+                        </form>)
                   }
 
                </div>
             </div>
 
-            {(!isManager && !isMember) && (
-               <div id='join-group'>
-                  <button className='standard-btn' onClick={() => handleJoinGroup(currentUser.email)}>JOIN GROUP</button>
-               </div>)}
+            {
+               (!isManager && !isMember) && (
+                  <div id='join-group'>
+                     <button className='standard-btn' onClick={() => handleJoinGroup(currentUser.email)}>JOIN GROUP</button>
+                  </div>)
+            }
+            {
+               (isManager || isMember) && (
+                  <div id='leave-group'>
+                     <button className='standard-btn' onClick={() => alert(`are you sure? please contact the manager by message button`)}>LEAVE GROUP</button>
+                  </div>)
+            }
 
          </div>
          <Footer />
