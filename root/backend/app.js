@@ -7,8 +7,8 @@ app.use(express.json());
 // file upload 
 app.use(fileUpload());
 
-// const configMiddleware = require("./middleware");
-// configMiddleware(app);
+const configMiddleware = require("./middleware");
+configMiddleware(app);
 
 const configRoute = require("./routes");
 configRoute(app);

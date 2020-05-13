@@ -145,7 +145,7 @@ async function deleteMember(groupId, userId) {
       const groupcollection = await groups();
       const updateInfo = await groupcollection.updateOne(
          { _id: groupId },
-         { $pull: { user: userId.toString() } }
+         { $pull: { users: userId.toString() } }
       );
       if (!updateInfo)
          throw 'Can\'t delete user!';
@@ -198,7 +198,11 @@ function checkId(id) {
       return id;
    }
    else if (typeof id == "string") {
-      return ObjectId(id);
+      if (ObjectId.isValid(id))
+         return ObjectId(id);
+      else {
+         throw `not valid id: ${id}`
+      }
    }
    else throw "Input Can't Be An Id!"
 }

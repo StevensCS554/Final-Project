@@ -5,6 +5,7 @@ import profile from '../images/team-bg.jpeg';
 import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
 import { AuthContext } from '../firebase/Auth';
+import axios from 'axios';
 // import Error from './utilities/Error';//404 component!
 
 export default function Groupprofile(props) {
@@ -17,7 +18,7 @@ export default function Groupprofile(props) {
    // const [error, setError] = useState(undefined);
 
    useEffect(() => {
-      async function groupProfile(){
+      async function groupProfile() {
          try {
             const group = await fetchGroupData();
             setGroupData(group);// not update immidately
@@ -33,7 +34,7 @@ export default function Groupprofile(props) {
          }
       }
       groupProfile();
-   }, [props.match.params.groupId, currentUser]
+   }, [props.match.params.groupId, currentUser, isMember]
    );
 
    //get the group by groupId in the path.
@@ -188,20 +189,20 @@ export default function Groupprofile(props) {
          }
          user = await user.json();
 
-         const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${user._id}?_method=PUT`, {
+         const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${user._id}`, {
             method: "POST",
             headers: {
                'Content-Type': 'application/json'
             }
          });
          //error handle! 
-         if (groupResult.ok == false) {
-            throw `fail to add user to group ${await groupResult.json().then((error) => {
+         if (!groupResult.ok) {
+            throw `Fail to add user to group! status:${groupResult.status}, statusText:${groupResult.statusText} message:${await groupResult.json().then((error) => {
                return error.error;
             })}`
          }
-         //already did in the groupResult fetch route's function!
-         //redundancy:
+
+         //already did in the groupResult fetch route's function!         //redundancy:
          // const userResult = await fetch(`http://localhost:4000/users/${user._id}/${groupData._id}`, {
          //    method: "POST",
          //    headers: {
@@ -224,19 +225,26 @@ export default function Groupprofile(props) {
    //remove member from group
    async function handleMemberDelete(userId) {
       try {
-         alert("handleMemberDelete " + groupData._id + " " + userId);
-         const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${userId}`, {
-            method: "DELETE",
-            headers: {
-               'Content-Type': 'application/json'
-            }
+         alert("handleMemberDelete groupData._id: " + `http://localhost:4000/groups/${groupData._id}/${userId}`);
+         // const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${userId}`, {
+         //    method: 'DELETE',
+         //    headers: {
+         //        'Content-Type': 'application/json'
+         //    }
+         // });
+         // //error handle! 
+         // if (groupResult.ok == false) {
+         //    throw `fail to delete user from group! status:${groupResult.status}, statusText:${groupResult.statusText} message: ${await groupResult.json().then((error) => {
+         //       return error;
+         //    })}`
+         // }
+         const groupResult = await axios({//https://www.npmjs.com/package/axios#response-schema
+            method: 'delete',
+            url: `http://localhost:4000/groups/${groupData._id}/${userId}`
          });
          //error handle! 
-         if (groupResult.ok == false) {
-            throw `fail to delete user from group ${await groupResult.json().then((error) => {
-               return error;
-            })}`
-         }
+         // if()
+         console.log(groupResult.data)
          alert(`deleted user from group`);
 
          const userResult = await fetch(`http://localhost:4000/users/${userId}/${groupData._id}`, {
@@ -254,6 +262,7 @@ export default function Groupprofile(props) {
          alert(`deleted group from user`);
 
          document.getElementById(userId).style.display = "none";
+
          return;
       } catch (e) {
          alert(`error-error: ${e}`);

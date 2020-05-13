@@ -152,7 +152,6 @@ router.put("/:id", async (req, res) => {
 //delete the group
 router.delete("/:id", async (req, res) => {
    try {
-
       const id = req.params.id;
       const checkedId = checkId(id);
 
@@ -171,9 +170,10 @@ router.delete("/:id", async (req, res) => {
 
 // -----------------------Posts Section Added by Kuan -------------------
 // Add a user to a group
-router.put('/:groupId/:userId', async (req, res) => {
+router.post('/:groupId/:userId', async (req, res) => {
    let groupId = req.params.groupId;
    let userId = req.params.userId;
+   console.log("Adding a user to a group "+ groupId+ ` ` + userId);
    try {
       groupId = checkId(groupId);
       userId = checkId(userId);
@@ -195,7 +195,7 @@ router.delete('/:groupId/:userId', async (req, res) => {
       groupId = checkId(groupId);
       userId = checkId(userId);
 
-      const group = await groupsData.deleteMember(userId, groupId);
+      const group = await groupsData.deleteMember(groupId, userId);
       res.status(200).json(group);
    } catch(e) {
       res.status(500).json(e);
