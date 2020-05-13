@@ -4,6 +4,7 @@ const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 // const ObjectID = require('mongodb').ObjectID;
 // const middleware = require("../middleware");
+const userData = require('./users');
 
 //get all the group
 async function getAll() {
@@ -128,13 +129,12 @@ async function joinGroup(userId, groupId) {
       const groupcollection = await groups();
       const updateInfo = await groupcollection.updateOne(
          { _id: groupId },
-         { $push: { users: userId.toString() } }
+         { $addToSet: { users: userId.toString() } }
       );
       const userCollection = await users();
-
       const updateInfo2 = await userCollection.updateOne(
          { _id: userId },
-         { $push: { groups: groupId.toString() } }
+         { $addToSet: { groups: groupId.toString() } }
       );
       if (!updateInfo || !updateInfo2)
          throw 'Can\'t join in!'
