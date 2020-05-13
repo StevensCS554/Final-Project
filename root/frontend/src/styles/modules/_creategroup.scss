@@ -4,18 +4,32 @@
    &-container {
       display: flex;
       width: 80%;
-      min-height: 60%;
+      max-height: 60%;
       margin: 4rem auto;
       margin-bottom: 4rem;
       box-shadow: 2px 2px 2px 2px;
+      #setting-input1 {
+         margin-top: 0.5rem;
+         margin-bottom: 0.5rem;
+      }
+
+      #form1 {
+         flex: 1;
+         min-height: 100%;
+         img {
+            width: 95%;
+            height: 20rem;
+            box-shadow: 2px 2px;
+         }
+      }
    }
 
    &-profile {
       flex: 1;
       text-align: center;
       img {
-         width: 95%;
-         height: 80%;
+         max-width: 95%;
+         max-height: 80%;
          box-shadow: 2px 2px;
       }
       button {

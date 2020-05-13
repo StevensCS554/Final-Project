@@ -20,7 +20,7 @@ async function getAll() {
 //get a group by id
 async function getById(id) {
    try {
-      checkId(id);
+      id = checkId(id);
       const groupsCollection = await groups();
       const group = await groupsCollection.findOne({ _id: id });
       if (group == null) throw `can not find the group with id: ${id}`;
@@ -273,6 +273,16 @@ async function getGroupByManager(managerId) {
    return group;
 }
 
+async function updateGroupProfile(groupId, url) {
+   const groupsCollection = await groups();
+   const updateInfo = await groupsCollection.updateOne(
+      {_id: groupId},
+      {$set: {groupProfileUrl: url}}
+   );
+   if (!updateInfo)
+      throw 'Can\t update group profile！';
+}
+
 //-----------------------------------check--------------------------------------
 
 function checkId(id) {
@@ -293,5 +303,5 @@ function checkId(id) {
 module.exports = {
    getAll, getById, creatGroup, updateGroup, deleteGroupById,
    createPost, getPosts, deletePost, deleteMember, joinGroup, getCertainLocalGroups,
-   getAllLocalGroups, addGroupProfile, getGroupByManager
+   getAllLocalGroups, addGroupProfile, getGroupByManager,updateGroupProfile
 };

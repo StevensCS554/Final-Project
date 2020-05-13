@@ -204,6 +204,7 @@ export default function Gallery(props) {
                         </Link>
                      )
                   })}
+              
                </div>
 
                <div id='gallery-btn-area' style={{ textAlign: 'center' }}>

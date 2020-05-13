@@ -205,6 +205,19 @@ router.post('/:groupId/:userId', async (req, res) => {
    }
 })
 
+router.put('/profile/:groupId', async(req, res) => {
+   try {
+      await groupsData.addGroupProfile(req.params.groupId, req.body.url);
+      res.status(200).json({
+         msg: "success"
+      })
+   } catch(e) {
+      res.status(501).json({
+         msg: e
+      })
+   }
+})
+
 // delete a user from a group
 router.delete('/:groupId/:userId', async (req, res) => {
    try {
@@ -294,7 +307,6 @@ router.get('/local-groups/:zipcode', async(req, res) => {
 
 router.get('/manager/:managerId', async(req, res) => {
    try {
-      console.log(req.params);
       const group = await groupsData.getGroupByManager(req.params.managerId);
       res.status(200).json({
          group: group
@@ -306,6 +318,7 @@ router.get('/manager/:managerId', async(req, res) => {
       })
    }
 });
+
 
 //-----------------------------------check--------------------------------------
 //helper

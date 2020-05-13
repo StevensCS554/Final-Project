@@ -136,7 +136,7 @@ export default function Groupprofile(props) {
          // }
          setManager(managerData);
          // alert(currentUser.email);//for User check: https://firebase.google.com/docs/reference/js/firebase.User#properties
-         if (managerData.email === currentUser.email) {
+         if (managerData.username === currentUser.displayName) {
             setIsManager(true);
          }
       } catch (e) {
@@ -312,33 +312,32 @@ export default function Groupprofile(props) {
                   <div id='group-manager'>
                      <img src={manager && manager.profileUrl || profile} alt="manager avatar" />
                      <p>Group Manager: {manager && manager.username}</p>
-                     {isManager ? (<Link to='/edit-group/5eb714c7fcd5921c04761505' >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
+                     {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
                   </div>
 
                   {/* group member list*/}
-                  {memberList && memberList.map((user) => {
-                     return (
-                        <div id={user._id} className='group-members'>
-                           <div className='single-group-member'>
+                  <div className='group-members'>
+                     {memberList && memberList.map((user) => {
+                        return (
+                           <div id={user._id} className='single-group-member'>
                               <p>{user.username}</p>
                               <img src={user && user.profileUrl || profile} alt="user avatar" />
                               <div id='group-members-links'>
-                                 <a href='#'>MESSAGE</a>
+                                 {/* <a href='#'>MESSAGE</a> */}
                                  {isManager && (<a href='#' onClick={() => handleMemberDelete(user._id)}>DELETE</a>)}
                               </div>
                            </div>
-                        </div>
-                     );
-                  })
-                  }
-
+                        );
+                     })
+                     }
+                  </div>
                </div>
 
                <div id='group-info'>
                   {/* group info section */}
                   <div id='group-info-container'>
                      <div id='group-info-pic'>
-                        <img src={groupData && groupData.profileUrl || defaultGroup} alt="group avatar" />
+                        <img src={groupData && groupData.groupProfileUrl || defaultGroup} alt="group avatar" />
                      </div>
                      <div id='group-info-name'>
                         <p>Group Name: {groupData && groupData.groupName}</p>

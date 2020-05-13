@@ -5,11 +5,11 @@
 }
 
 #profile-form {
-   max-width: 38.2rem;
+   max-width: 60%;
    margin: auto;
    display: flex;
    min-height: 70vh;
-   margin-bottom: 3rem;
+   margin-bottom: 1rem;
    box-shadow: 2px 2px 3px 3px;
 
    &-pic {
@@ -50,13 +50,18 @@
       input {
          width: 95%;
       }
-      button {
-         width: 90%;
-         margin-left: 1rem;
-         margin-top: 0.8rem;
-         margin-bottom: 0.5rem;
-      }
+      
    }
+}
+
+#user-form-btn {
+   width: 50%;
+   margin-left: 1rem;
+   margin-top: 0.8rem;
+   margin-bottom: 3rem;
+}
+#form-btn {
+   text-align: center;
 }
 
 .form-group {

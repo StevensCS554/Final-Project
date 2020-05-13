@@ -3,7 +3,6 @@ import axios from 'axios';
 import { storage } from '../firebase/Firebase';
 import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
-import defaultGroup from '../images/group-bg.jpg';
 
 export default function GroupSetting(props) {
    const [groupProfile, setGroupProfile] = useState(null);
@@ -16,12 +15,13 @@ export default function GroupSetting(props) {
             const { data } = await axios.get(`http://localhost:4000/groups/manager/${props.match.params.userId}`);
             const { group } = data;
             setGroup(group);
+            setProfileUrl(group.groupProfileUrl);
          } catch (e) {
             alert(e);
          }
       }
       getGroup();
-   }, [])
+   }, [profileUrl])
 
    const uploadFile = (e) => {
       setGroupProfile(e.target.files[0]);
@@ -41,7 +41,7 @@ export default function GroupSetting(props) {
             storage.ref('images').child(newName).getDownloadURL().then(async url => {
                setProfileUrl(url);
                try {
-                  await axios.post(`http://localhost:4000/users/profile/`,
+                  await axios.put(`http://localhost:4000/groups/profile/${group._id}`,
                      { url: url });
                } catch (e) {
                   alert(e);
@@ -57,24 +57,24 @@ export default function GroupSetting(props) {
          {group && (
             <div id='create-group'>
                <div id='create-group-container'>
-                  <form onSubmit={submitForm1}>
+                  <form id='form1' onSubmit={submitForm1}>
                      <div id='create-group-profile'>
-                        <img src={group.groupProfileUrl} />
-                        <input type='file' onChange={uploadFile} />
+                        <img src={profileUrl} />
+                        <input id='setting-input1' type='file' onChange={uploadFile} />
                         <label htmlFor='userprofile' />
-                        <input className='standard-btn' type='submit' value='CHANGE AVATAR' />
+                        <input id='setting-input2' className='standard-btn' type='submit' value='CHANGE AVATAR' />
                      </div>
                   </form>
                   <div id='create-group-form'>
                      <form>
                         <div className='single-input'>
                            <label for='groupName'>Group Name</label>
-                           <input type='text' name='groupName' id='groupName' />
+                           <input type='text' name='groupName' id='groupName' placeholder={group && group.groupName} />
                         </div>
 
                         <div className='single-input'>
                            <label for='groupNotice'>Group Notice</label>
-                           <input type='text' name='groupNotice' id='groupNotice' />
+                           <input type='text' name='groupNotice' id='groupNotice' placeholder={group && group.groupNotice} />
                         </div>
                         <p>Group Limitations</p>
                         <div className='energy-bar'></div>
@@ -82,26 +82,26 @@ export default function GroupSetting(props) {
                            <div id='age-limitations'>
                               <div id='p1'>
                                  <label htmlFor='maxAge'>Max Age</label>
-                                 <input type='number' id='maxAge' name='maxAge' />
+                                 <input type='number' id='maxAge' name='maxAge' placeholder={group && group.maxAge} />
                               </div>
                               <div id='p2'>
                                  <label htmlFor='minAge'>Min Age</label>
-                                 <input type='number' id='minAge' name='minAge' />
+                                 <input type='number' id='minAge' name='minAge' placeholder={group && group.minAge} />
                               </div>
                            </div>
 
                            <div id='gender-limitations'>
                               <label htmlFor="gender">Gender</label>
-                              <select name="gender" id="gender">
+                              <select name="gender" id="gender" placeholder={group && group.gender}>
                                  <option value="male">Male Only</option>
-                                 <option value="female" selected>Female Only</option>
+                                 <option value="female">Female Only</option>
                                  <option value="other">None</option>
                               </select>
                            </div>
 
                            <div id='number-limitations'>
                               <label>Max Number</label>
-                              <input type='number' name='maxGroupNo' id='maxGroupNo' />
+                              <input type='number' name='maxGroupNo' id='maxGroupNo' placeholder={group && group.maxGroupNo} />
                            </div>
                         </div>
 

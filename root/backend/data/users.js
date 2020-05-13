@@ -50,6 +50,7 @@ async function readUserByName(newUsername) {
 
 async function readUserByEmail(newEmail) {
    if (!newEmail) throw 'No email provided!'
+   console.log(newEmail);
    const usersCollection = await users();
    let user = await usersCollection.findOne({ email: newEmail });
    return user;

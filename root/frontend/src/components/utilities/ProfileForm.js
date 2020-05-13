@@ -23,7 +23,20 @@ export default function ProfileForm() {
          }
       }
       getUrl();
+      getUserData();
    }, [profileUrl]);
+
+   async function getUserData() {
+      if (currentUser && currentUser.displayName) {
+         try {
+            const { data } = await axios.get(`http://localhost:4000/users/getUserByName/${currentUser.displayName}`);
+            const { user } = data;
+            setUserData(user);
+         } catch (e) {
+            alert(e);
+         }
+      }
+   }
 
    async function updateUser() {
       const username = document.getElementById('username').value;
@@ -115,35 +128,37 @@ export default function ProfileForm() {
             <form id='profile-form-f'>
                <div className='form-group'>
                   <label htmlFor='username'>Username</label>
-                  <input type='text' name='username' id='username' />
+                  <input type='text' name='username' id='username' placeholder={userData && userData.username} />
                </div>
                <div className='form-group' id='gender-input'>
                   <label htmlFor="gender">Gender</label>
-                  <select name="gender" id="gender">
+                  <select name="gender" id="gender" placeholder={userData && userData.gender} >
                      <option value="male">Male</option>
-                     <option value="female" value>Female</option>
+                     <option value="female">Female</option>
                      <option value="other">Other</option>
                   </select>
                </div>
                <div className='form-group' id='age-input'>
                   <label htmlFor='age'>Age</label>
-                  <input type='number' name='age' id='age' />
+                  <input type='number' name='age' id='age' placeholder={userData && userData.age} />
                </div>
                <div className='form-group' id='zipcode-input'>
                   <label htmlFor='zipcode'>Zip Code</label>
-                  <input type='text' name='zipcode' id='zipcode' />
+                  <input type='text' name='zipcode' id='zipcode' placeholder={userData && userData.zipcode} />
                </div>
                <div className='form-group'>
                   <label htmlFor='cellphone'>Cell Phone</label>
-                  <input type='tel' name='cellphone' id='cellphone' />
+                  <input type='tel' name='cellphone' id='cellphone' placeholder={userData && userData.phone} />
                </div>
                <div className='form-group'>
                   <label htmlFor='bio'>Bio</label>
-                  <input type='tel' name='bio' id='bio' />
+                  <input type='tel' name='bio' id='bio' placeholder={userData && userData.bio} />
                </div>
 
-               <button id='user-form-btn' className='standard-btn'>SAVE CHANGES</button>
             </form>
+         </div>
+         <div id='form-btn'>
+            <button id='user-form-btn' className='standard-btn'>SAVE CHANGES</button>
          </div>
       </div>
    )
