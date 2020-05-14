@@ -1,16 +1,19 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Navigation from './utilities/Navigation';
 import Map from './utilities/Map';
 import Gallery from './utilities/Gallery';
 import Footer from './utilities/Footer';
 import { AuthContext } from '../firebase/Auth';
 import { withGoogleMap, withScriptjs } from 'react-google-maps';
+import axios from 'axios';
 
 const WrappedMap = withScriptjs(withGoogleMap(Map));
 
 export default function Explore() {
 
    const { currentUser } = useContext(AuthContext);
+   // const [lat, setLat] = useState(null);
+   // const [lng, setLng] = useState(null);
 
    return (
       <div>
