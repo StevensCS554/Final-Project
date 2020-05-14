@@ -1,13 +1,13 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { AuthContext } from '../../firebase/Auth'
 import axios from 'axios';
 import $ from 'jquery';
-import groupbg from '../../images/group-bg.jpg';
 
 export default function Gallery(props) {
    const { currentUser } = useContext(AuthContext);
    const [user, setUser] = useState(props.user);
+   const [zipCode, setZipCode] = useState(undefined);
    const [userGroups, setUserGroups] = useState(undefined);
    const [userOwnGroup, setUserOwnGroup] = useState(null);
    const [ownGroupId, setOwnGroupId] = useState(null);
@@ -16,18 +16,19 @@ export default function Gallery(props) {
    const [allLocalGroups, setAllLocalGroups] = useState(null);
    const [numLeftOver, setNoLeftOver] = useState(1);
    const [pageNo, setPageNo] = useState(0);
+
    let li = null;
    let take = 6;
    let skip = 0;
 
    useEffect(() => {
-
       getUrl();
       getGroups();
       getUserGroup();
+      getUserLocation();
       getLocalGroups(take, skip);
       getAllLocalGroups();
-   }, []);
+   }, [zipCode]);
 
    async function getUrl() {
       if (currentUser && currentUser.displayName) {
@@ -68,12 +69,12 @@ export default function Gallery(props) {
 
    const getLocalGroups = async (take, skip) => {
       try {
-         const { data } = await axios.get(`http://localhost:4000/groups/local/07307?take=${take}&skip=${skip}`);
-         const { groups, numLeftOver } = data;
-         setLocalGroups(groups);
-         setNoLeftOver(numLeftOver);
-         console.log(take, skip);
-
+         if (zipCode) {
+            const { data } = await axios.get(`http://localhost:4000/groups/local/${zipCode}?take=${take}&skip=${skip}`);
+            const { groups, numLeftOver } = data;
+            setLocalGroups(groups);
+            setNoLeftOver(numLeftOver);
+         }
       } catch (e) {
          alert(e);
       }
@@ -81,13 +82,28 @@ export default function Gallery(props) {
 
    const getAllLocalGroups = async () => {
       try {
-         const { data } = await axios.get(`http://localhost:4000/groups/local-groups/07307`);
-         const { groups } = data;
-         setAllLocalGroups(groups);
+         if (zipCode) {
+            const { data } = await axios.get(`http://localhost:4000/groups/local-groups/${zipCode}`);
+            const { groups } = data;
+            setAllLocalGroups(groups);
+         }
       } catch (e) {
          alert(e);
       }
    }
+
+   async function getUserLocation() {
+      if (navigator.geolocation) {
+         navigator.geolocation.getCurrentPosition(async position => {
+            const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyCTJckDGDyHM8cZ9R-PKUIQGHgfhoXzzFA`);
+            const { results } = data;
+            const z = results[0].address_components[6].short_name;
+            setZipCode(z);
+         }, error => {
+            alert(error);
+         })
+      }
+   };
 
    const handleNextPage = async () => {
       setPageNo(pageNo + 1);
@@ -173,7 +189,7 @@ export default function Gallery(props) {
                   </div>
 
                   <div id='explore-gallery-sidebar-groups-list'>
-                     <button onClick={() => handleToggle2()} className='click-to-reveal'>GROUPS WITHIN 07307</button>
+                     <button onClick={() => handleToggle2()} className='click-to-reveal'>GROUPS WITHIN {zipCode && <span>{zipCode}</span>}</button>
                      <div style={{ display: 'none' }} ref={toggle2Ref}>
                         <ul>
                            {allLocalGroups && allLocalGroups.map((group) => {
@@ -204,7 +220,6 @@ export default function Gallery(props) {
                         </Link>
                      )
                   })}
-              
                </div>
 
                <div id='gallery-btn-area' style={{ textAlign: 'center' }}>
@@ -213,16 +228,14 @@ export default function Gallery(props) {
                         <button onClick={handlePrePage} className='standard-btn'>PREVIOUS PAGE</button>
                      )}
                   </div>
-
                   <div>
-                     {numLeftOver > 0 && (
+                     {numLeftOver > 0 && localGroups && localGroups.length !== 0 && (
                         <button onClick={handleNextPage} className='standard-btn'>NEXT PAGE</button>
                      )}
                   </div>
                </div>
 
             </div>
-
          </div>
       </div>
    )

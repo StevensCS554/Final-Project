@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import data from './test.json';
+import axios from 'axios';
+
 
 export default function Map() {
    const [selectedGroup, setSelectedGroup] = useState(null);
@@ -10,7 +12,7 @@ export default function Map() {
    useEffect(() => {
       async function getUserLocation() {
          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
+            navigator.geolocation.getCurrentPosition(async position => {
                setLat(position.coords.latitude);
                setLng(position.coords.longitude);
             }, error => {

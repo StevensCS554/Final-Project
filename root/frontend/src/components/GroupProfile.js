@@ -296,16 +296,16 @@ export default function Groupprofile(props) {
                   <div className='group-members'>
                      {memberList && memberList.map((user) => {
                         return (
-                           <Link to={`/userprofile/${user.username}`}>
-                              <div id={user._id} className='single-group-member'>
+                           <div id={user._id} className='single-group-member'>
+                              <Link to={`/userprofile/${user.username}`}>
                                  <p>{user.username}</p>
                                  <img src={user && user.profileUrl || profile} alt="user avatar" />
-                                 <div id='group-members-links'>
-                                    {/* <a href='#'>MESSAGE</a> */}
-                                    {isManager && (<a href='#' onClick={() => handleMemberDelete(user._id)}>DELETE</a>)}
-                                 </div>
+                              </Link>
+                              <div id='group-members-links'>
+                                 {/* <a href='#'>MESSAGE</a> */}
+                                 {isManager && (<a href='#' onClick={() => handleMemberDelete(user._id)}>DELETE</a>)}
                               </div>
-                           </Link>
+                           </div>
                         );
                      })
                      }
