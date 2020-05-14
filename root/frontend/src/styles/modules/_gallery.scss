@@ -7,6 +7,8 @@
    margin-bottom: 3rem;
    min-height: 100vh;
    max-width: 1920px;
+   margin-left: auto;
+   margin-right: auto;
    box-sizing: border-box;
    display: flex;
    overflow: scroll;
@@ -28,7 +30,7 @@
           
             img {
                border-radius: 20px;
-               width: 90%;
+               height: 17rem;
             }
             p {
                margin: 0.5rem auto;

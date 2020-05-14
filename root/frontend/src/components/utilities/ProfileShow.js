@@ -37,12 +37,12 @@ export default function ProfileForm(props) {
                 <img src={userData && userData.profileUrl || profile} alt="user avatar" />
             </div>
             <div id='profileShow-info'>
-                <p type='text' name='username' id='username'>{userData && userData.username}</p>
-                <p name="gender" id="gender">{userData && userData.gender}</p>
-                <p type='number' name='age' id='age' >{userData && userData.age}</p>
-                <p type='text' name='zipcode' id='zipcode' >{userData && userData.zipcode}</p>
-                <p type='tel' name='cellphone' id='cellphone' >{userData && userData.phone}</p>
-                <p type='tel' name='bio' id='bio' >{userData && userData.bio}</p>
+                <p type='text' name='username' id='username'>USERNAME: {userData && userData.username}</p>
+                <p name="gender" id="gender">GENDER: {userData && userData.gender}</p>
+                <p type='number' name='age' id='age' >AGE: {userData && userData.age}</p>
+                <p type='text' name='zipcode' id='zipcode' >ZIPCODE: {userData && userData.zipcode}</p>
+                <p type='tel' name='cellphone' id='cellphone' >PHONE: {userData && userData.phone}</p>
+                <p type='tel' name='bio' id='bio' >BIO: {userData && userData.bio ? userData.bio : "NONE"}</p>
             </div>
         </div>
     )

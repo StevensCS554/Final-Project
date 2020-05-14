@@ -22,7 +22,7 @@ function App() {
                <Route exact path='/signup' component={Signup} />
                <Route exact path='/login' component={Login} />
                <PrivateRoute path='/userprofile/:username' component={UserProfile} />
-               <PrivateRoute path='/create-group/:userId' component={CreateGroup} />
+               <PrivateRoute path='/create-group/:username' component={CreateGroup} />
                <PrivateRoute path='/group-profile/:groupId' component={GroupProfile} />
                <PrivateRoute path='/edit-group/:userId' component={GroupSetting} />
             </div>
