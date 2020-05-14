@@ -35,7 +35,7 @@ export default function Groupprofile(props) {
          }
       }
       groupProfile();
-   }, [props.match.params.groupId, currentUser, isMember, groupData]
+   }, [props.match.params.groupId, currentUser, isMember]
    );
 
    // async function getUrl(username) {
@@ -158,8 +158,7 @@ export default function Groupprofile(props) {
             })}`
          }
          //TODO: refresh:
-         const group = await fetchGroupData();
-         setGroupData(group);     
+         window.location.reload();
          return;
       } catch (e) {
          alert(`-error: ${e}`);
@@ -375,22 +374,10 @@ export default function Groupprofile(props) {
                   </div>)
             }
             {
-               (isManager || isMember) && (() => {
-                  if (isMember) {
-                     return (
-                        <div id='leave-group'>
-                           <button className='standard-btn' onClick={() => alert(`are you sure? please contact the manager by message button`)}>LEAVE GROUP</button>
-                        </div>
-                     )
-                  }
-                  else {
-                     return (
-                        <div id='delete-group'>
-                           <button className='standard-btn' onClick={() => alert(`are you sure? DELETE can not be revert!`)}>DELETE GROUP</button>
-                        </div>
-                     )
-                  }
-               })
+               (isManager || isMember) && (
+                  <div id='leave-group'>
+                     <button className='standard-btn' onClick={() => alert(`are you sure? please contact the manager by message button`)}>LEAVE GROUP</button>
+                  </div>)
             }
 
          </div>
