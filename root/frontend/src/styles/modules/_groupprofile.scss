@@ -17,10 +17,13 @@
          height: 100%;
          overflow: scroll;
          text-align: center;
+         a {
+            margin-bottom: 1rem;
+         }
 
          #group-manager {
             box-shadow: 2px 2px 2px 2px;
-            height: 50%;
+            height: 60%;
             img {
                border-radius: 50%;
                width: 65%;

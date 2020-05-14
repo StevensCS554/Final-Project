@@ -39,6 +39,8 @@ router.post("/:userId", async (req, res) => {
       const minAge = req.body.minAge;
       const gender = req.body.gender;
       const maxGroupNo = req.body.maxGroupNo;
+      const latitude = req.body.latitude;
+      const longitude = req.body.longitude
       //saved user information:
       //TODO:
       // const zipcode = req.zipcode;
@@ -91,7 +93,7 @@ router.post("/:userId", async (req, res) => {
          throw "You Must Provide A maxGroupNo!";
       }
 
-      const newGroup = await groupsData.creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGroupNo, zipcode, managerId);
+      const newGroup = await groupsData.creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGroupNo, zipcode, managerId, latitude, longitude);
       res.json(newGroup);
    } catch (e) {
       res.status(500).json(e);
@@ -206,13 +208,13 @@ router.post('/:groupId/:userId', async (req, res) => {
    }
 })
 
-router.put('/profile/:groupId', async(req, res) => {
+router.put('/profile/:groupId', async (req, res) => {
    try {
       await groupsData.addGroupProfile(req.params.groupId, req.body.url);
       res.status(200).json({
          msg: "success"
       })
-   } catch(e) {
+   } catch (e) {
       res.status(501).json({
          msg: e
       })
@@ -235,13 +237,13 @@ router.delete('/:groupId/:userId', async (req, res) => {
 })
 
 //delete an post from group
-router.delete('/post/:groupId/:postId', async (req, res)=>{
+router.delete('/post/:groupId/:postId', async (req, res) => {
    try {
       let groupId = req.params.groupId;
       let postId = req.params.postId;
       groupId = checkId(groupId);
       postId = checkId(postId);
-      
+
       const group = await groupsData.deletePost(groupId, postId);
       res.status(200).json(group);
    } catch (e) {
@@ -293,26 +295,27 @@ router.get('/local/:zipcode', async (req, res) => {
 });
 
 // get all groups within a zipcode
-router.get('/local-groups/:zipcode', async(req, res) => {
+router.get('/local-groups/:zipcode', async (req, res) => {
    try {
       const groups = await groupsData.getAllLocalGroups(req.params.zipcode);
       res.status(200).json({
          groups: groups
       })
-   } catch(e) {
+   } catch (e) {
       res.status(500).json({
          error: e
       })
    }
 });
 
-router.get('/manager/:managerId', async(req, res) => {
+router.get('/manager/:managerId', async (req, res) => {
    try {
       const group = await groupsData.getGroupByManager(req.params.managerId);
       res.status(200).json({
          group: group
       });
-   } catch(e) {
+   } catch (e) {
+      console.log(e);
       res.status(500).json({
          error: e
       })

@@ -2,21 +2,43 @@ import React, { useEffect, useContext, useState } from 'react';
 import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
 import defaultGroup from '../images/group-bg.jpg';
-import { AuthContext } from '../firebase/Auth'
+import { AuthContext } from '../firebase/Auth';
+import { Redirect } from 'react-router-dom';
 
 export default function Creategroup(props) {
    const { currentUser } = useContext(AuthContext);
    const [user, setUser] = useState(undefined);
+   const [lat, setLat] = useState(null);
+   const [lng, setLng] = useState(null);
+   const [success, setSuccess] = useState(false);
+   let latitude = null;
+   let longitude = null;
 
    useEffect(() => {
       try {
          if (props.match.params.username !== currentUser.displayName)
             throw `do not create groups for other user!`
          fetchUserByName(currentUser.displayName);
+         if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+               latitude = position.coords.latitude;
+               longitude = position.coords.longitude;
+               setLat(latitude);
+               setLng(longitude);
+            }, error => {
+               alert(error);
+            })
+         }
+
+         // getUserLocation();
       } catch (e) {
          alert(e);
       }
    }, [props.match.params.username]);
+
+   if (success) {
+      return <Redirect to='/explore' />
+   }
 
    async function fetchUserByName(username) {
       try {
@@ -89,7 +111,9 @@ export default function Creategroup(props) {
                minAge: minAge,
                gender: document.getElementById("gender").value,
                maxGroupNo: maxGroupNo,
-               zipcode: zipcode
+               zipcode: zipcode,
+               latitude: lat,
+               longitude: lng
             })
          });
          if (!response.ok) {
@@ -97,9 +121,9 @@ export default function Creategroup(props) {
                return error;
             })}`);
          }
-         return;
+         setSuccess(true);
       } catch (e) {
-         throw `error: `+e;
+         throw `error: ` + e;
       }
    }
 
@@ -162,8 +186,9 @@ export default function Creategroup(props) {
                            <input type='number' name='maxGroupNo' id='maxGroupNo' />
                         </div>
                      </div>
-
-                     <button id='group-form-btn' className='standard-btn' type='submit'>SUBMIT</button>
+                     {lat && lng && (
+                        <button id='group-form-btn' className='standard-btn' type='submit'>SUBMIT</button>
+                     )}
                   </form>
 
                </div>

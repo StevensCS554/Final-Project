@@ -30,7 +30,7 @@ async function getById(id) {
    }
 };
 
-async function creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGroupNo, zipcode, managerId) {
+async function creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGroupNo, zipcode, managerId, latitude, longitude) {
    const userData = require('./users');
    try {
       const newGroup = {
@@ -43,7 +43,9 @@ async function creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGro
          zipcode: zipcode,
          users: [],
          managerId: managerId,
-         posts: []
+         posts: [],
+         lat: latitude,
+         lng: longitude
       }
       const groupsCollection = await groups();
       const insertedGroup = await groupsCollection.insertOne(newGroup);
@@ -234,7 +236,7 @@ async function deletePost(groupId, postId) {
       // const group = await groupsCollection.findOne({ _id: groupId });
       const group = await groupsCollection.updateOne(
          { _id: groupId },
-         { $pull: { posts: { _id : postId}} }
+         { $pull: { posts: { _id: postId } } }
       );
       if (group === null)
          throw 'Invalid group !!!';
@@ -256,8 +258,8 @@ async function addGroupProfile(groupId, url) {
    groupId = checkId(groupId);
    const groupsCollection = await groups();
    const updateInfo = await groupsCollection.updateOne(
-      {_id: groupId},
-      {$set: {groupProfileUrl: url}}
+      { _id: groupId },
+      { $set: { groupProfileUrl: url } }
    );
    if (!updateInfo)
       throw 'Can\'t update group profile!';
@@ -265,8 +267,9 @@ async function addGroupProfile(groupId, url) {
 
 async function getGroupByManager(managerId) {
    const groupsCollection = await groups();
+   managerId = checkId(managerId);
    const group = await groupsCollection.findOne(
-      {managerId: managerId}
+      { managerId: managerId }
    );
    if (!group)
       throw 'There is no such group!';
@@ -275,9 +278,10 @@ async function getGroupByManager(managerId) {
 
 async function updateGroupProfile(groupId, url) {
    const groupsCollection = await groups();
+   groupId = checkId(groupId);
    const updateInfo = await groupsCollection.updateOne(
-      {_id: groupId},
-      {$set: {groupProfileUrl: url}}
+      { _id: groupId },
+      { $set: { groupProfileUrl: url } }
    );
    if (!updateInfo)
       throw 'Can\t update group profile！';
@@ -303,5 +307,5 @@ function checkId(id) {
 module.exports = {
    getAll, getById, creatGroup, updateGroup, deleteGroupById,
    createPost, getPosts, deletePost, deleteMember, joinGroup, getCertainLocalGroups,
-   getAllLocalGroups, addGroupProfile, getGroupByManager,updateGroupProfile
+   getAllLocalGroups, addGroupProfile, getGroupByManager, updateGroupProfile
 };
