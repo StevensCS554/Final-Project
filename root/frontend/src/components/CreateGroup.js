@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
 import defaultGroup from '../images/group-bg.jpg';
+import AuthContext from '../firebase/Auth'
 
 export default function Creategroup() {
-
-   useEffect(() => {
-      document.getElementById("group-form-btn").addEventListener("click", createGroup);
-      // document.getElementById("upload-profile-btn").addEventListener("click", createGroup);
-   }, []);
+   const { currentUser } = 
+   // useEffect(() => {
+   // }, []);
 
    async function createGroup() {
       const groupName = document.getElementById('groupName').value;
