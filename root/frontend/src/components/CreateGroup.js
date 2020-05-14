@@ -1,79 +1,118 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
 import defaultGroup from '../images/group-bg.jpg';
+import { AuthContext } from '../firebase/Auth'
 
-export default function Creategroup() {
+export default function Creategroup(props) {
+   const { currentUser } = useContext(AuthContext);
+   const [user, setUser] = useState(undefined);
 
    useEffect(() => {
-      document.getElementById("group-form-btn").addEventListener("click", createGroup);
-      // document.getElementById("upload-profile-btn").addEventListener("click", createGroup);
-   }, []);
+      try {
+         if (props.match.params.username !== currentUser.displayName)
+            throw `do not create groups for other user!`
+         fetchUserByName(currentUser.displayName);
+      } catch (e) {
+         alert(e);
+      }
+   }, [props.match.params.username]);
+
+   async function fetchUserByName(username) {
+      try {
+         const user = await fetch(`http://localhost:4000/users/getUserByUsername/${username}`, {
+            method: "GET",
+            headers: {
+               'Content-Type': 'application/json'
+            }
+         });
+         // error handle! 
+         if (!user.ok)
+            throw `error in user info fetching with name! status:${user.status}, statusText:${user.statusText} message:${await user.json().then((error) => {
+               return error;
+            })}`
+         const resolved = await user.json();
+         setUser(resolved);
+         return;
+      } catch (e) {
+         alert(e);
+      }
+   }
 
    async function createGroup() {
-      const groupName = document.getElementById('groupName').value;
-      if (!groupName) {
-         alert("Please input the groupName!");
-         return false;
+      try {
+         const groupName = document.getElementById('groupName').value;
+         if (!groupName) {
+            throw `Please input the groupName!`;
+         }
+         const groupNotice = document.getElementById('groupNotice').value;
+         if (!groupNotice) {
+            throw `Please input the groupNotice!`;
+         }
+         const maxAge = document.getElementById('maxAge').value;
+         if (!maxAge) {
+            throw `Please input the maxAge!`;
+         }
+         if (maxAge < 10 || maxAge > 100) {
+            throw `Max Age should be in range 10~100!`;
+         }
+         const minAge = document.getElementById('minAge').value;
+         if (!minAge) {
+            throw `Please input the minAge!`;
+         }
+         if (minAge < 10 || minAge > 100) {
+            throw `Min Age should be in range 10~100!`;
+         }
+         if (minAge > maxAge) {
+            throw `Min Age should not be bigger than max age!`;
+         }
+         const maxGroupNo = document.getElementById('maxGroupNo').value;
+         if (!maxGroupNo) {
+            throw `Please input the maxGroupNo!`;
+         }
+         if (maxGroupNo <= 0) {
+            throw `Max group number should be bigger than 0!`;
+         }
+         //TODO: get the zipcode from someware:
+         alert("TODO: get the zipcode from someware: hard code 07307 for now");
+         const zipcode = "07307";
+
+         const response = await fetch(`http://localhost:4000/groups/${user._id}`, {
+            method: "POST",
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+               groupName: groupName,
+               groupNotice: groupNotice,
+               maxAge: maxAge,
+               minAge: minAge,
+               gender: document.getElementById("gender").value,
+               maxGroupNo: maxGroupNo,
+               zipcode: zipcode
+            })
+         });
+         if (!response.ok) {
+            alert(`Sorry, something went wrong!! status:${response.status}, statusText:${response.statusText} message:${await response.json().then((error) => {
+               return error;
+            })}`);
+         }
+         return;
+      } catch (e) {
+         throw `error: `+e;
       }
-      const groupNotice = document.getElementById('groupNotice').value;
-      if (!groupNotice) {
-         alert("Please input the groupNotice!");
-         return false;
+   }
+
+   async function handleCreateGroup(e) {
+      try {
+         e.preventDefault();
+         await createGroup();
+         alert("Success");
+         // window.location.reload();
+         return;
+      } catch (e) {
+         alert(e);
       }
-      const maxAge = document.getElementById('maxAge').value;
-      if (!maxAge) {
-         alert("Please input the maxAge!");
-         return false;
-      }
-      if (maxAge < 10 || maxAge > 100) {
-         alert("Max Age should be in range 10~100!");
-         return false;
-      }
-      const minAge = document.getElementById('minAge').value;
-      if (!minAge) {
-         alert("Please input the minAge!");
-         return false;
-      }
-      if (minAge < 10 || minAge > 100) {
-         alert("Min Age should be in range 10~100!");
-         return false;
-      }
-      if (minAge > maxAge) {
-         alert("Min Age should not be bigger than max age!");
-         return false;
-      }
-      const maxGroupNo = document.getElementById('maxGroupNo').value;
-      if (!maxGroupNo) {
-         alert("Please input the maxGroupNo!");
-         return false;
-      }
-      if (maxGroupNo <= 0) {
-         alert("Max group number should be bigger than 0!");
-         return false;
-      }
-      const response = await fetch("http://localhost:4000/groups", {
-         method: "POST",
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-            groupName: groupName,
-            groupNotice: groupNotice,
-            maxAge: maxAge,
-            minAge: minAge,
-            gender: document.getElementById("gender").value,
-            maxGroupNo: maxGroupNo
-         })
-      });
-      if (response.status == 200) {
-         alert('Succes!');
-      }
-      else {
-         alert('Sorry, something went wrong!');
-         console.log(await response.json());
-      }
-      window.location.reload();
    }
 
    return (
@@ -85,14 +124,14 @@ export default function Creategroup() {
                   <img src={defaultGroup} />
                </div>
                <div id='create-group-form'>
-                  <form>
+                  <form onSubmit={handleCreateGroup}>
                      <div className='single-input'>
-                        <label for='groupName'>Group Name</label>
+                        <label htmlFor='groupName'>Group Name</label>
                         <input type='text' name='groupName' id='groupName' />
                      </div>
 
                      <div className='single-input'>
-                        <label for='groupNotice'>Group Notice</label>
+                        <label htmlFor='groupNotice'>Group Notice</label>
                         <input type='text' name='groupNotice' id='groupNotice' />
                      </div>
                      <p>Group Limitations</p>
@@ -112,9 +151,9 @@ export default function Creategroup() {
                         <div id='gender-limitations'>
                            <label htmlFor="gender">Gender</label>
                            <select name="gender" id="gender">
+                              <option defaultValue="other">None</option>
                               <option value="male">Male Only</option>
-                              <option value="female" selected>Female Only</option>
-                              <option value="other">None</option>
+                              <option value="female">Female Only</option>
                            </select>
                         </div>
 
@@ -124,8 +163,8 @@ export default function Creategroup() {
                         </div>
                      </div>
 
+                     <button id='group-form-btn' className='standard-btn' type='submit'>SUBMIT</button>
                   </form>
-                  <button id='group-form-btn' className='standard-btn'>SUBMIT</button>
 
                </div>
             </div>
