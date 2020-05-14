@@ -282,24 +282,30 @@ export default function Groupprofile(props) {
 
                {/* group member section */}
                <div id='group-member-list'>
-                  <div id='group-manager'>
-                     <img src={manager && manager.profileUrl || profile} alt="manager avatar" />
-                     <p>Group Manager: {manager && manager.username}</p>
-                     {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
-                  </div>
+                  {manager && (
+                     <div id='group-manager'>
+                        <Link to={`/userprofile/${manager.username}`}>
+                           <img src={manager && manager.profileUrl || profile} alt="manager avatar" />
+                           <p>Group Manager: {manager && manager.username}</p>
+                        </Link>
+                        {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
+                     </div>
+                  )}
 
                   {/* group member list*/}
                   <div className='group-members'>
                      {memberList && memberList.map((user) => {
                         return (
-                           <div id={user._id} className='single-group-member'>
-                              <p>{user.username}</p>
-                              <img src={user && user.profileUrl || profile} alt="user avatar" />
-                              <div id='group-members-links'>
-                                 {/* <a href='#'>MESSAGE</a> */}
-                                 {isManager && (<a href='#' onClick={() => handleMemberDelete(user._id)}>DELETE</a>)}
+                           <Link to={`/userprofile/${user.username}`}>
+                              <div id={user._id} className='single-group-member'>
+                                 <p>{user.username}</p>
+                                 <img src={user && user.profileUrl || profile} alt="user avatar" />
+                                 <div id='group-members-links'>
+                                    {/* <a href='#'>MESSAGE</a> */}
+                                    {isManager && (<a href='#' onClick={() => handleMemberDelete(user._id)}>DELETE</a>)}
+                                 </div>
                               </div>
-                           </div>
+                           </Link>
                         );
                      })
                      }

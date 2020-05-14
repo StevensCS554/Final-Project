@@ -135,7 +135,7 @@ export default function Gallery(props) {
                         <div id='explore-gallery-sidebar-profile-header'>
                            <img src={userProfile} />
                            <p>{user.displayName}</p>
-                           <Link to='/userprofile/1'><p>CHANGE PROFILE</p></Link>
+                           <Link to={`/userprofile/${user.displayName}`}><p>CHANGE PROFILE</p></Link>
                         </div>
                      )}
 
@@ -151,7 +151,7 @@ export default function Gallery(props) {
                            {!userOwnGroup && (
                               <div style={{ display: 'none' }} ref={toggle3Ref}>
                                  <p>You don't have a group yet!</p>
-                                 <Link to='/create-group/1'><button className='standard-btn'>CREATE YOUR OWN GROUP</button></Link>
+                                 <Link to={`/create-group/${user.displayName}`}><button className='standard-btn'>CREATE YOUR OWN GROUP</button></Link>
                               </div>
                            )}
                         </div>
