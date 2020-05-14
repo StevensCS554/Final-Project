@@ -44,9 +44,10 @@ router.post("/:userId", async (req, res) => {
       // const zipcode = req.zipcode;
       // const managerId = req.user._id//managerId should be current user!
       const zipcode = req.body.zipcode;
-      const managerId = req.params.userId;
+      let managerId = req.params.userId;
       //   const posts = [];    every group has an array of posts !!
 
+      managerId = checkId(managerId);
       if (groupName) {
          if (typeof groupName !== 'string') {
             throw `You Must Provide A groupName with string type! what you give:${typeof groupName}`;
