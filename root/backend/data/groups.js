@@ -317,6 +317,19 @@ async function updateGroupProfile(groupId, url) {
       throw 'Can\t update group profile！';
 }
 
+async function searchGroups(groupName) {
+   const groupsCollection = await groups();
+   const res = await groupsCollection.distinct(
+      "_id", { groupName: groupName }
+   );
+   let output = [];
+   for (let i = 0; i < res.length; i++) {
+      const group = await getById(res[i]);
+      output.push(group);
+   }
+   return output;
+}
+
 //-----------------------------------check--------------------------------------
 
 function checkId(id) {
@@ -337,5 +350,5 @@ function checkId(id) {
 module.exports = {
    getAll, getById, creatGroup, updateGroup, deleteGroupById,
    createPost, getPosts, deletePost, deleteMember, joinGroup, getCertainLocalGroups,
-   getAllLocalGroups, addGroupProfile, getGroupByManager, updateGroupProfile
+   getAllLocalGroups, addGroupProfile, getGroupByManager, updateGroupProfile, searchGroups
 };
