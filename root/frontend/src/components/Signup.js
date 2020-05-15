@@ -44,7 +44,7 @@ export default function Signup() {
          const bio_v = bio.value.trim();  //Not sure what it is when no input, "" or null
          const password_v = password.value.trim();
 
-         // if (!username_v || username_v.trim().length == 0) {
+         // if (!username_v || username_v.trim().length ==== 0) {
          //    document.getElementById('username-confirmMessage').innerHTML = '';
          //    document.getElementById('username-errorMessage').innerHTML = 'You have to enter a username!';
          // }
@@ -77,7 +77,7 @@ export default function Signup() {
             })
          });
 
-         if (response.status == 200) {
+         if (response.status === 200) {
             window.location.href = "http://localhost:3000/login";
          }
          else {
@@ -95,7 +95,7 @@ export default function Signup() {
       e.persist();
       const newUsername = e.target.value.trim();
       const message = document.getElementById('username-message');
-      if (!newUsername || newUsername.length == 0) {
+      if (!newUsername || newUsername.length === 0) {
          message.innerHTML = 'You have to enter username.';
          message.className = 'red-message';
          e.target.className = 'error';
@@ -122,7 +122,7 @@ export default function Signup() {
                   'Content-Type': 'application/json'
                }
             });
-            if (response.status == 200) {
+            if (response.status === 200) {
                const res = await response.json();
                if (!res.noUser) {
                   message.innerHTML = 'Sorry, this username has been used. Please try another one.';
@@ -156,7 +156,7 @@ export default function Signup() {
       e.persist();
       const newEmail = e.target.value.trim();
       const message = document.getElementById('email-message');
-      if (!newEmail || newEmail.length == 0) {
+      if (!newEmail || newEmail.length === 0) {
          message.innerHTML = 'You have to enter email!';
          message.className = 'red-message';
          e.target.className = 'error';
@@ -183,7 +183,7 @@ export default function Signup() {
                   'Content-Type': 'application/json'
                }
             });
-            if (response.status == 200) {
+            if (response.status === 200) {
                const res = await response.json();
                if (!res.noEmail) {
                   message.innerHTML = 'Sorry, this email has been used. Please try another one.';
@@ -216,7 +216,7 @@ export default function Signup() {
       e.preventDefault();
       const newAge = e.target.value.trim();
       const message = document.getElementById('age-message');
-      if (!newAge || newAge.length == 0) {
+      if (!newAge || newAge.length === 0) {
          message.innerHTML = 'You have to enter age!';
          message.className = 'red-message';
          e.target.className = 'error';
@@ -263,7 +263,7 @@ export default function Signup() {
       e.preventDefault();
       const newZipcode = e.target.value.trim();
       const message = document.getElementById('zipcode-message');
-      if (!newZipcode || newZipcode.length == 0) {
+      if (!newZipcode || newZipcode.length === 0) {
          message.innerHTML = 'You have to enter zipcode!';
          message.className = 'red-message';
          e.target.className = 'error';
@@ -284,7 +284,7 @@ export default function Signup() {
             });
          }
          else {
-            if (newZipcode.length != 5) {
+            if (newZipcode.length !== 5) {
                message.innerHTML = 'Sorry, zipcode size should be 5.';
                message.className = 'red-message';
                e.target.className = 'error';
@@ -310,7 +310,7 @@ export default function Signup() {
       e.preventDefault();
       const newPhone = e.target.value.trim();
       const message = document.getElementById('phone-message');
-      if (!newPhone || newPhone.length == 0) {
+      if (!newPhone || newPhone.length === 0) {
          message.innerHTML = 'You have to enter phone!';
          message.className = 'red-message';
          e.target.className = 'error';
@@ -331,7 +331,7 @@ export default function Signup() {
             });
          }
          else {
-            if (newPhone.length != 10) {
+            if (newPhone.length !== 10) {
                message.innerHTML = 'Sorry, phone number size should be 10.';
                message.className = 'red-message';
                e.target.className = 'error';
@@ -357,7 +357,7 @@ export default function Signup() {
       e.preventDefault();
       const newPassword = e.target.value;
       const message = document.getElementById('password-message');
-      if (!newPassword || newPassword.length == 0) {
+      if (!newPassword || newPassword.length === 0) {
          message.innerHTML = 'You have to enter password!';
          message.className = 'red-message';
          e.target.className = 'error';
@@ -404,7 +404,7 @@ export default function Signup() {
       e.preventDefault();
       const confPassword = e.target.value;
       const message = document.getElementById('password2-message');
-      if (!confPassword || confPassword.trim().length == 0) {
+      if (!confPassword || confPassword.trim().length === 0) {
          message.innerHTML = 'You have to enter confirm password!';
          message.className = 'red-message';
          e.target.className = 'error';
@@ -462,7 +462,7 @@ export default function Signup() {
                      <label htmlFor='zipcode'>ZIPCODE</label><label id='zipcode-message' className=''></label>
                      <input required type='text' name='zipcode' onBlur={zipcodeBlur} />
                   </div>
-                  <div id='signup-gender' className='signup-input' id='gender-input'>
+                  <div id='signup-gender' className='signup-input'>
                      <label htmlFor='gender'>Gender</label>
                      <select name='gender' id='gender' defaultValue='male'>
                         <option value='male'>Male</option>

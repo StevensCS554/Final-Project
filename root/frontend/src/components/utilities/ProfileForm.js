@@ -11,7 +11,7 @@ export default function ProfileForm() {
    const [userData, setUserData] = useState(null);
 
    useEffect(() => {
-      document.getElementById("user-form-btn").addEventListener("click", updateUser);
+      //document.getElementById("user-form-btn").addEventListener("click", updateUser);
       // document.getElementById("upload-profile-btn").addEventListener("click", createGroup);
       async function getUrl() {
          try {
@@ -22,68 +22,69 @@ export default function ProfileForm() {
             alert(e);
          }
       }
+      async function getUserData() {
+         if (currentUser && currentUser.displayName) {
+            try {
+               const { data } = await axios.get(`http://localhost:4000/users/getUserByName/${currentUser.displayName}`);
+               const { user } = data;
+               setUserData(user);
+            } catch (e) {
+               alert(e);
+            }
+         }
+      }
       getUrl();
       getUserData();
    }, [profileUrl]);
 
-   async function getUserData() {
-      if (currentUser && currentUser.displayName) {
-         try {
-            const { data } = await axios.get(`http://localhost:4000/users/getUserByName/${currentUser.displayName}`);
-            const { user } = data;
-            setUserData(user);
-         } catch (e) {
-            alert(e);
-         }
-      }
-   }
-
    async function updateUser() {
       const username = document.getElementById('username').value;
       const reqBody = {};
-      if (username != userData.username) {
-         reqBody.username = username;
+      if (userData) {
+         if (username && username !== userData.username) {
+            reqBody.username = username;
+         }
+         const gender = document.getElementById('gender').value;
+         if (gender && gender !== userData.gender) {
+            reqBody.gender = gender;
+         }
+         const age = document.getElementById('age').value;
+         if (age && age !== userData.age) {
+            reqBody.age = age;
+         }
+         const zipcode = document.getElementById('zipcode').value;
+         if (zipcode && zipcode !== userData.zipcode) {
+            reqBody.zipcode = zipcode;
+         }
+         const cellphone = document.getElementById('cellphone').value;
+         if (cellphone && cellphone !== userData.phone) {
+            //front is cellphone and back is phone, lazy to synchronize XD
+            reqBody.phone = cellphone;
+         }
+         const bio = document.getElementById('bio').value;
+         if (bio && bio !== userData.bio) {
+            reqBody.bio = bio;
+         }
+         if (Object.keys(reqBody).length === 0) {
+            alert('Please change some information!')
+            return false;
+         }
+         const response = await fetch(`http://localhost:4000/users/${userData._id}`, {
+            method: "PUT",
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reqBody)
+         });
+         if (response.status === 200) {
+            alert('Succes!');
+         }
+         else {
+            alert('Sorry, something went wrong!');
+            console.log(await response.json());
+         }
+         //window.location.reload();
       }
-      const gender = document.getElementById('gender').value;
-      if (gender != userData.gender) {
-         reqBody.gender = gender;
-      }
-      const age = document.getElementById('age').value;
-      if (age != userData.age) {
-         reqBody.age = age;
-      }
-      const zipcode = document.getElementById('zipcode').value;
-      if (zipcode != userData.zipcode) {
-         reqBody.zipcode = zipcode;
-      }
-      const cellphone = document.getElementById('cellphone').value;
-      if (cellphone != userData.phone) {
-         //front is cellphone and back is phone, lazy to synchronize XD
-         reqBody.phone = cellphone;
-      }
-      const bio = document.getElementById('bio').value;
-      if (bio != userData.bio) {
-         reqBody.bio = bio;
-      }
-      if (Object.keys(reqBody).length === 0) {
-         alert('Please change some information!')
-         return false;
-      }
-      const response = await fetch("http://localhost:4000/users", {
-         method: "PUT",
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         body: JSON.stringify(reqBody)
-      });
-      if (response.status == 200) {
-         alert('Succes!');
-      }
-      else {
-         alert('Sorry, something went wrong!');
-         console.log(await response.json());
-      }
-      window.location.reload();
    }
 
    const uploadFile = (e) => {
@@ -119,7 +120,7 @@ export default function ProfileForm() {
          <div id='profile-form'>
             <form id='profile-form-pic' onSubmit={submitForm1}>
                <div id='profile-form-pic-img'>
-                  <img src={profileUrl} />
+                  <img alt='user profile' src={profileUrl} />
                </div>
                <input type='file' id='userprofile' onChange={uploadFile} />
                <label htmlFor='userprofile' />
@@ -158,7 +159,7 @@ export default function ProfileForm() {
             </form>
          </div>
          <div id='form-btn'>
-            <button id='user-form-btn' className='standard-btn'>SAVE CHANGES</button>
+            <button id='user-form-btn' className='standard-btn' onClick={updateUser}>SAVE CHANGES</button>
          </div>
       </div>
    )

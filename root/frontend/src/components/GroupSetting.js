@@ -23,6 +23,55 @@ export default function GroupSetting(props) {
       getGroup();
    }, [profileUrl])
 
+   async function updateGroup() {
+      const groupName = document.getElementById('groupName').value;
+      const reqBody = {};
+      if (group) {
+         if (groupName && groupName !== group.groupName) {
+            reqBody.groupName = groupName;
+         }
+         const groupNotice = document.getElementById('groupNotice').value;
+         if (groupNotice && groupNotice !== group.groupNotice) {
+            reqBody.groupNotice = groupNotice;
+         }
+         const maxAge = document.getElementById('maxAge').value;
+         if (maxAge && maxAge !== group.maxAge) {
+            reqBody.maxAge = maxAge;
+         }
+         const minAge = document.getElementById('minAge').value;
+         if (minAge && minAge !== group.minAge) {
+            reqBody.minAge = minAge;
+         }
+         const gender = document.getElementById('gender').value;
+         if (gender && gender !== group.phone) {
+            reqBody.phone = gender;
+         }
+         const maxGroupNo = document.getElementById('maxGroupNo').value;
+         if (maxGroupNo && maxGroupNo !== group.maxGroupNo) {
+            reqBody.maxGroupNo = maxGroupNo;
+         }
+         if (Object.keys(reqBody).length === 0) {
+            alert('Please change some information!')
+            return false;
+         }
+         const response = await fetch(`http://localhost:4000/groups/${group._id}`, {
+            method: "PUT",
+            headers: {
+               'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(reqBody)
+         });
+         if (response.status === 200) {
+            alert('Succes!');
+         }
+         else {
+            alert('Sorry, something went wrong!');
+            console.log(await response.json());
+         }
+         //window.location.reload();
+      }
+   }
+
    const uploadFile = (e) => {
       setGroupProfile(e.target.files[0]);
    }
@@ -68,12 +117,12 @@ export default function GroupSetting(props) {
                   <div id='create-group-form'>
                      <form>
                         <div className='single-input'>
-                           <label for='groupName'>Group Name</label>
+                           <label htmlFor='groupName'>Group Name</label>
                            <input type='text' name='groupName' id='groupName' placeholder={group && group.groupName} />
                         </div>
 
                         <div className='single-input'>
-                           <label for='groupNotice'>Group Notice</label>
+                           <label htmlFor='groupNotice'>Group Notice</label>
                            <input type='text' name='groupNotice' id='groupNotice' placeholder={group && group.groupNotice} />
                         </div>
                         <p>Group Limitations</p>
@@ -106,7 +155,7 @@ export default function GroupSetting(props) {
                         </div>
 
                      </form>
-                     <button id='group-form-btn' className='standard-btn'>SAVE CHANGES</button>
+                     <button id='group-form-btn' className='standard-btn' onClick={updateGroup}>SAVE CHANGES</button>
 
                   </div>
                </div>
