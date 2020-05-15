@@ -5,6 +5,14 @@ const { ObjectId } = require("mongodb");
 // const ObjectID = require('mongodb').ObjectID;
 // const middleware = require("../middleware");
 const userData = require('./users');
+//redis:
+const redis = require("redis");
+const client = redis.createClient();
+const bluebird = require("bluebird");
+const flat = require('flat');
+const unflatten = flat.unflatten;
+bluebird.promisifyAll(redis.RedisClient.prototype);
+bluebird.promisifyAll(redis.Multi.prototype);
 
 //get all the group
 async function getAll() {
@@ -169,12 +177,13 @@ async function deleteMember(groupId, userId) {
 }
 
 async function getCertainLocalGroups(zipcode, take = 6, skip = 0) {
-   const groups = await getAll();
-   let res = [];
-   for (let i = 0; i < groups.length; i++) {
-      if (groups[i].zipcode === zipcode)
-         res.push(groups[i]);
-   }
+   // const groups = await getAll();
+   // let res = [];
+   // for (let i = 0; i < groups.length; i++) {
+   //    if (groups[i].zipcode === zipcode)
+   //       res.push(groups[i]);
+   // }
+   const res = await getAllLocalGroups(zipcode);
    if (take > res.length)
       take = 6;
    if (skip < 0)
@@ -193,13 +202,36 @@ async function getCertainLocalGroups(zipcode, take = 6, skip = 0) {
 }
 
 async function getAllLocalGroups(zipcode) {
-   const groups = await getAll();
-   let res = [];
-   for (let i = 0; i < groups.length; i++) {
-      if (groups[i].zipcode === zipcode)
-         res.push(groups[i]);
+   try {
+      const jsonGroups = await client.getAsync(zipcode);
+      if (jsonGroups) {
+         const localGroups = JSON.parse(jsonGroups)//unStringify
+         console.log("come from the redis");
+         return localGroups;
+      } else {
+         const groups = await getAll();
+         let localGroups = [];
+         for (let i = 0; i < groups.length; i++) {
+            if (groups[i].zipcode === zipcode)
+               localGroups.push(groups[i]);
+         }
+         // let flatLocalGroups = flat([localGroups]);//flat
+         // let jsonGroups = JSON.stringify(flatLocalGroups);//stringify
+         // await client.setAsync(zipcode, jsonGroups);
+         // console.log("--------------------------------------------");
+         // jsonGroups = await client.getAsync(zipcode);
+         // flatLocalGroups = JSON.parse(jsonGroups)//unStringify
+         // localGroups = unflatten(flatLocalGroups);//unflat
+         // res.json(localGroups);
+         let jsonGroups = JSON.stringify(localGroups);//stringify
+         await client.setAsync(zipcode, jsonGroups);
+         jsonGroups = await client.getAsync(zipcode);
+         localGroups = JSON.parse(jsonGroups)//unStringify
+         return localGroups;
+      }
+   } catch (e) {
+      throw e;
    }
-   return res;
 }
 
 async function createPost(groupId, username, content, time) {

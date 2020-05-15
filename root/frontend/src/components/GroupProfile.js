@@ -35,7 +35,7 @@ export default function Groupprofile(props) {
          }
       }
       groupProfile();
-   }, [props.match.params.groupId, currentUser, isMember]
+   }, [props.match.params.groupId, currentUser]
    );
 
    // async function getUrl(username) {
@@ -158,7 +158,9 @@ export default function Groupprofile(props) {
             })}`
          }
          //TODO: refresh:
-         window.location.reload();
+         const group = await fetchGroupData();
+         setGroupData(group);
+         postContent.value = "";
          return;
       } catch (e) {
          alert(`-error: ${e}`);
@@ -274,6 +276,24 @@ export default function Groupprofile(props) {
       }
    }
 
+   const groupActionButton = ()=> {
+      if (!isManager && !isMember)
+         return (
+            <div id='join-group'>
+               <button className='standard-btn' onClick={() => handleJoinGroup(currentUser.email)}>JOIN GROUP</button>
+            </div>);
+      else if (isMember)
+         return (
+            <div id='leave-group'>
+               <button className='standard-btn' onClick={() => alert(`are you sure? please contact the manager by message button`)}>LEAVE GROUP</button>
+            </div>);
+      else
+         return (
+            <div id='delete-group'>
+               <button className='standard-btn' onClick={() => alert(`are you sure? DELETE is not revertabel!`)}>DELETE THE Whole GROUP</button>
+            </div>);
+   }
+
    return (
       <div>
          <Navigation />
@@ -367,18 +387,8 @@ export default function Groupprofile(props) {
                </div>
             </div>
 
-            {
-               (!isManager && !isMember) && (
-                  <div id='join-group'>
-                     <button className='standard-btn' onClick={() => handleJoinGroup(currentUser.email)}>JOIN GROUP</button>
-                  </div>)
-            }
-            {
-               (isManager || isMember) && (
-                  <div id='leave-group'>
-                     <button className='standard-btn' onClick={() => alert(`are you sure? please contact the manager by message button`)}>LEAVE GROUP</button>
-                  </div>)
-            }
+            {/* "join OR leave Or delete BUTTON" */}
+            {groupActionButton()}
 
          </div>
          <Footer />
