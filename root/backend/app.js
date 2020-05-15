@@ -3,10 +3,10 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const app = express();
 
-// app.use(bodyParser.urlencoded());
-app.use(express.json());
 // cookie parser middleware
 app.use(cookieParser());
+// app.use(bodyParser.urlencoded());
+app.use(express.json());
 app.use(session({
    name: "sessionId",
    resave: false,

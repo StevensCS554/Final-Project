@@ -20,73 +20,78 @@ const usersData = data.usersData;
 
 //create
 router.post("/", async (req, res) => {
-    console.log(req.session);
-    console.log(req.cookies);
+   console.log(req.session);
 
-    try {
+   try {
 
-        const username = req.body.username;
-        const email = req.body.email;
-        const age = req.body.age;
-        const zipcode = req.body.zipcode;
-        const gender = req.body.gender;
-        const phone = req.body.phone;
-        const bio = req.body.bio;
+      const username = req.body.username;
+      const email = req.body.email;
+      const age = req.body.age;
+      const zipcode = req.body.zipcode;
+      const gender = req.body.gender;
+      const phone = req.body.phone;
+      const bio = req.body.bio;
 
-        //required
-        if (username) {
-            if (typeof username !== 'string') {
-                throw `You Must Provide A username with string type! what you give:${typeof username}`;
-            }
-        } else {
-            throw "You Must Provide A username!";
-        }
-        if (email) {
-            if (typeof email !== 'string') {
-                throw `You Must Provide A email with string type! what you give:${typeof email}`;
-            }
-        } else {
-            throw "You Must Provide A email!";
-        }
-        if (age) {
-            if (isNaN(age)) {
-                throw `You Must Provide A age with number type! what you give:${typeof age}`;
-            }
-        } else {
-            throw "You Must Provide A age!";
-        }
-        if (zipcode) {
-            if (typeof zipcode !== 'string') {
-                throw `You Must Provide A zipcode with string type! what you give:${typeof zipcode}`;
-            }
-        } else {
-            throw "You Must Provide A zipcode!";
-        }
-        if (gender) {
-            if (typeof gender !== 'string') {
-                throw `You Must Provide A gender with string type! what you give:${typeof gender}`;
-            }
-        } else {
-            throw "You Must Provide A gender!";
-        }
-        if (phone) {
-            if (typeof phone !== 'string') {
-                throw `You Must Provide A phone with string type! what you give:${typeof phone}`;
-            }
-        } else {
-            throw "You Must Provide A phone!";
-        }
-        //optional
-        if (bio) {
-            if (typeof bio !== 'string') {
-                throw `You Must Provide A bio with string type! what you give:${typeof bio}`;
-            }
-        }
-        const newUser = await usersData.createUser(username, email, age, zipcode, gender, phone, bio);
-        res.json(newUser);
-    } catch (e) {
-        res.status(500).json(e);
-    }
+      //required
+      if (username) {
+         if (typeof username !== 'string') {
+            throw `You Must Provide A username with string type! what you give:${typeof username}`;
+         }
+      } else {
+         throw "You Must Provide A username!";
+      }
+      if (email) {
+         if (typeof email !== 'string') {
+            throw `You Must Provide A email with string type! what you give:${typeof email}`;
+         }
+      } else {
+         throw "You Must Provide A email!";
+      }
+      if (age) {
+         if (isNaN(age)) {
+            throw `You Must Provide A age with number type! what you give:${typeof age}`;
+         }
+      } else {
+         throw "You Must Provide A age!";
+      }
+      if (zipcode) {
+         if (typeof zipcode !== 'string') {
+            throw `You Must Provide A zipcode with string type! what you give:${typeof zipcode}`;
+         }
+      } else {
+         throw "You Must Provide A zipcode!";
+      }
+      if (gender) {
+         if (typeof gender !== 'string') {
+            throw `You Must Provide A gender with string type! what you give:${typeof gender}`;
+         }
+      } else {
+         throw "You Must Provide A gender!";
+      }
+      if (phone) {
+         if (typeof phone !== 'string') {
+            throw `You Must Provide A phone with string type! what you give:${typeof phone}`;
+         }
+      } else {
+         throw "You Must Provide A phone!";
+      }
+      //optional
+      if (bio) {
+         if (typeof bio !== 'string') {
+            throw `You Must Provide A bio with string type! what you give:${typeof bio}`;
+         }
+      }
+      const newUser = await usersData.createUser(username, email, age, zipcode, gender, phone, bio);
+      req.session.userId = newUser._id;
+      console.log(req.session);
+      if (!req.cookies) {
+         res.cookie('Agile Monster', newUser._id);
+         console.log(req.cookies);
+      }
+      res.json(newUser);
+   } catch (e) {
+      res.status(500).json(e);
+   }
 });
 
 router.get("/:newUsername", async (req, res) => {
@@ -142,22 +147,22 @@ router.get("/getuserbyemail/:email", async (req, res) => {
 });
 
 router.get("/getUserByUsername/:username", async (req, res) => {
-    try {
-        const username = req.params.username;
-        if (username) {
-            if (typeof username !== 'string') {
-                throw `You Must Provide A username with string type! what you give:${typeof username}`;
-            }
-        } else {
-            throw "You Must Provide A username!";
-        }
+   try {
+      const username = req.params.username;
+      if (username) {
+         if (typeof username !== 'string') {
+            throw `You Must Provide A username with string type! what you give:${typeof username}`;
+         }
+      } else {
+         throw "You Must Provide A username!";
+      }
 
-        const user = await usersData.readUserByName(username);
-        if (user == null) throw `user not found with username: ${username}`;
-        res.status(200).json(user);
-    } catch (e) {
-        res.status(500).json(e);
-    }
+      const user = await usersData.readUserByName(username);
+      if (user == null) throw `user not found with username: ${username}`;
+      res.status(200).json(user);
+   } catch (e) {
+      res.status(500).json(e);
+   }
 });
 
 router.put("/:id", async (req, res) => {
@@ -260,42 +265,58 @@ router.delete("/:userId/:groupId", async (req, res) => {
 })
 
 // User Image file upload route!!! Added by Kuan //
-router.post('/upload', async (req, res) => {
-   if (req.files.file === null)
-      return res.status(400).json({ msg: 'No file uploaded!' });
+// router.post('/upload', async (req, res) => {
+//    if (req.files.file === null)
+//       return res.status(400).json({ msg: 'No file uploaded!' });
 
-   const file = req.files.file;
-   const date = new Date();
-   const newName = date + file.name;
-   file.mv(path.resolve(`../frontend/src/upload/users/${newName}`), err => {
-      if (err) {
-         console.log(err);
-         return res.status(500).json({ e: err });
-      }
-      res.status(500).json({
-         filename: file.name,
-         filepath: `/uploads/users/${newName}`
-      })
-   });
-});
+//    const file = req.files.file;
+//    const date = new Date();
+//    const newName = date + file.name;
+//    file.mv(path.resolve(`../frontend/src/upload/users/${newName}`), err => {
+//       if (err) {
+//          console.log(err);
+//          return res.status(500).json({ e: err });
+//       }
+//       res.status(500).json({
+//          filename: file.name,
+//          filepath: `/uploads/users/${newName}`
+//       })
+//    });
+// });
+
 
 // Get groups user in
 router.get('/groups/:username', async (req, res) => {
-    console.log('df' + req.params.username);
-    try {
-        const groups = await usersData.getUserGroup(req.params.username);
-        res.status(200).json({
-            groups: groups
-        })
-    } catch (e) {
-        console.log('groups' + e);
-        res.status(502).json({
-            error: e
-        })
-    }
+   try {
+      const groups = await usersData.getUserGroup(req.params.username);
+      res.status(200).json({
+         groups: groups
+      })
+   } catch (e) {
+      console.log('groups' + e);
+      res.status(502).json({
+         error: e
+      })
+   }
 });
 
+const hehe = (s) => {
+   return JSON.parse(JSON.stringify(s));
+}
+
 router.get('/profile/:username', async (req, res) => {
+   console.log(req.session);
+   const cookie = JSON.parse(JSON.stringify(req.cookies));
+   if (Object.entries(cookie).length === 0 && cookie.constructor === Object) {
+      console.log(hehe(req.cookies));
+      res.cookie("Agile Monster", "value", {
+         maxAge: 1000 * 60 * 60
+      });
+      req.session.cookie.userId = req.session.userId;
+      console.log(req.session.cookie);
+      console.log(hehe(req.cookies));
+   }
+
    try {
       const url = await usersData.getUserProfileUrl(req.params.username);
       res.status(200).json({
@@ -308,6 +329,7 @@ router.get('/profile/:username', async (req, res) => {
    }
 });
 
+// update user profile
 router.post('/profile/:username', async (req, res) => {
    try {
       await usersData.updateUserProfile(req.params.username, req.body.url);
@@ -315,6 +337,7 @@ router.post('/profile/:username', async (req, res) => {
          msg: 'success!'
       })
    } catch (e) {
+      console.log(e);
       res.status(500).json({
          error: e
       })
@@ -328,19 +351,21 @@ router.get('/', async (req, res) => {
          users: users
       });
    } catch (e) {
+      console.log(e);
       res.status(500).json({
          error: e
       })
    }
 });
 
-router.get('/getUserByName/:username', async(req, res) => {
+router.get('/getUserByName/:username', async (req, res) => {
    try {
       const user = await usersData.readUserByName(req.params.username);
       res.status(200).json({
          user: user
       });
-   } catch(e) {
+   } catch (e) {
+      console.log(e);
       res.status(500).json({
          error: e
       })

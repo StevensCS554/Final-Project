@@ -11,7 +11,6 @@ router.get("/:groupId", async (req, res) => {
    try {
       const id = req.params.groupId;
       const checkedId = checkId(id);
-
       const targetGroup = await groupsData.getById(checkedId);
       res.json(targetGroup);
    } catch (e) {
@@ -96,6 +95,7 @@ router.post("/:userId", async (req, res) => {
       const newGroup = await groupsData.creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGroupNo, zipcode, managerId, latitude, longitude);
       res.json(newGroup);
    } catch (e) {
+      console.log(e);
       res.status(500).json(e);
    }
 });
@@ -148,6 +148,7 @@ router.put("/:id", async (req, res) => {
       const updatedGroup = await groupsData.updateGroup(checkedId, groupName, groupNotice, maxAge, minAge, gender, maxGroupNo);
       res.json(updatedGroup);
    } catch (e) {
+      console.log(e);
       res.status(500).json(e);
    }
 });
@@ -165,6 +166,7 @@ router.delete("/:id", async (req, res) => {
          throw `delete fail` + e;
       }
    } catch (e) {
+      console.log(e);
       res.status(500).json(e);
    }
 })
@@ -188,6 +190,7 @@ router.post('/post/:groupId', async (req, res) => {
       const postResult = await groupsData.createPost(groupId, username, content, time);
       res.status(200).json(postResult);
    } catch (e) {
+      console.log(e);
       res.status(500).json(e);
    }
 })
@@ -215,6 +218,7 @@ router.put('/profile/:groupId', async (req, res) => {
          msg: "success"
       })
    } catch (e) {
+      console.log(e);
       res.status(501).json({
          msg: e
       })
@@ -232,6 +236,7 @@ router.delete('/:groupId/:userId', async (req, res) => {
       const group = await groupsData.deleteMember(groupId, userId);
       res.status(200).json(group);
    } catch (e) {
+      console.log(e);
       res.status(500).json(e);
    }
 })
@@ -247,6 +252,7 @@ router.delete('/post/:groupId/:postId', async (req, res) => {
       const group = await groupsData.deletePost(groupId, postId);
       res.status(200).json(group);
    } catch (e) {
+      console.log(e);
       res.status(500).json(e);
    }
 })
@@ -266,6 +272,7 @@ router.get('/group/:username', async (req, res) => {
          groupId: group._id
       });
    } catch (e) {
+      console.log(e);
       res.status(500).json({
          error: e
       })
@@ -288,6 +295,8 @@ router.get('/local/:zipcode', async (req, res) => {
          numLeftOver: numLeftOver
       })
    } catch (e) {
+      console.log(e);
+
       res.status(500).json({
          error: e
       })
@@ -302,6 +311,7 @@ router.get('/local-groups/:zipcode', async (req, res) => {
          groups: groups
       })
    } catch (e) {
+      console.log(e);
       res.status(500).json({
          error: e
       })
@@ -315,7 +325,6 @@ router.get('/manager/:managerId', async (req, res) => {
          group: group
       });
    } catch (e) {
-      console.log(e);
       res.status(500).json({
          error: e
       })

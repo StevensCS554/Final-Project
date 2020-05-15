@@ -70,7 +70,7 @@ export default function Map() {
       <div>
          {lat && lng && (
             <GoogleMap
-               defaultZoom={10}
+               defaultZoom={12}
                defaultCenter={{ lat: lat, lng: lng }}
             >
                <Marker position={{
