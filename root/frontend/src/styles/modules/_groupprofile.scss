@@ -111,10 +111,18 @@
    }
 }
 
-#join-group, #leave-group {
+#join-group{
    margin-top: 3rem;
    button {
       width: 70%;
+   }
+   text-align: center;
+}
+#leave-group, #delete-group {
+   margin-top: 3rem;
+   button {
+      width: 70%;
+      color: $pro_medium_pink;
    }
    text-align: center;
 }
