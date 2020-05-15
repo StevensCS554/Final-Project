@@ -35,7 +35,7 @@ export default function Groupprofile(props) {
          }
       }
       groupProfile();
-   }, [props.match.params.groupId, currentUser, isMember]
+   }, [props.match.params.groupId, currentUser]
    );
 
    // async function getUrl(username) {
