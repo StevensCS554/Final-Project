@@ -160,6 +160,7 @@ export default function Groupprofile(props) {
          //TODO: refresh:
          const group = await fetchGroupData();
          setGroupData(group);
+         postContent.value = "";
          return;
       } catch (e) {
          alert(`-error: ${e}`);
