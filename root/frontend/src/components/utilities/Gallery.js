@@ -88,7 +88,7 @@ export default function Gallery(props) {
             setAllLocalGroups(groups);
          }
       } catch (e) {
-         alert(e);
+         alert(e.error);
       }
    }
 
