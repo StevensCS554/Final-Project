@@ -9,8 +9,6 @@ const userData = require('./users');
 const redis = require("redis");
 const client = redis.createClient();
 const bluebird = require("bluebird");
-const flat = require('flat');
-const unflatten = flat.unflatten;
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
 
