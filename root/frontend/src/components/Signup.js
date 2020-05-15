@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import Navigation from './utilities/Navigation';
+import logo from '../images/logo.png';
 import { AuthContext } from '../firebase/Auth';
 import Footer from './utilities/Footer';
 import { doCreateUserWithEmailAndPassword } from '../firebase/FirebaseFunctions';
@@ -438,7 +438,23 @@ export default function Signup() {
 
    return (
       <div>
-         <Navigation />
+        {/* navigation */}
+        <div className='navigation-bar'>
+            <div id='navbar-logo'>
+               <img src={logo} />
+            </div>
+
+            <div id='navbar-link'>
+               <ul>
+                  <li><Link to='/'>HOME</Link></li>
+                  <li><Link to='/explore'>EXPLORE</Link></li>
+                  <li><Link to='/login'>LOGIN</Link></li>
+                  <li><Link to='/signup'>SIGNUP</Link></li>
+               </ul>
+
+            </div>
+         </div>
+
          <div id='signup-header'>
             <p>SIGN UP</p>
             <div className='energy-bar'></div>

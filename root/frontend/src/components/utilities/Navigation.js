@@ -1,10 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { Link, Redirect } from 'react-router-dom';
-// import getProfile from './getProfile';
-import axios from 'axios';
 import logo from '../../images/logo.png';
+import axios from 'axios';
 import { AuthContext } from '../../firebase/Auth';
-// import profile from '../../images/team-bg.jpeg'
 import { doSignOut } from '../../firebase/FirebaseFunctions';
 
 export default function Navigation() {
@@ -34,6 +32,7 @@ export default function Navigation() {
          document.querySelector('#search-btn').disabled = true;
       else {
          document.querySelector('#search-btn').disabled = false;
+         setQuery(item);
          window.location.href = `http://localhost:3000/search-results/${item}`;
       }
    }

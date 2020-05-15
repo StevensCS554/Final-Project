@@ -1,5 +1,6 @@
-import React, { useContext,useState } from 'react';
-import Navigation from './utilities/Navigation';
+import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
+import logo from '../images/logo.png';
 import { doSignInWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../firebase/Auth';
@@ -63,6 +64,24 @@ export default function Login() {
    return (
       <div>
          {/* <Navigation /> */}
+         <div className='navigation-bar'>
+            <div id='navbar-logo'>
+               <img src={logo} />
+            </div>
+
+            <div id='navbar-link'>
+               <ul>
+                  <li><Link to='/'>HOME</Link></li>
+                  <li><Link to='/explore'>EXPLORE</Link></li>
+                  <li><Link to='/login'>LOGIN</Link></li>
+                  <li><Link to='/signup'>SIGNUP</Link></li>
+               </ul>
+
+            </div>
+         </div>
+
+
+
          <div id='login-container'>
             <div id='login-header'>
                <p>Login</p>
