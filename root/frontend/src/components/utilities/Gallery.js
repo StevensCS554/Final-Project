@@ -95,10 +95,12 @@ export default function Gallery(props) {
    async function getUserLocation() {
       if (navigator.geolocation) {
          navigator.geolocation.getCurrentPosition(async position => {
-            const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyCTJckDGDyHM8cZ9R-PKUIQGHgfhoXzzFA`);
-            const { results } = data;
-            const z = results[0].address_components[6].short_name;
-            setZipCode(z);
+            let username = null;
+            if (user) {
+               username = user.displayName;
+            }
+            const { data } = await axios.get(`http://localhost:4000/zipcodeApi/${position.coords.latitude}/${position.coords.longitude}/${username}`);
+            setZipCode(data);
          }, error => {
             alert(error);
          })
