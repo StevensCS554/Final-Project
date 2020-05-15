@@ -10,12 +10,14 @@
    "author": "Agile Monsters",
    "license": "ISC",
    "dependencies": {
+      "bluebird": "^3.7.2",
       "cookie-parser": "^1.4.5",
       "express": "^4.17.1",
       "express-fileupload": "^1.1.7-alpha.3",
-      "method-override": "^3.0.0",
       "express-session": "^1.17.1",
-      "mongodb": "^3.5.6"
+      "method-override": "^3.0.0",
+      "mongodb": "^3.5.6",
+      "redis": "^3.0.2"
    },
    "devDependencies": {
       "nodemon": "^2.0.3"
