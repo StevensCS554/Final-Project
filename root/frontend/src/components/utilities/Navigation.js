@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 // import getProfile from './getProfile';
 import axios from 'axios';
 import logo from '../../images/logo.png';
@@ -10,10 +10,12 @@ import { doSignOut } from '../../firebase/FirebaseFunctions';
 export default function Navigation() {
    const { currentUser } = useContext(AuthContext);
    const [userProfile, setUserProfile] = useState(null);
+   const [query, setQuery] = useState(null);
 
    useEffect(() => {
+      console.log(currentUser);
       getUrl();
-   }, []);
+   }, [query]);
 
    async function getUrl() {
       if (currentUser && currentUser.displayName) {
@@ -26,6 +28,15 @@ export default function Navigation() {
          }
       }
    }
+   const handleSearch = () => {
+      const item = document.querySelector('#search-item').value.trim();
+      if (item.length === 0)
+         document.querySelector('#search-btn').disabled = true;
+      else {
+         document.querySelector('#search-btn').disabled = false;
+         window.location.href = `http://localhost:3000/search-results/${item}`;
+      }
+   }
 
    return (
       <div className='navigation-bar'>
@@ -33,7 +44,7 @@ export default function Navigation() {
             <img src={logo} />
          </div>
          <div id='navbar-search'>
-            <input type='text' placeholder='Search group name or username' /><button type='submit'>SEARCH</button>
+            <input id='search-item' type='text' placeholder='Search group name or username' /><button id='search-btn' type='submit' onClick={handleSearch} >SEARCH</button>
          </div>
          <div id='navbar-link'>
             {!currentUser &&

@@ -20,8 +20,6 @@ const usersData = data.usersData;
 
 //create
 router.post("/", async (req, res) => {
-   console.log(req.session);
-
    try {
 
       const username = req.body.username;
@@ -84,10 +82,6 @@ router.post("/", async (req, res) => {
       const newUser = await usersData.createUser(username, email, age, zipcode, gender, phone, bio);
       req.session.userId = newUser._id;
       console.log(req.session);
-      if (!req.cookies) {
-         res.cookie('Agile Monster', newUser._id);
-         console.log(req.cookies);
-      }
       res.json(newUser);
    } catch (e) {
       res.status(500).json(e);
@@ -95,6 +89,7 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/:newUsername", async (req, res) => {
+   console.log(req.body);
    try {
       const newUsername = req.params.newUsername;
 
@@ -308,6 +303,7 @@ router.get('/profile/:username', async (req, res) => {
    console.log(req.session);
    const cookie = JSON.parse(JSON.stringify(req.cookies));
    if (Object.entries(cookie).length === 0 && cookie.constructor === Object) {
+      console.log(1);
       console.log(hehe(req.cookies));
       res.cookie("Agile Monster", "value", {
          maxAge: 1000 * 60 * 60
@@ -371,6 +367,26 @@ router.get('/getUserByName/:username', async (req, res) => {
       })
    }
 })
+
+// search everything !!!
+router.get('/search/:item', async (req, res) => {
+   try {
+      const result = {
+         userInfo: undefined,
+         groupsInfo: undefined
+      }
+      result.userInfo = await usersData.searchUsers(req.params.item);
+      result.groupsInfo = await data.groupsData.searchGroups(req.params.item);
+      res.status(200).json({
+         result: result
+      })
+   } catch(e) {
+      console.log(e);
+      res.status(500).json({
+         error: e
+      })
+   }
+});
 
 
 

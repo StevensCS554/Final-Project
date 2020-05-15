@@ -11,6 +11,7 @@ import CreateGroup from './components/CreateGroup';
 import UserProfile from './components/UserProfile';
 import GroupProfile from './components/GroupProfile';
 import GroupSetting from './components/GroupSetting';
+import SearchResults from './components/SearchResults';
 
 function App() {
    return (
@@ -25,6 +26,7 @@ function App() {
                <PrivateRoute path='/create-group/:username' component={CreateGroup} />
                <PrivateRoute path='/group-profile/:groupId' component={GroupProfile} />
                <PrivateRoute path='/edit-group/:userId' component={GroupSetting} />
+               <PrivateRoute path='/search-results/:query' component={SearchResults} />
             </div>
          </Router>
       </AuthProvider>

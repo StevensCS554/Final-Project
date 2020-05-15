@@ -1,0 +1,14 @@
+#search-results {
+   min-height: 70vh;
+   display: flex;
+   margin-top: 3rem;
+
+   #search-results-user {
+      flex: 1;
+      text-align: center;
+   }
+
+   #search-results-group {
+      flex: 1;
+   }
+}

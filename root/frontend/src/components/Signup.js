@@ -122,6 +122,7 @@ export default function Signup() {
                   'Content-Type': 'application/json'
                }
             });
+
             if (response.status === 200) {
                const res = await response.json();
                if (!res.noUser) {

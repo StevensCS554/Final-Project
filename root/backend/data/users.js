@@ -194,12 +194,20 @@ async function getUserProfileUrl(username) {
 async function updateUserProfile(username, url) {
    const usersCollection = await users();
    const updateInfo = await usersCollection.updateOne(
-      {username: username},
-      {$set: {profileUrl: url}}
+      { username: username },
+      { $set: { profileUrl: url } }
    );
    if (!updateInfo)
       throw 'Can\'t update profile url!';
    return await readUserByName(username);
+}
+
+async function searchUsers(username) {
+   const usersCollection = await users();
+   const user = await usersCollection.findOne({
+      username: username
+   })
+   return user;
 }
 
 //-----------------------------------check--------------------------------------
@@ -215,7 +223,9 @@ function checkId(id) {
    else throw "Input Can't Be An Id!"
 }
 
-module.exports = { createUser, readUser, readUserByName, 
+module.exports = {
+   createUser, readUser, readUserByName,
    updateUser, readUserByEmail, removeGroup, addGroup, deleteUser,
-    getAllUser, getUserGroup, getUserProfileUrl, addUserProfile,
-     updateUserProfile,getUserOwnGroup };
+   getAllUser, getUserGroup, getUserProfileUrl, addUserProfile,
+   updateUserProfile, getUserOwnGroup, searchUsers
+};

@@ -12,11 +12,14 @@
    "dependencies": {
       "bluebird": "^3.7.2",
       "cookie-parser": "^1.4.5",
+      "cors": "^2.8.5",
       "express": "^4.17.1",
       "express-fileupload": "^1.1.7-alpha.3",
       "express-session": "^1.17.1",
+      "flat": "^5.0.0",
       "method-override": "^3.0.0",
       "mongodb": "^3.5.6",
+      "node-redis": "^0.1.7",
       "redis": "^3.0.2"
    },
    "devDependencies": {
