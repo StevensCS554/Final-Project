@@ -34,33 +34,41 @@ router.get('/:latitude/:longitude/:username', async (req, res) => {
             }
         }
 
+        let zipcode = null;
         //if there is username then check for the redis.
         if (username) {
             const jsonZipcode = await client.getAsync(username);
             // found user's zipcode in redis
             if (jsonZipcode) {
-                const zipcode = JSON.parse(jsonZipcode)//unStringify
+                zipcode = JSON.parse(jsonZipcode)//unStringify
                 console.log("Zipcode come from the redis");
-                res.status(200).json(zipcode);
+                // res.status(200).json(zipcode);
             }
             //Do not have user's zipcode, then insert username-zipcode pair to redis
             else {
                 const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCTJckDGDyHM8cZ9R-PKUIQGHgfhoXzzFA`);
                 const { results } = data;
-                let zipcode = results[0].address_components[6].short_name;
-
+                zipcode = results[0].address_components[6].short_name;
+                console.log("Zipcode come from the google Api!");
                 let jsonZipcode = JSON.stringify(zipcode);//stringify
                 await client.setAsync(username, jsonZipcode);
+                //Note here >> 1 hour time expire, so the user location is assume not change during one hour!
+                await client.expireAsync(username, 3600);//set expire time
                 jsonZipcode = await client.getAsync(username);
                 zipcode = JSON.parse(jsonZipcode)//unStringify
-                res.status(200).json(zipcode);
+                // res.status(200).json(zipcode);
             }
         }
         //if there is no user login, then just fetch for the zipcode.
-        const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCTJckDGDyHM8cZ9R-PKUIQGHgfhoXzzFA`);
-        const { results } = data;
-        const zipcode = results[0].address_components[6].short_name;
-        res.status(200).json(zipcode);
+        else{
+            const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCTJckDGDyHM8cZ9R-PKUIQGHgfhoXzzFA`);
+            const { results } = data;
+            zipcode = results[0].address_components[6].short_name;
+            console.log("No user right now! Zipcode come from the google Api!");
+        }
+        if(zipcode)
+            res.status(200).json(zipcode);
+        else throw `zipcode fecth fail try again!`
     } catch (e) {
         res.status(500).json(e)
     }
