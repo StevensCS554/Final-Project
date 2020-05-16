@@ -93,17 +93,21 @@ export default function Gallery(props) {
    }
 
    async function getUserLocation() {
-      if (navigator.geolocation) {
-         navigator.geolocation.getCurrentPosition(async position => {
-            let username = null;
-            if (user) {
-               username = user.displayName;
-            }
-            const { data } = await axios.get(`http://localhost:4000/zipcodeApi/${position.coords.latitude}/${position.coords.longitude}/${username}`);
-            setZipCode(data);
-         }, error => {
-            alert(error);
-         })
+      try {
+         if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async position => {
+               let username = null;
+               if (user) {
+                  username = user.displayName;
+               }
+               const { data } = await axios.get(`http://localhost:4000/zipcodeApi/${position.coords.latitude}/${position.coords.longitude}/${username}`);
+               setZipCode(data);
+            }, error => {
+               alert(error);
+            })
+         }
+      } catch (e) {
+         alert(e);
       }
    };
 

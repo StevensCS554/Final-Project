@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import axios from 'axios';
+import { AuthContext } from '../../firebase/Auth';
 
 export default function Map() {
    const [selectedGroup, setSelectedGroup] = useState(null);
@@ -8,6 +9,7 @@ export default function Map() {
    const [lng, setLng] = useState(null);
    const [zipCode, setZipCode] = useState(null);
    const [groupData, setGroupData] = useState(null);
+   const { currentUser } = useContext(AuthContext);
 
    useEffect(() => {
       async function getUserLocation() {
@@ -54,15 +56,21 @@ export default function Map() {
    }
 
    async function getUserZipCode() {
-      if (navigator.geolocation) {
-         navigator.geolocation.getCurrentPosition(async position => {
-            const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=AIzaSyCTJckDGDyHM8cZ9R-PKUIQGHgfhoXzzFA`);
-            const { results } = data;
-            const z = results[0].address_components[6].short_name;
-            setZipCode(z);
-         }, error => {
-            alert(error);
-         })
+      try {
+         if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async position => {
+               let username = null;
+               if (currentUser) {
+                  username = currentUser.displayName;
+               }
+               const { data } = await axios.get(`http://localhost:4000/zipcodeApi/${position.coords.latitude}/${position.coords.longitude}/${username}`);
+               setZipCode(data);
+            }, error => {
+               throw error;
+            })
+         }
+      } catch (e) {
+         alert(e);
       }
    };
 
