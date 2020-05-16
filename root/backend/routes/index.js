@@ -1,5 +1,6 @@
 const groupRoute = require("./groups");
 const userRoute = require('./users');
+const zipcodeApiRoute = require('./zipcodeApi');
 
 module.exports = (app) => {
     app.use(function(req, res, next) {
@@ -11,6 +12,7 @@ module.exports = (app) => {
 
     app.use("/groups", groupRoute);
     app.use("/users", userRoute);
+    app.use("/zipcodeApi", zipcodeApiRoute)
 
    app.use("*", (req, res) => {
       res.status(404).json("Page Not Found");
