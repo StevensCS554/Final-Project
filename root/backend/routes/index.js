@@ -12,7 +12,7 @@ module.exports = (app) => {
 
     app.use("/groups", groupRoute);
     app.use("/users", userRoute);
-    app.use("/zipcodeApi", zipcodeApiRoute)
+    app.use("/zipcodeApi", zipcodeApiRoute);
 
    app.use("*", (req, res) => {
       res.status(404).json("Page Not Found");

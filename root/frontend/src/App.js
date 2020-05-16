@@ -13,6 +13,7 @@ import UserProfile from './components/UserProfile';
 import GroupProfile from './components/GroupProfile';
 import GroupSetting from './components/GroupSetting';
 import SearchResults from './components/SearchResults';
+import Chat from './components/Chat';
 
 function App() {
    return (
@@ -29,6 +30,7 @@ function App() {
                <PrivateRoute path='/edit-group/:userId' component={GroupSetting} />
                <PrivateRoute path='/search-results/:query' component={SearchResults} />
                <PrivateRoute path='/error/:message' component={Error} />
+               <PrivateRoute path='/chat/:roomname' component={Chat} />
             </div>
          </Router>
       </AuthProvider>

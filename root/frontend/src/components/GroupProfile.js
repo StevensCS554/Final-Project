@@ -293,6 +293,13 @@ export default function Groupprofile(props) {
             </div>);
    }
 
+   const createChatHref = () => {
+      if (manager) {
+         let roomName = [currentUser.displayName, manager.username];
+         return 'localhost:3000/chat/' + roomName.sort().join('');
+      }
+   };
+
    return (
       <div>
          <Navigation />
@@ -307,7 +314,7 @@ export default function Groupprofile(props) {
                            <img src={manager && manager.profileUrl || profile} alt="manager avatar" />
                            <p>Group Manager: {manager && manager.username}</p>
                         </Link>
-                        {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
+                        {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href={createChatHref()} target='_blank'>MESSAGE</a>)}
                      </div>
                   )}
 
@@ -376,7 +383,7 @@ export default function Groupprofile(props) {
                         <form onSubmit={handleCreatPost}>
                            <div id='group-info-posts-area'>
                               <label htmlFor='post-area'>Write Something...</label>
-                              <input type='text' id='post-area' required name='postContent' />
+                              <textarea type='text' id='post-area' required name='postContent' />
 
                               <button className='standard-btn' type='submit' >CREATE POST</button>
                            </div>

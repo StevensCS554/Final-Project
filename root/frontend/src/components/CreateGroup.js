@@ -4,6 +4,7 @@ import Footer from './utilities/Footer';
 import defaultGroup from '../images/group-bg.jpg';
 import { AuthContext } from '../firebase/Auth';
 import { Redirect } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Creategroup(props) {
    const { currentUser } = useContext(AuthContext);
@@ -13,28 +14,52 @@ export default function Creategroup(props) {
    const [success, setSuccess] = useState(false);
    let latitude = null;
    let longitude = null;
+   const [geoZipcode, setGeoZipcode] = useState("unKnow!");
+   const iniCheckParameter = {
+      groupName: false,
+      groupNotice: false,
+      maxAge: false,
+      minAge: false,
+      gender: false,
+      maxGroupNo: false,
+      zipcode: false,
+   };
+   const [checkParameter, setCheckParameter] = useState(iniCheckParameter);
 
    useEffect(() => {
       try {
          if (props.match.params.username !== currentUser.displayName)
             throw `do not create groups for other user!`
          fetchUserByName(currentUser.displayName);
-         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-               latitude = position.coords.latitude;
-               longitude = position.coords.longitude;
-               setLat(latitude);
-               setLng(longitude);
-            }, error => {
-               alert(error);
-            })
+         async function getZip() {
+            if (navigator.geolocation) {
+               navigator.geolocation.getCurrentPosition(async position => {
+                  let username = null;
+                  if (currentUser) {
+                     username = currentUser.displayName;
+                  }
+                  const { data } = await axios.get(`http://localhost:4000/zipcodeApi/${position.coords.latitude}/${position.coords.longitude}/${username}`);
+                  setGeoZipcode(data);
+                  latitude = position.coords.latitude;
+                  longitude = position.coords.longitude;
+                  setLat(latitude);
+                  setLng(longitude);
+               }, error => {
+                  alert(error);
+               })
+            }
          }
-
+         getZip();
+         if (checkParameter.zipcode) {
+            document.getElementById('group-form-btn').disabled = false;
+         } else {
+            document.getElementById('group-form-btn').disabled = true;
+         }
          // getUserLocation();
       } catch (e) {
          alert(e);
       }
-   }, [props.match.params.username]);
+   }, [props.match.params.username, checkParameter.zipcode]);
 
    if (success) {
       return <Redirect to='/explore' />
@@ -71,6 +96,10 @@ export default function Creategroup(props) {
          if (!groupNotice) {
             throw `Please input the groupNotice!`;
          }
+         const zipcode = document.getElementById('zipcode').value;
+         if (!zipcode) {
+            throw `Please input the zipcode!`;
+         }
          const maxAge = document.getElementById('maxAge').value;
          if (!maxAge) {
             throw `Please input the maxAge!`;
@@ -95,9 +124,6 @@ export default function Creategroup(props) {
          if (maxGroupNo <= 0) {
             throw `Max group number should be bigger than 0!`;
          }
-         //TODO: get the zipcode from someware:
-         alert("TODO: get the zipcode from someware: hard code 07307 for now");
-         const zipcode = "07307";
 
          const response = await fetch(`http://localhost:4000/groups/${user._id}`, {
             method: "POST",
@@ -132,10 +158,68 @@ export default function Creategroup(props) {
          e.preventDefault();
          await createGroup();
          alert("Success");
-         // window.location.reload();
+         window.location.href = "http://localhost:3000/explore";
          return;
       } catch (e) {
          alert(e);
+      }
+   }
+
+   const zipcodeBlur = (e) => {
+      e.preventDefault();
+      const newZipcode = e.target.value.trim();
+      const message = document.getElementById('zipcode-message');
+      if (!newZipcode || newZipcode.length === 0) {
+         message.innerHTML = 'You have to enter zipcode!';
+         message.className = 'red-message';
+         e.target.className = 'error';
+         setCheckParameter({
+            ...checkParameter,
+            zipcode: false
+         });
+      }
+      else {
+         const regex = /^\d*$/;
+         if (!regex.test(newZipcode)) {
+            message.innerHTML = 'Sorry, input can\'t be a zipcode.';
+            message.className = 'red-message';
+            e.target.className = 'error';
+            setCheckParameter({
+               ...checkParameter,
+               zipcode: false
+            });
+         }
+         else {
+            if (newZipcode.length !== 5) {
+               message.innerHTML = 'Sorry, zipcode size should be 5.';
+               message.className = 'red-message';
+               e.target.className = 'error';
+               setCheckParameter({
+                  ...checkParameter,
+                  zipcode: false
+               });
+            }
+            else {
+               if (newZipcode !== geoZipcode) {
+                  message.innerHTML = 'Sorry, group will be creat at your curren location make sure is same';
+                  message.className = 'red-message';
+                  e.target.className = 'error';
+                  setCheckParameter({
+                     ...checkParameter,
+                     zipcode: false
+                  });
+               }
+               else {
+                  message.innerHTML = 'Checked!';
+                  message.className = 'green-message';
+                  e.target.className = '';
+                  setCheckParameter({
+                     ...checkParameter,
+                     zipcode: true
+                  });
+               }
+            }
+         }
       }
    }
 
@@ -151,12 +235,16 @@ export default function Creategroup(props) {
                   <form onSubmit={handleCreateGroup}>
                      <div className='single-input'>
                         <label htmlFor='groupName'>Group Name</label>
-                        <input type='text' name='groupName' id='groupName' />
+                        <input type='text' name='groupName' id='groupName' required />
                      </div>
 
                      <div className='single-input'>
                         <label htmlFor='groupNotice'>Group Notice</label>
-                        <input type='text' name='groupNotice' id='groupNotice' />
+                        <input type='text' name='groupNotice' id='groupNotice' required />
+                     </div>
+                     <div className='single-input'>
+                        <label htmlFor='zipcode'>Location Zipcode</label><label id='zipcode-message' className=''>(group will be creat at your curren location)</label>
+                        <input type='text' name='zipcode' id='zipcode' onBlur={zipcodeBlur} required placeholder={`you current zipcode:${geoZipcode}`} />
                      </div>
                      <p>Group Limitations</p>
                      <div className='energy-bar'></div>
@@ -164,18 +252,18 @@ export default function Creategroup(props) {
                         <div id='age-limitations'>
                            <div id='p1'>
                               <label htmlFor='maxAge'>Max Age</label>
-                              <input type='number' id='maxAge' name='maxAge' />
+                              <input type='number' id='maxAge' name='maxAge' required />
                            </div>
                            <div id='p2'>
                               <label htmlFor='minAge'>Min Age</label>
-                              <input type='number' id='minAge' name='minAge' />
+                              <input type='number' id='minAge' name='minAge' required />
                            </div>
                         </div>
 
                         <div id='gender-limitations'>
                            <label htmlFor="gender">Gender</label>
-                           <select name="gender" id="gender">
-                              <option defaultValue="other">None</option>
+                           <select name="gender" id="gender" defaultValue="male" required>
+                              <option value="none">None</option>
                               <option value="male">Male Only</option>
                               <option value="female">Female Only</option>
                            </select>
@@ -183,12 +271,12 @@ export default function Creategroup(props) {
 
                         <div id='number-limitations'>
                            <label>Max Number</label>
-                           <input type='number' name='maxGroupNo' id='maxGroupNo' />
+                           <input type='number' name='maxGroupNo' id='maxGroupNo' required />
                         </div>
                      </div>
-                     {lat && lng && (
-                        <button id='group-form-btn' className='standard-btn' type='submit'>SUBMIT</button>
-                     )}
+                     <button id='group-form-btn' className='standard-btn' type='submit'>SUBMIT</button>
+                     {/* {lat && lng && (
+                     )} */}
                   </form>
 
                </div>
