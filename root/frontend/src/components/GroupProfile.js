@@ -276,7 +276,7 @@ export default function Groupprofile(props) {
       }
    }
 
-   const groupActionButton = ()=> {
+   const groupActionButton = () => {
       if (!isManager && !isMember)
          return (
             <div id='join-group'>
@@ -294,6 +294,13 @@ export default function Groupprofile(props) {
             </div>);
    }
 
+   const createChatHref = () => {
+      if (manager) {
+         let roomName = [currentUser.displayName, manager.username];
+         return 'localhost:3000/chat/' + roomName.sort().join('');
+      }
+   };
+
    return (
       <div>
          <Navigation />
@@ -308,7 +315,7 @@ export default function Groupprofile(props) {
                            <img src={manager && manager.profileUrl || profile} alt="manager avatar" />
                            <p>Group Manager: {manager && manager.username}</p>
                         </Link>
-                        {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href='#'>MESSAGE</a>)}
+                        {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href={createChatHref()} target='_blank'>MESSAGE</a>)}
                      </div>
                   )}
 
