@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 export default function error404(props) {
     return (
         <div>
-            <h1> 404 ! Not Found! {props.message}</h1>
+            <h1> Oops something wrong in the server: {props.match.params.message}</h1>
             <br />
-            <Link to="/">Go to Home </Link>
+            <Link to="/explore">Go to main page</Link>
         </div>
     )
 }

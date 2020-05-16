@@ -5,7 +5,6 @@ import profile from '../images/team-bg.jpeg';
 import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
 import { AuthContext } from '../firebase/Auth';
-import axios from 'axios';
 // import Error from './utilities/Error';//404 component!
 
 export default function Groupprofile(props) {
@@ -84,7 +83,7 @@ export default function Groupprofile(props) {
          // alert(resolved.email);
          return resolved;
       } catch (e) {
-         throw e;
+         window.location.href = `http://localhost:3000/error/${e}`
       }
    }
 
@@ -99,7 +98,7 @@ export default function Groupprofile(props) {
          }
          return userList;
       } catch (e) {
-         throw e;
+         window.location.href = `http://localhost:3000/error/${e}`;
       }
    }
 

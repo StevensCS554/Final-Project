@@ -37,7 +37,7 @@ export default function Gallery(props) {
             const { url } = data;
             setUserProfile(url);
          } catch (e) {
-            alert(`get url` + e);
+            window.location.href = `http://localhost:3000/error/${e}`
          }
       }
    };

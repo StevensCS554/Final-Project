@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from '../../images/logo.png';
 import axios from 'axios';
 import { AuthContext } from '../../firebase/Auth';
