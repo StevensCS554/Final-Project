@@ -243,7 +243,7 @@ export default function Creategroup(props) {
                         <input type='text' name='groupNotice' id='groupNotice' required />
                      </div>
                      <div className='single-input'>
-                        <label htmlFor='zipcode'>Location Zipcode</label><label id='zipcode-message' className=''></label>
+                        <label htmlFor='zipcode'>Location Zipcode</label><label id='zipcode-message' className=''>(group will be creat at your curren location)</label>
                         <input type='text' name='zipcode' id='zipcode' onBlur={zipcodeBlur} required placeholder={`you current zipcode:${geoZipcode}`} />
                      </div>
                      <p>Group Limitations</p>
