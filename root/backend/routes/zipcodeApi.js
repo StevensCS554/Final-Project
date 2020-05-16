@@ -64,8 +64,11 @@ router.get('/:latitude/:longitude/:username', async (req, res) => {
             const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCTJckDGDyHM8cZ9R-PKUIQGHgfhoXzzFA`);
             const { results } = data;
             zipcode = results[0].address_components[6].short_name;
+            console.log("No user right now! Zipcode come from the google Api!");
         }
-        res.status(200).json(zipcode);
+        if(zipcode)
+            res.status(200).json(zipcode);
+        else throw `zipcode fecth fail try again!`
     } catch (e) {
         res.status(500).json(e)
     }
