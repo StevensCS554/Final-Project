@@ -204,7 +204,7 @@ async function getAllLocalGroups(zipcode) {
       const jsonGroups = await client.getAsync(zipcode);
       if (jsonGroups) {
          const localGroups = JSON.parse(jsonGroups)//unStringify
-         console.log("come from the redis");
+         console.log("groups come from the redis");
          return localGroups;
       } else {
          const groups = await getAll();
@@ -213,16 +213,11 @@ async function getAllLocalGroups(zipcode) {
             if (groups[i].zipcode === zipcode)
                localGroups.push(groups[i]);
          }
-         // let flatLocalGroups = flat([localGroups]);//flat
-         // let jsonGroups = JSON.stringify(flatLocalGroups);//stringify
-         // await client.setAsync(zipcode, jsonGroups);
-         // console.log("--------------------------------------------");
-         // jsonGroups = await client.getAsync(zipcode);
-         // flatLocalGroups = JSON.parse(jsonGroups)//unStringify
-         // localGroups = unflatten(flatLocalGroups);//unflat
-         // res.json(localGroups);
+         console.log("groups come from the mongodb!");
          let jsonGroups = JSON.stringify(localGroups);//stringify
          await client.setAsync(zipcode, jsonGroups);
+         //Note here >> 60 second time expire, so the new created group will appear after 1 min.
+         await client.expireAsync(zipcode, 60);//set expire time in second
          jsonGroups = await client.getAsync(zipcode);
          localGroups = JSON.parse(jsonGroups)//unStringify
          return localGroups;

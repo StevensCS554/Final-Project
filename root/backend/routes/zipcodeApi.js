@@ -48,9 +48,11 @@ router.get('/:latitude/:longitude/:username', async (req, res) => {
                 const { data } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCTJckDGDyHM8cZ9R-PKUIQGHgfhoXzzFA`);
                 const { results } = data;
                 let zipcode = results[0].address_components[6].short_name;
-
+                console.log("Zipcode come from the google Api!");
                 let jsonZipcode = JSON.stringify(zipcode);//stringify
                 await client.setAsync(username, jsonZipcode);
+                //Note here >> 1 hour time expire, so the user location is assume not change during one hour!
+                await client.expireAsync(username, 3600);//set expire time
                 jsonZipcode = await client.getAsync(username);
                 zipcode = JSON.parse(jsonZipcode)//unStringify
                 res.status(200).json(zipcode);
