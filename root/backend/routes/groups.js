@@ -107,6 +107,7 @@ router.put("/:id", async (req, res) => {
       const id = req.params.id;
       const groupName = req.body.groupName;
       const groupNotice = req.body.groupNotice;
+      const zipcode = req.body.zipcode;
       const maxAge = req.body.maxAge;
       const minAge = req.body.minAge;
       const gender = req.body.gender;
@@ -122,6 +123,11 @@ router.put("/:id", async (req, res) => {
       if (groupNotice) {
          if (typeof groupNotice !== 'string') {
             throw `You Must Provide A groupNotice with string type! what you give:${typeof groupNotice}`;
+         }
+      }
+      if (zipcode) {
+         if (typeof zipcode !== 'string') {
+            throw `You Must Provide A zipcode with string type! what you give:${typeof zipcode}`;
          }
       }
       if (maxAge) {
@@ -145,7 +151,7 @@ router.put("/:id", async (req, res) => {
          }
       }
 
-      const updatedGroup = await groupsData.updateGroup(checkedId, groupName, groupNotice, maxAge, minAge, gender, maxGroupNo);
+      const updatedGroup = await groupsData.updateGroup(checkedId, groupName, groupNotice, zipcode, maxAge, minAge, gender, maxGroupNo);
       res.json(updatedGroup);
    } catch (e) {
       console.log(e);

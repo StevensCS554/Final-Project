@@ -384,7 +384,7 @@ export default function Groupprofile(props) {
                         <form onSubmit={handleCreatPost}>
                            <div id='group-info-posts-area'>
                               <label htmlFor='post-area'>Write Something...</label>
-                              <input type='text' id='post-area' required name='postContent' />
+                              <textarea type='text' id='post-area' required name='postContent' />
 
                               <button className='standard-btn' type='submit' >CREATE POST</button>
                            </div>
