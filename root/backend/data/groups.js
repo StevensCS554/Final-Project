@@ -71,7 +71,7 @@ async function creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGro
 };
 
 //update group
-async function updateGroup(id, groupName = null, groupNotice = null, maxAge = null, minAge = null, gender = null, maxGroupNo = null) {
+async function updateGroup(id, groupName = null, groupNotice = null, zipcode = null, maxAge = null, minAge = null, gender = null, maxGroupNo = null) {
    try {
       const checkedId = checkId(id);//double check may not needed;
 
@@ -84,6 +84,10 @@ async function updateGroup(id, groupName = null, groupNotice = null, maxAge = nu
       if (groupNotice) {
          const updatedGroup = await groupsCollection.updateOne({ _id: checkedId }, { $set: { groupNotice: groupNotice } });
          if (updatedGroup.modifiedCount === 0) throw "Can't Update groupNotice of Group with ID: " + checkedId;
+      }
+      if (zipcode) {
+         const updatedGroup = await groupsCollection.updateOne({ _id: checkedId }, { $set: { zipcode: zipcode } });
+         if (updatedGroup.modifiedCount === 0) throw "Can't Update zipcode of Group with ID: " + checkedId;
       }
       if (maxAge) {
          const updatedGroup = await groupsCollection.updateOne({ _id: checkedId }, { $set: { maxAge: maxAge } });

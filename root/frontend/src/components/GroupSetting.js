@@ -8,6 +8,16 @@ export default function GroupSetting(props) {
    const [groupProfile, setGroupProfile] = useState(null);
    const [profileUrl, setProfileUrl] = useState(null);
    const [group, setGroup] = useState(null);
+   const groupParameter = {
+      groupName: null,
+      groupNotice: null,
+      maxAge: null,
+      minAge: null,
+      gender: null,
+      maxGroupNo: null,
+      zipcode: null,
+   };
+   const [checkParameter, setCheckParameter] = useState(groupParameter);
 
    useEffect(() => {
       async function getGroup() {
@@ -16,6 +26,7 @@ export default function GroupSetting(props) {
             const { group } = data;
             setGroup(group);
             setProfileUrl(group.groupProfileUrl);
+            setCheckParameter(group);
          } catch (e) {
             alert(e);
          }
@@ -23,53 +34,95 @@ export default function GroupSetting(props) {
       getGroup();
    }, [profileUrl])
 
-   async function updateGroup() {
-      const groupName = document.getElementById('groupName').value;
-      const reqBody = {};
-      if (group) {
-         if (groupName && groupName !== group.groupName) {
-            reqBody.groupName = groupName;
+   async function handleUpdateGroup(e) {
+      try {
+         e.preventDefault();
+         const reqBody = {};
+         if (group && checkParameter) {
+            //sample error handle
+            if (!checkParameter.groupName) {
+               throw `Please input the groupName!`;
+            }
+            if (!checkParameter.groupNotice) {
+               throw `Please input the groupNotice!`;
+            }
+            const regex = /^\d*$/;
+            if (!checkParameter.zipcode || checkParameter.zipcode.length === 0) {
+               throw 'You have to enter zipcode!';
+            }
+            else if (!regex.test(checkParameter.zipcode)) {
+               throw 'Sorry, input can\'t be a zipcode.';
+            }
+            else if (checkParameter.zipcode.length !== 5) {
+               throw 'Sorry, zipcode size should be 5.';
+            }
+            if (!checkParameter.maxAge) {
+               throw `Please input the maxAge!`;
+            }
+            if (checkParameter.maxAge < 10 || checkParameter.maxAge > 100) {
+               throw `Max Age should be in range 10~100!`;
+            }
+            if (!checkParameter.minAge) {
+               throw `Please input the minAge!`;
+            }
+            if (checkParameter.minAge < 10 || checkParameter.minAge > 100) {
+               throw `Min Age should be in range 10~100!`;
+            }
+            if (checkParameter.minAge > checkParameter.maxAge) {
+               throw `Min Age should not be bigger than max age!`;
+            }
+            if (!checkParameter.maxGroupNo) {
+               throw `Please input the maxGroupNo!`;
+            }
+            if (checkParameter.maxGroupNo <= 0) {
+               throw `Max group number should be bigger than 0!`;
+            }
+
+            //check if info ever changed!
+            if (checkParameter.groupName && checkParameter.groupName !== group.groupName) {
+               reqBody.groupName = checkParameter.groupName;
+            }
+            if (checkParameter.groupNotice && checkParameter.groupNotice !== group.groupNotice) {
+               reqBody.groupNotice = checkParameter.groupNotice;
+            }
+            if (checkParameter.zipcode && checkParameter.zipcode !== group.zipcode) {
+               reqBody.zipcode = checkParameter.zipcode;
+               alert(`Zipcode Checked! But the latitude and longitude is still same! Need to implemant later!`);
+            }
+            if (checkParameter.maxAge && checkParameter.maxAge !== group.maxAge) {
+               reqBody.maxAge = checkParameter.maxAge;
+            }
+            if (checkParameter.minAge && checkParameter.minAge !== group.minAge) {
+               reqBody.minAge = checkParameter.minAge;
+            }
+            if (checkParameter.gender && checkParameter.gender !== group.gender) {
+               reqBody.gender = checkParameter.gender;
+            }
+            if (checkParameter.maxGroupNo && checkParameter.maxGroupNo !== group.maxGroupNo) {
+               reqBody.maxGroupNo = checkParameter.maxGroupNo;
+            }
+            if (Object.keys(reqBody).length === 0) {
+               throw 'Please change some information!'
+            }
+            const response = await fetch(`http://localhost:4000/groups/${group._id}`, {
+               method: "PUT",
+               headers: {
+                  'Content-Type': 'application/json'
+               },
+               body: JSON.stringify(reqBody)
+            });
+            if (!response.ok) {
+               throw `Sorry, something went wrong! status:${response.status}, statusText:${response.statusText} message:${await response.json().then((error) => {
+                  return error;
+               })}`;
+            }
+            alert(`success`);
+            window.location.href = `http://localhost:3000/group-profile/${group._id}`;
          }
-         const groupNotice = document.getElementById('groupNotice').value;
-         if (groupNotice && groupNotice !== group.groupNotice) {
-            reqBody.groupNotice = groupNotice;
-         }
-         const maxAge = document.getElementById('maxAge').value;
-         if (maxAge && maxAge !== group.maxAge) {
-            reqBody.maxAge = maxAge;
-         }
-         const minAge = document.getElementById('minAge').value;
-         if (minAge && minAge !== group.minAge) {
-            reqBody.minAge = minAge;
-         }
-         const gender = document.getElementById('gender').value;
-         if (gender && gender !== group.phone) {
-            reqBody.phone = gender;
-         }
-         const maxGroupNo = document.getElementById('maxGroupNo').value;
-         if (maxGroupNo && maxGroupNo !== group.maxGroupNo) {
-            reqBody.maxGroupNo = maxGroupNo;
-         }
-         if (Object.keys(reqBody).length === 0) {
-            alert('Please change some information!')
-            return false;
-         }
-         const response = await fetch(`http://localhost:4000/groups/${group._id}`, {
-            method: "PUT",
-            headers: {
-               'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(reqBody)
-         });
-         if (response.status === 200) {
-            alert('Succes!');
-         }
-         else {
-            alert('Sorry, something went wrong!');
-            console.log(await response.json());
-         }
-         //window.location.reload();
+      } catch (e) {
+         alert(e);
       }
+
    }
 
    const uploadFile = (e) => {
@@ -115,15 +168,27 @@ export default function GroupSetting(props) {
                      </div>
                   </form>
                   <div id='create-group-form'>
-                     <form>
+                     <form onSubmit={handleUpdateGroup}>
                         <div className='single-input'>
                            <label htmlFor='groupName'>Group Name</label>
-                           <input type='text' name='groupName' id='groupName' placeholder={group && group.groupName} />
+                           <input type='text' name='groupName' id='groupName'
+                              value={checkParameter && checkParameter.groupName}
+                              onChange={(e) => setCheckParameter({ ...checkParameter, groupName: e.target.value })}
+                           />
                         </div>
-
                         <div className='single-input'>
                            <label htmlFor='groupNotice'>Group Notice</label>
-                           <input type='text' name='groupNotice' id='groupNotice' placeholder={group && group.groupNotice} />
+                           <input type='text' name='groupNotice' id='groupNotice'
+                              value={checkParameter && checkParameter.groupNotice}
+                              onChange={(e) => setCheckParameter({ ...checkParameter, groupNotice: e.target.value })}
+                           />
+                        </div>
+                        <div className='single-input'>
+                           <label htmlFor='zipcode'>Location Zipcode</label>
+                           <input type='text' name='zipcode' id='zipcode'
+                              value={checkParameter && checkParameter.zipcode}
+                              onChange={(e) => setCheckParameter({ ...checkParameter, zipcode: e.target.value })}
+                           />
                         </div>
                         <p>Group Limitations</p>
                         <div className='energy-bar'></div>
@@ -131,17 +196,25 @@ export default function GroupSetting(props) {
                            <div id='age-limitations'>
                               <div id='p1'>
                                  <label htmlFor='maxAge'>Max Age</label>
-                                 <input type='number' id='maxAge' name='maxAge' placeholder={group && group.maxAge} />
+                                 <input type='number' id='maxAge' name='maxAge'
+                                    value={checkParameter && checkParameter.maxAge}
+                                    onChange={(e) => setCheckParameter({ ...checkParameter, maxAge: e.target.value })}
+                                 />
                               </div>
                               <div id='p2'>
                                  <label htmlFor='minAge'>Min Age</label>
-                                 <input type='number' id='minAge' name='minAge' placeholder={group && group.minAge} />
+                                 <input type='number' id='minAge' name='minAge'
+                                    value={checkParameter && checkParameter.minAge}
+                                    onChange={(e) => setCheckParameter({ ...checkParameter, minAge: e.target.value })}
+                                 />
                               </div>
                            </div>
-
                            <div id='gender-limitations'>
                               <label htmlFor="gender">Gender</label>
-                              <select name="gender" id="gender" placeholder={group && group.gender}>
+                              <select name="gender" id="gender"
+                                 value={checkParameter && checkParameter.gender}
+                                 onChange={(e) => setCheckParameter({ ...checkParameter, gender: e.target.value })}
+                              >
                                  <option value="male">Male Only</option>
                                  <option value="female">Female Only</option>
                                  <option value="other">None</option>
@@ -150,12 +223,15 @@ export default function GroupSetting(props) {
 
                            <div id='number-limitations'>
                               <label>Max Number</label>
-                              <input type='number' name='maxGroupNo' id='maxGroupNo' placeholder={group && group.maxGroupNo} />
+                              <input type='number' name='maxGroupNo' id='maxGroupNo'
+                                 value={checkParameter && checkParameter.maxGroupNo}
+                                 onChange={(e) => setCheckParameter({ ...checkParameter, maxGroupNo: e.target.value })}
+                              />
                            </div>
                         </div>
 
+                        <button id='group-form-btn' className='standard-btn' typs='submit'>SAVE CHANGES</button>
                      </form>
-                     <button id='group-form-btn' className='standard-btn' onClick={updateGroup}>SAVE CHANGES</button>
 
                   </div>
                </div>
