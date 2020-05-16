@@ -37,7 +37,7 @@ export default function Gallery(props) {
             const { url } = data;
             setUserProfile(url);
          } catch (e) {
-            window.location.href = `http://localhost:3000/error/${e}`
+            window.location.href = `http://localhost:3000/error/${e}`;
          }
       }
    };
@@ -49,7 +49,7 @@ export default function Gallery(props) {
             const { groups } = data;
             setUserGroups(groups);
          } catch (e) {
-            alert('get groups' + e);
+            window.location.href = `http://localhost:3000/error/${e}`;
          }
       }
    }
@@ -62,7 +62,7 @@ export default function Gallery(props) {
             setUserOwnGroup(groupName);
             setOwnGroupId(groupId);
          } catch (e) {
-            alert('get user group' + e);
+            window.location.href = `http://localhost:3000/error/${e}`;
          }
       }
    }
@@ -76,7 +76,7 @@ export default function Gallery(props) {
             setNoLeftOver(numLeftOver);
          }
       } catch (e) {
-         alert(e);
+         window.location.href = `http://localhost:3000/error/${e}`;
       }
    }
 
@@ -88,7 +88,7 @@ export default function Gallery(props) {
             setAllLocalGroups(groups);
          }
       } catch (e) {
-         alert(e.error);
+         window.location.href = `http://localhost:3000/error/${e}`;
       }
    }
 
@@ -102,7 +102,7 @@ export default function Gallery(props) {
             const { data } = await axios.get(`http://localhost:4000/zipcodeApi/${position.coords.latitude}/${position.coords.longitude}/${username}`);
             setZipCode(data);
          }, error => {
-            alert(error);
+            window.location.href = `http://localhost:3000/error/${error}`;
          })
       }
    };

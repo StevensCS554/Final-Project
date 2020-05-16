@@ -34,7 +34,7 @@ export default function Groupprofile(props) {
          }
       }
       groupProfile();
-   }, [props.match.params.groupId, currentUser]
+   }, [props.match.params.groupId, currentUser, isMember]
    );
 
    // async function getUrl(username) {
@@ -275,7 +275,7 @@ export default function Groupprofile(props) {
       }
    }
 
-   const groupActionButton = ()=> {
+   const groupActionButton = () => {
       if (!isManager && !isMember)
          return (
             <div id='join-group'>

@@ -89,7 +89,6 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/:newUsername", async (req, res) => {
-   console.log(req.body);
    try {
       const newUsername = req.params.newUsername;
 
@@ -301,17 +300,16 @@ const hehe = (s) => {
 
 router.get('/profile/:username', async (req, res) => {
    console.log(req.session);
-   const cookie = JSON.parse(JSON.stringify(req.cookies));
-   if (Object.entries(cookie).length === 0 && cookie.constructor === Object) {
-      console.log(1);
-      console.log(hehe(req.cookies));
-      res.cookie("Agile Monster", "value", {
-         maxAge: 1000 * 60 * 60
-      });
-      req.session.cookie.userId = req.session.userId;
-      console.log(req.session.cookie);
-      console.log(hehe(req.cookies));
-   }
+   // if (Object.entries(cookie).length === 0 && cookie.constructor === Object) {
+   //    console.log(1);
+   //    console.log(hehe(req.cookies));
+   //    res.cookie("Agile Monster", "value", {
+   //       maxAge: 1000 * 60 * 60
+   //    });
+   //    req.session.cookie.userId = req.session.userId;
+   //    console.log(req.session.cookie);
+   //    console.log(hehe(req.cookies));
+   // }
 
    try {
       const url = await usersData.getUserProfileUrl(req.params.username);

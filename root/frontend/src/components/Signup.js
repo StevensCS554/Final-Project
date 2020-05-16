@@ -62,6 +62,7 @@ export default function Signup() {
         await doCreateUserWithEmailAndPassword(email_v, password_v, username_v);
    
          const response = await fetch("http://localhost:4000/users", {
+            credentials: 'same-origin',
             method: "POST",
             headers: {
                'Content-Type': 'application/json'

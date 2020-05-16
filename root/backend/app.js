@@ -2,15 +2,9 @@ const express = require("express");
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const app = express();
-// const cors = require('cors');
 
 
-// app.use(cors({
-//    credentials: true,
-//    origin: "localhost:3000"
-// }))
-// cookie parser middleware
-app.use(cookieParser());
+// app.use(cookieParser());
 // app.use(bodyParser.urlencoded());
 app.use(session({
    name: "sessionId",
