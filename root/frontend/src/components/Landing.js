@@ -1,7 +1,11 @@
 import React, { useEffect, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import logo from '../images/logo.png';
-import teamBg from '../images/team-bg.jpeg';
+import k from '../images/kuanlvu.jpeg';
+import j from '../images/Jason.jpeg';
+import r from '../images/XingyuanRui.jpeg';
+import z from '../images/Christine.jpeg'
+
 import { throttle } from 'lodash';
 import Footer from './utilities/Footer';
 import { AuthContext } from '../firebase/Auth';
@@ -68,7 +72,7 @@ const Landing = () => {
                <div id='landing-fe-features'>
                   <div id='landing-fe-box' className='is-revealed'>
                      <div id='landing-fe-box-heading'>
-                        <i className="fas fa-desktop fa-2x"></i><h2>FEATURE 1</h2>
+                        <i className="fas fa-desktop fa-2x"></i><h2>Find what inspires you</h2>
                      </div>
                      <div id='landing-fe-box-content'>
                         <p>Find what your neighbors are up to and find a gorup of your interest to join. With the help of Google Map, 
@@ -77,7 +81,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-fe-box' className='is-revealed'>
                      <div id='landing-fe-box-heading'>
-                        <i className="fas fa-object-ungroup fa-2x"></i><h2>FEATURE 2</h2>
+                        <i className="fas fa-object-ungroup fa-2x"></i><h2>Plan events on the fly</h2>
                      </div>
                      <div id='landing-fe-box-content'>
                         <p>Create your own group and start to manage it. Attract more people in your community to 
@@ -87,7 +91,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-fe-box' className='is-revealed'>
                      <div id='landing-fe-box-heading'>
-                        <i className="fas fa-thumbs-up fa-2x"></i><h2>FEATURE 3</h2>
+                        <i className="fas fa-thumbs-up fa-2x"></i><h2>Make real connections</h2>
                      </div>
                      <div id='landing-fe-box-content'>
                         <p>Chatting with group managers and group members in real time allows you to arrange group
@@ -107,7 +111,7 @@ const Landing = () => {
                <div id='landing-tm-box-c' className='is-revealed'>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} alt="teamBg"/>
+                        <img src={k} alt="kuanlvu's picture"/>
                         <h3>Kuan Lyu</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
@@ -117,7 +121,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} alt="teamBg" />
+                        <img src={j} alt="Jason's picture" />
                         <h3>Jiaxian Xing</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
@@ -127,7 +131,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} alt="teamBg" />
+                        <img src={r} alt="teamBg" />
                         <h3>Xingyuan Rui</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
@@ -137,7 +141,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} alt="teamBg"/>
+                        <img src={z} alt="Christine's picture"/>
                         <h3>Luyun Zheng</h3>
                      </div>
                      <div id='landing-tm-box-contact'>

@@ -47,12 +47,11 @@ export default function ProfileForm() {
    }, [profileUrl]);
 
    async function updateUser() {
-      const username = document.getElementById('username').value;
+      if (document.getElementById('age-message').className === 'red-messasge' || document.getElementById('zipcode-message').className === 'red-messasge' || document.getElementById('phone-message').className === 'red-message') {
+         alert('Input not correct!');
+      }
       const reqBody = {};
       if (userData) {
-         if (username && username !== userData.username) {
-            reqBody.username = username;
-         }
          const gender = document.getElementById('gender').value;
          if (gender && gender !== userData.gender) {
             reqBody.gender = gender;
@@ -134,6 +133,78 @@ export default function ProfileForm() {
       );
    }
 
+   const ageChange = (e) => {
+      e.preventDefault();
+      const newAge = e.target.value.trim();
+      const message = document.getElementById('age-message');
+      const regex = /^\d*$/;
+      if (!regex.test(newAge)) {
+         message.innerHTML = 'Sorry, input can\'t be a age.';
+         message.className = 'red-message';
+         e.target.className = 'error';
+      }
+      else {
+         if (parseInt(newAge) < 10 || parseInt(newAge) > 100) {
+            message.innerHTML = 'Sorry, age out of range: 10 to 100.';
+            message.className = 'red-message';
+            e.target.className = 'error';
+         }
+         else {
+            message.innerHTML = 'Checked!';
+            message.className = 'green-message';
+            e.target.className = '';
+         }
+      }
+   }
+
+   const zipcodeChange = (e) => {
+      e.preventDefault();
+      const newZipcode = e.target.value.trim();
+      const message = document.getElementById('zipcode-message');
+      const regex = /^\d*$/;
+      if (!regex.test(newZipcode)) {
+         message.innerHTML = 'Sorry, input can\'t be a zipcode.';
+         message.className = 'red-message';
+         e.target.className = 'error';
+      }
+      else {
+         if (newZipcode.length !== 5) {
+            message.innerHTML = 'Sorry, zipcode size should be 5.';
+            message.className = 'red-message';
+            e.target.className = 'error';
+         }
+         else {
+            message.innerHTML = 'Checked!';
+            message.className = 'green-message';
+            e.target.className = '';
+         }
+      }
+   }
+
+   const phoneChange = (e) => {
+      e.preventDefault();
+      const newPhone = e.target.value.trim();
+      const message = document.getElementById('phone-message');
+      const regex = /^\d*$/;
+      if (!regex.test(newPhone)) {
+         message.innerHTML = 'Sorry, input can\'t be a phone number.';
+         message.className = 'red-message';
+         e.target.className = 'error';
+      }
+      else {
+         if (newPhone.length !== 10) {
+            message.innerHTML = 'Sorry, phone number size should be 10.';
+            message.className = 'red-message';
+            e.target.className = 'error';
+         }
+         else {
+            message.innerHTML = 'Checked!';
+            message.className = 'green-message';
+            e.target.className = '';
+         }
+      }
+   }
+
    return (
       <div id='profile-form-container'>
          <div id='profile-form'>
@@ -147,8 +218,11 @@ export default function ProfileForm() {
             </form>
             <form id='profile-form-f'>
                <div className='form-group'>
-                  <label htmlFor='username'>Username</label>
-                  <input type='text' name='username' id='username' placeholder={userData && userData.username} />
+                  <label htmlFor='username'>Username: {userData && userData.username}</label>
+                  {/* <input type='text' name='username' id='username' placeholder={userData && userData.username} /> */}
+               </div>
+               <div className='form-group'>
+                  <label htmlFor='email'>Email: {userData && userData.email}</label>
                </div>
                <div className='form-group' id='gender-input'>
                   <label htmlFor="gender">Gender</label>
@@ -159,16 +233,16 @@ export default function ProfileForm() {
                   </select>
                </div>
                <div className='form-group' id='age-input'>
-                  <label htmlFor='age'>Age</label>
-                  <input type='number' name='age' id='age' placeholder={userData && userData.age} />
+                  <label htmlFor='age'>Age</label><label id='age-message' className=''></label>
+                  <input type='number' name='age' id='age' placeholder={userData && userData.age} onChange={ageChange} />
                </div>
                <div className='form-group' id='zipcode-input'>
-                  <label htmlFor='zipcode'>Zip Code</label>
-                  <input type='text' name='zipcode' id='zipcode' placeholder={userData && userData.zipcode} />
+                  <label htmlFor='zipcode'>Zip Code</label><label id='zipcode-message' className=''></label>
+                  <input type='text' name='zipcode' id='zipcode' placeholder={userData && userData.zipcode} onChange={zipcodeChange} />
                </div>
                <div className='form-group'>
-                  <label htmlFor='cellphone'>Cell Phone</label>
-                  <input type='tel' name='cellphone' id='cellphone' placeholder={userData && userData.phone} />
+                  <label htmlFor='cellphone' className='title'>Cell Phone</label><label id='phone-message' className=''></label>
+                  <input type='tel' name='cellphone' id='cellphone' placeholder={userData && userData.phone} onChange={phoneChange} />
                </div>
                <div className='form-group'>
                   <label htmlFor='bio'>Bio</label>
