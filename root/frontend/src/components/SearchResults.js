@@ -39,7 +39,7 @@ export default function SearchResults(props) {
             <div id='search-results-user'>
                {user && (
                   <Link to={`/userprofile/${user.username}`}>
-                     <img src={user.profileUrl} />
+                     <img src={user.profileUrl} alt="user profile url"/>
                      <p>username: {user.username}</p>
                   </Link>
                )}
@@ -53,7 +53,7 @@ export default function SearchResults(props) {
                {groups && groups.map((group => {
                   return <Link to={`/group-profile/${group._id}`}>
                      <div className='single-group'>
-                        <img style={{ width: '100%', height: '100%' }} src={group.groupProfileUrl} />
+                        <img style={{ width: '100%', height: '100%' }} src={group.groupProfileUrl} alt="group profile url"/>
                         <div className='single-group-overlay'>
                            <p>{group.groupName}</p>
                         </div>

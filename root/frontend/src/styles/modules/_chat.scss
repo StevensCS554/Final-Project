@@ -42,6 +42,9 @@
     li {
         padding: 0.5rem;
     }
+    li.admin-message{
+        color: gray;
+    }
     li:nth-child(odd) {
         background: #eee;
     }

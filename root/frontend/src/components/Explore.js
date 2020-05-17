@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import Navigation from './utilities/Navigation';
 import Map from './utilities/Map';
 import Gallery from './utilities/Gallery';

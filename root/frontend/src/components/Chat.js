@@ -23,6 +23,7 @@ export default function Chat(props) {
         const messages = document.querySelector("#chat-messages");
         const li = document.createElement("li");
         li.innerHTML = user + ": " + text;
+        if (user === 'Admin') li.className = 'admin-message';
         messages.appendChild(li);
         window.scrollTo(0, document.body.scrollHeight);
     }
@@ -30,7 +31,7 @@ export default function Chat(props) {
     const sendText = (e) => {
         e.preventDefault();
         const input = document.querySelector(".input");
-        socket.emit("message", { name: currentUser.displayName, room: roomName, message: input.value });
+        if(input.value) socket.emit("message", { name: currentUser.displayName, room: roomName, message: input.value });
         input.value = "";
         return false;
     }

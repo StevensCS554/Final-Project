@@ -442,7 +442,7 @@ export default function Signup() {
          {/* navigation */}
          <div className='navigation-bar'>
             <div id='navbar-logo'>
-               <img src={logo} />
+               <img src={logo} alt="logo"/>
             </div>
 
             <div id='navbar-link'>

@@ -165,7 +165,7 @@ export default function GroupSetting(props) {
                <div id='create-group-container'>
                   <form id='form1' onSubmit={submitForm1}>
                      <div id='create-group-profile'>
-                        <img src={profileUrl} />
+                        <img src={profileUrl} alt="profileUrl"/>
                         <input id='setting-input1' type='file' onChange={uploadFile} />
                         <label htmlFor='userprofile' />
                         <input id='setting-input2' className='standard-btn' type='submit' value='CHANGE AVATAR' />
