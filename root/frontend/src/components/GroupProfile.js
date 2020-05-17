@@ -324,7 +324,7 @@ export default function Groupprofile(props) {
                                  <p>{user.username}</p>
                                  <img src={(user && user.profileUrl) || profile} alt="user avatar" />
                               </Link>
-                              <div id='group-members-links'>
+                              <div className='group-members-links'>
                                  <a href={createChatHref(user.username)} target='_blank'>MESSAGE</a>
                                  {isManager && (<a href='#' onClick={() => handleMemberDelete(user._id)}>DELETE</a>)}
                               </div>
@@ -361,11 +361,11 @@ export default function Groupprofile(props) {
                            // };
                            return (
                               <div className='single-posts' id={post._id}>
-                                 <div id='group-info-posts-header'>
+                                 <div className='group-info-posts-header'>
                                     <span className=""> Time:{post.time} </span>
                                     <span className=""> Post by:{post.username} </span>
                                  </div>
-                                 <div id='group-info-posts-content'>
+                                 <div className='group-info-posts-content'>
                                     <p>{post.content}</p>
                                  </div>
                                  {isManager && (<div id='btn-wrapper'><button className='standard-btn' onClick={() => handleDeletePost(post._id)}>DELETE POST</button></div>)}
