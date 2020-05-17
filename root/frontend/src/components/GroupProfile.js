@@ -5,7 +5,7 @@ import profile from '../images/team-bg.jpeg';
 import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
 import { AuthContext } from '../firebase/Auth';
-import axios from 'axios';
+// import axios from 'axios';
 // import Error from './utilities/Error';//404 component!
 
 export default function Groupprofile(props) {
@@ -16,7 +16,6 @@ export default function Groupprofile(props) {
    const [isMember, setIsMember] = useState(false);
    const [manager, setManager] = useState(undefined);
    const [memberList, setMemberList] = useState(undefined);
-   const [userProfile, setUserProfile] = useState(null);
    // const [error, setError] = useState(undefined);
 
    useEffect(() => {
@@ -250,7 +249,7 @@ export default function Groupprofile(props) {
             }
          });
          //error handle! 
-         if (groupResult.ok == false) {
+         if (groupResult.ok === false) {
             throw `fail to delete user from group! status:${groupResult.status}, statusText:${groupResult.statusText} message: ${await groupResult.json().then((error) => {
                return error;
             })}`
@@ -312,7 +311,7 @@ export default function Groupprofile(props) {
                   {manager && (
                      <div id='group-manager'>
                         <Link to={`/userprofile/${manager.username}`}>
-                           <img src={manager && manager.profileUrl || profile} alt="manager avatar" />
+                           <img src={(manager && manager.profileUrl) || profile} alt="manager avatar" />
                            <p>Group Manager: {manager && manager.username}</p>
                         </Link>
                         {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href={createChatHref()} target='_blank'>MESSAGE</a>)}
@@ -326,7 +325,7 @@ export default function Groupprofile(props) {
                            <div id={user._id} className='single-group-member'>
                               <Link to={`/userprofile/${user.username}`}>
                                  <p>{user.username}</p>
-                                 <img src={user && user.profileUrl || profile} alt="user avatar" />
+                                 <img src={(user && user.profileUrl) || profile} alt="user avatar" />
                               </Link>
                               <div id='group-members-links'>
                                  {/* <a href='#'>MESSAGE</a> */}
@@ -343,7 +342,7 @@ export default function Groupprofile(props) {
                   {/* group info section */}
                   <div id='group-info-container'>
                      <div id='group-info-pic'>
-                        <img src={groupData && groupData.groupProfileUrl || defaultGroup} alt="group avatar" />
+                        <img src={(groupData && groupData.groupProfileUrl) || defaultGroup} alt="group avatar" />
                      </div>
                      <div id='group-info-name'>
                         <p>Group Name: {groupData && groupData.groupName}</p>

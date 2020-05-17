@@ -43,9 +43,9 @@ const Landing = () => {
          <div id="landing">
             <div id='navbar'>
                <nav>
-                  <a id='logo-link' href='#'><img id='logo' src={logo} alt='company logo' /></a>
+                  <img id='logo' src={logo} alt='company logo' />
                   <ul>
-                     <li><a href='#' className='current'>Home</a></li>
+                     <li><a href='/' className='current'>Home</a></li>
                      <li><Link to='/explore'>Explore</Link></li>
                      <li><Link to='/login'>Login</Link></li>
                      <li><Link to='/signup'>Sigup</Link></li>
@@ -54,8 +54,8 @@ const Landing = () => {
 
                <div id='header-content'>
                   <h1>A New Way of life</h1>
-                  <p>some text bla bla</p>
-                  <a href='#'>Get Started Now!</a>
+                  <p>Join a local group, discover something new, or do what you interested about.</p>
+                  <a href='/explore'>Get Started Now!</a>
                </div>
             </div>
          </div>
@@ -72,7 +72,12 @@ const Landing = () => {
                         <i className="fas fa-desktop fa-2x"></i><h2>feature1</h2>
                      </div>
                      <div id='landing-fe-box-content'>
-                        <p>Some random shit</p>
+                        <p>Authentication</p>
+                        <ul>
+                           <li>Sign up</li>
+                           <li>Sign in</li>
+                           <li>Sign out</li>
+                        </ul>
                      </div>
                   </div>
                   <div id='landing-fe-box' className='is-revealed'>
@@ -80,7 +85,14 @@ const Landing = () => {
                         <i className="fas fa-object-ungroup fa-2x"></i><h2>feature2</h2>
                      </div>
                      <div id='landing-fe-box-content'>
-                        <p>Some random shit</p>
+                        <p>Group Activity</p>
+                           <ul >
+                              <li>Start a new goup</li>
+                              <li>Discover groups by location</li>
+                              <li>Join groups</li>
+                              <li>Delete a member in group</li>
+                              <li>add posts in group</li>
+                           </ul>
                      </div>
                   </div>
                   <div id='landing-fe-box' className='is-revealed'>
@@ -88,7 +100,11 @@ const Landing = () => {
                         <i className="fas fa-thumbs-up fa-2x"></i><h2>feature3</h2>
                      </div>
                      <div id='landing-fe-box-content'>
-                        <p>Some random shit</p>
+                        <p>Small Chatting Room</p>
+                     <ul>
+                        <li>Chat between two people</li>
+                        <li>Quit notification</li>
+                     </ul>
                      </div>
                   </div>
                </div>
@@ -104,42 +120,42 @@ const Landing = () => {
                <div id='landing-tm-box-c' className='is-revealed'>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} />
+                        <img src={teamBg} alt="teamBg"/>
                         <h3>Kuan Lyu</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
-                        <p>bla bla</p>
-                        <a href='#'>Contact Him</a>
+                        <p>Group Manager</p>
+                        <a href='https://www.linkedin.com/in/kuan-lyu/'>Contact Him</a>
                      </div>
                   </div>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} />
+                        <img src={teamBg} alt="teamBg" />
                         <h3>Jiaxian Xing</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
-                        <p>bla bla</p>
-                        <a href='#'>Contact Him</a>
+                        <p>Group Member</p>
+                        <a href='https://www.linkedin.com/in/jiaxian-xing/'>Contact Him</a>
                      </div>
                   </div>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} />
+                        <img src={teamBg} alt="teamBg" />
                         <h3>Xingyuan Rui</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
-                        <p>bla bla</p>
-                        <a href='#'>Contact Him</a>
+                        <p>Group Member</p>
+                        <a href='https://www.linkedin.com/in/xingyuan-rui-b53212196/'>Contact Him</a>
                      </div>
                   </div>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} />
+                        <img src={teamBg} alt="teamBg"/>
                         <h3>Luyun Zheng</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
-                        <p>bla bla</p>
-                        <a href='#'>Contact Him</a>
+                        <p>Group Member</p>
+                        <a href='https://www.linkedin.com/in/luyun-zheng-772283193/'>Contact Her</a>
                      </div>
                   </div>
                </div>

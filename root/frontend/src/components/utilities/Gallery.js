@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { AuthContext } from '../../firebase/Auth'
 import axios from 'axios';
 import $ from 'jquery';
 
 export default function Gallery(props) {
    const { currentUser } = useContext(AuthContext);
-   const [user, setUser] = useState(props.user);
+   const [user] = useState(props.user);
    const [zipCode, setZipCode] = useState(undefined);
    const [userGroups, setUserGroups] = useState(undefined);
    const [userOwnGroup, setUserOwnGroup] = useState(null);
@@ -155,7 +155,7 @@ export default function Gallery(props) {
                   <div id='explore-gallery-sidebar-profile'>
                      {user && (
                         <div id='explore-gallery-sidebar-profile-header'>
-                           <img src={userProfile} />
+                           <img src={userProfile} alt="userProfile"/>
                            <p>{user.displayName}</p>
                            <Link to={`/userprofile/${user.displayName}`}><p>CHANGE PROFILE</p></Link>
                         </div>
@@ -218,7 +218,7 @@ export default function Gallery(props) {
                      return (
                         <Link to={`/group-profile/${group._id}`}>
                            <div className='single-group'>
-                              <img style={{ width: '100%', height: '100%' }} src={group.groupProfileUrl} />
+                              <img style={{ width: '100%', height: '100%' }} src={group.groupProfileUrl} alt="group profile url"/>
                               <div className='single-group-overlay'>
                                  <p>{group.groupName}</p>
                               </div>

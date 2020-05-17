@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
 import { doSignInWithEmailAndPassword } from '../firebase/FirebaseFunctions';
@@ -17,7 +17,7 @@ export default function Login() {
          const email_message = document.getElementById('email-message');
          const password_v = password.value.trim();
          const password_message = document.getElementById('password-message');
-         if (!email_v || email_v.length == 0) {
+         if (!email_v || email_v.length === 0) {
             email_message.innerHTML = 'You have to enter email!';
             email.className = 'error';
             return;
@@ -34,7 +34,7 @@ export default function Login() {
                email.className = '';
             }
          }
-         if (!password_v || password_v.length == 0) {
+         if (!password_v || password_v.length === 0) {
             password_message.innerHTML = 'You have to enter password!';
             password.className = 'error';
             return;
@@ -66,7 +66,7 @@ export default function Login() {
          {/* <Navigation /> */}
          <div className='navigation-bar'>
             <div id='navbar-logo'>
-               <img src={logo} />
+               <img src={logo} alt="logo"/>
             </div>
 
             <div id='navbar-link'>
@@ -97,9 +97,9 @@ export default function Login() {
                      <label htmlFor='password'>PASSWORD</label><label id='password-message' className='red-message'></label>
                      <input required name='password' type='password' />
                   </div>
-                  <div>
+                  {/* <div>
                      <a href='#'>Forget Password ?</a>
-                  </div>
+                  </div> */}
                   <div>
                      <button className='standard-btn'>LOGIN</button>
                   </div>

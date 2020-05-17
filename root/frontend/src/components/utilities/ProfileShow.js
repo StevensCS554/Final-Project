@@ -34,7 +34,7 @@ export default function ProfileForm(props) {
     return (
         <div id='profileShow-container'>
             <div id='profileShow-img'>
-                <img src={userData && userData.profileUrl || profile} alt="user avatar" />
+                <img src={( userData && userData.profileUrl )|| profile} alt="user avatar" />
             </div>
             <div id='profileShow-info'>
                 <p type='text' name='username' id='username'>USERNAME: {userData && userData.username}</p>
