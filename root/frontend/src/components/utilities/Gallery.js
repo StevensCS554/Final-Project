@@ -192,8 +192,9 @@ export default function Gallery(props) {
                            <button onClick={() => handleToggle1()} className='click-to-reveal'>THE GROUP YOU ARE IN</button>
                            <div style={{ display: 'none' }} ref={toggle1Ref}>
                               <ul>
+                                 
                                  {userGroups && userGroups.map((group) => {
-                                    return <Link to={`/group-profile/${group.groupId}`}><li key={group.groupId}>{group.groupName}</li></Link>
+                                    return <li key={group.groupId}><Link to={`/group-profile/${group.groupId}`}>{group.groupName}</Link></li>
                                  })}
                               </ul>
                            </div>
@@ -207,7 +208,7 @@ export default function Gallery(props) {
                      <div style={{ display: 'none' }} ref={toggle2Ref}>
                         <ul>
                            {allLocalGroups && allLocalGroups.map((group) => {
-                              return <Link to={`/group-profile/${group._id}`}><li key={group._id}>{group.groupName}</li></Link>
+                              return <li key={group._id}><Link to={`/group-profile/${group._id}`}>{group.groupName}</Link></li>
                            })}
                         </ul>
                      </div>

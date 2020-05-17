@@ -109,44 +109,44 @@ const Landing = () => {
                   <h1>OUR TEAM</h1>
                </div>
                <div id='landing-tm-box-c' className='is-revealed'>
-                  <div id='landing-tm-box'>
+                  <div className='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
                         <img src={k} alt="kuanlyu's picture"/>
                         <h2>Kuan Lyu</h2>
                      </div>
-                     <div id='landing-tm-box-contact'>
+                     <div className='landing-tm-box-contact'>
                         <p>Group Manager</p>
-                        <a target='_blanket' href='https://www.linkedin.com/in/kuan-lyu/'>Contact Him</a>
+                        <a target='blanket' href='https://www.linkedin.com/in/kuan-lyu/'>Contact Him</a>
                      </div>
                   </div>
-                  <div id='landing-tm-box'>
+                  <div className='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
                         <img src={j} alt="Jason's picture" />
                         <h2>Jiaxian Xing</h2>
                      </div>
-                     <div id='landing-tm-box-contact'>
+                     <div className='landing-tm-box-contact'>
                         <p>Group Member</p>
-                        <a target='_blanket' href='https://www.linkedin.com/in/jiaxian-xing/'>Contact Him</a>
+                        <a target='blanket' href='https://www.linkedin.com/in/jiaxian-xing/'>Contact Him</a>
                      </div>
                   </div>
-                  <div id='landing-tm-box'>
+                  <div className='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
                         <img src={r} alt="rui xing yuan's picture" />
                         <h2>Xingyuan Rui</h2>
                      </div>
-                     <div id='landing-tm-box-contact'>
+                     <div className='landing-tm-box-contact'>
                         <p>Group Member</p>
-                        <a target='_blanket' href='https://www.linkedin.com/in/xingyuan-rui-b53212196/'>Contact Him</a>
+                        <a target='blanket' href='https://www.linkedin.com/in/xingyuan-rui-b53212196/'>Contact Him</a>
                      </div>
                   </div>
-                  <div id='landing-tm-box'>
+                  <div className='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
                         <img src={z} alt="Christine's picture"/>
                         <h2>Luyun Zheng</h2>
                      </div>
-                     <div id='landing-tm-box-contact'>
+                     <div className='landing-tm-box-contact'>
                         <p>Group Member</p>
-                        <a target='_blanket' href='https://www.linkedin.com/in/luyun-zheng-772283193/'>Contact Her</a>
+                        <a target='blanket' href='https://www.linkedin.com/in/luyun-zheng-772283193/'>Contact Her</a>
                      </div>
                   </div>
                </div>

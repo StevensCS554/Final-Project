@@ -178,10 +178,11 @@
    margin: 0.5rem 2rem;
 }
 
-#landing-tm-box {
+.landing-tm-box {
    flex: 1;
    margin: 0 1rem;
    min-height: 40vh;
+   text-align: center;
    box-shadow: 2px 2px 4px 4px;
 
    &-profile {
@@ -190,7 +191,7 @@
       text-align: center;
    }
 
-   &-contact {
+   .landing-tm-box-contact {
       margin-top: 2rem;
       font-size: 1.5rem;
       text-align: center;
