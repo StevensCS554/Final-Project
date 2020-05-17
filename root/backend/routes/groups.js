@@ -12,7 +12,7 @@ router.get("/:groupId", async (req, res) => {
       const id = req.params.groupId;
       const checkedId = checkId(id);
       const targetGroup = await groupsData.getById(checkedId);
-      res.json(targetGroup);
+      res.status(200).json(targetGroup);
    } catch (e) {
       res.status(500).json(e);
    }
@@ -22,7 +22,7 @@ router.get("/:groupId", async (req, res) => {
 router.get("/", async (req, res) => {
    try {
       const allGroup = await groupsData.getAll();
-      res.json(allGroup)
+      res.status(200).json(allGroup)
    } catch (e) {
       res.status(500).json(e);
    }
@@ -93,7 +93,7 @@ router.post("/:userId", async (req, res) => {
       }
 
       const newGroup = await groupsData.creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGroupNo, zipcode, managerId, latitude, longitude);
-      res.json(newGroup);
+      res.status(200).json(newGroup);
    } catch (e) {
       console.log(e);
       res.status(500).json(e);
@@ -152,7 +152,7 @@ router.put("/:id", async (req, res) => {
       }
 
       const updatedGroup = await groupsData.updateGroup(checkedId, groupName, groupNotice, zipcode, maxAge, minAge, gender, maxGroupNo);
-      res.json(updatedGroup);
+      res.status(200).json(updatedGroup);
    } catch (e) {
       console.log(e);
       res.status(500).json(e);
@@ -302,7 +302,6 @@ router.get('/local/:zipcode', async (req, res) => {
       })
    } catch (e) {
       console.log(e);
-
       res.status(500).json({
          error: e
       })

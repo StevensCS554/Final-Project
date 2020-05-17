@@ -17,17 +17,17 @@ export default function Footer() {
                   </div>
                </div>
                <div id='landing-footer-links'>
-                  <a href='www.linkedin.com/in/kuan-lyu' target='_blank'>Group Manager</a>
-                  {/* <a href='#'>dummy link</a>
-                  <a href='#'>dummy link</a>
-                  <a href='#'>dummy link</a> */}
+                  <a href='https://www.linkedin.com/in/kuan-lyu/' target='_blank'>Group Manager</a>
+                  <a href='https://github.com/StevensCS554/Final-Project' target='_blank'>Our Work</a>
+                  <a target='_blanket' href='https://www.linkedin.com/in/luyun-zheng-772283193/'>Service Center</a>
+                  {/* <a href='#'>dummy link</a> */}
                </div>
                <div id='landing-footer-locations'>
                   <p>Castle Point Terrace, Hoboken, NJ 07030, US</p>
                   <p>Stevens Institute of Technology</p>
                </div>
             </div>
-            <p id='copy-right'>Coptyright 2020 &copy; AgileMonsters.com. All Rights Reserved</p>
+            <p style={{color: 'white', fontSize: '1.1rem', marginTop: '0.7rem'}} id='copy-right'>Coptyright 2020 &copy; AgileMonsters.com. All Rights Reserved</p>
          </div>
       </footer>
    )
