@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
-import axios from 'axios';
+//import axios from 'axios';
 import { doSignInWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../firebase/Auth';

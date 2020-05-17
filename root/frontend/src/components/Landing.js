@@ -2,6 +2,11 @@ import React, { useEffect, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import logo from '../images/logo.png';
 import teamBg from '../images/team-bg.jpeg';
+import k from '../images/kuanlvu.jpeg';
+import j from '../images/Jason.jpeg';
+import r from '../images/XingyuanRui.jpeg';
+import z from '../images/Christine.jpeg'
+
 import { throttle } from 'lodash';
 import Footer from './utilities/Footer';
 import { AuthContext } from '../firebase/Auth';
@@ -53,7 +58,7 @@ const Landing = () => {
 
                <div id='header-content'>
                   <h1>A New Way of life</h1>
-                  <p>Join a local group, discover something new, or do what you interested about.</p>
+                  <p>A social platform dedicated to grouping people with similar hobbies and interests.</p>
                   <a href='/explore'>Get Started Now!</a>
                </div>
             </div>
@@ -119,7 +124,7 @@ const Landing = () => {
                <div id='landing-tm-box-c' className='is-revealed'>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} alt="teamBg"/>
+                        <img src={k} alt="kuanlvu's pircture"/>
                         <h3>Kuan Lyu</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
@@ -129,7 +134,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} alt="teamBg" />
+                        <img src={j} alt="Jason's picture" />
                         <h3>Jiaxian Xing</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
@@ -139,7 +144,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} alt="teamBg" />
+                        <img src={r} alt="teamBg" />
                         <h3>Xingyuan Rui</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
@@ -149,7 +154,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={teamBg} alt="teamBg"/>
+                        <img src={z} alt="Christine's picture"/>
                         <h3>Luyun Zheng</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
