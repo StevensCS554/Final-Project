@@ -50,7 +50,22 @@
       input {
          width: 95%;
       }
-      
+      .title {
+         float: left;
+      }
+      .red-message, .green-message {
+         float: right;
+      }
+      .red-message {
+         color: red;
+      }
+      .green-message {
+         color: green;
+      }
+      input.error {
+         border-color: red;
+         box-shadow: none;
+      }
    }
 }
 
