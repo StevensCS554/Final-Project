@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import axios from 'axios';
 import { AuthContext } from '../../firebase/Auth';
+import { Link } from 'react-router-dom';
 
 export default function Map() {
    const [selectedGroup, setSelectedGroup] = useState(null);
@@ -98,7 +99,7 @@ export default function Map() {
                   />
                ))}
                {/* Why there are two pup ups ?!!! */}
-               {selectedGroup && (
+               {(selectedGroup) && (
                   <InfoWindow
                      position={{
                         lat: selectedGroup.lat,
@@ -108,7 +109,15 @@ export default function Map() {
                         setSelectedGroup(null);
                      }}
                   >
-                     <div>Some Details</div>
+                  {selectedGroup &&(
+                     <div>
+                        {/* <Link to={`/group-profile/:${selectedGroup._id}`} ></Link> */}
+                        <p>{selectedGroup.groupName}</p>
+                        {/* <p>{selectedGroup.groupNotice}</p>
+                        <img src={selectedGroup.groupProfileUrl} alt='group avatar'/> */}
+                     </div>
+                  )}
+
                   </InfoWindow>
                )}
 

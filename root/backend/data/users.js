@@ -88,10 +88,10 @@ async function updateUser(userId, username = null, email = null, age = null, zip
    await readUser(checkedId);
 
    const usersCollection = await users();
-   if (username) {
-      const updatedUser = await usersCollection.updateOne({ _id: checkedId }, { $set: { username: username } });
-      // if (updatedUser.modifiedCount === 0) throw "Can't Update username of User with ID: " + checkedId;
-   }
+   // if (username) {//NOT ALLOWED TO CHANGE!
+   //    const updatedUser = await usersCollection.updateOne({ _id: checkedId }, { $set: { username: username } });
+   //    // if (updatedUser.modifiedCount === 0) throw "Can't Update username of User with ID: " + checkedId;
+   // }
    if (email) {
       const updatedUser = await usersCollection.updateOne({ _id: checkedId }, { $set: { email: email } });
       // if (updatedUser.modifiedCount === 0) throw "Can't Update Email of User with ID: " + checkedId;

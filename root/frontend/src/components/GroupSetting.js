@@ -60,22 +60,22 @@ export default function GroupSetting(props) {
             if (!checkParameter.maxAge) {
                throw `Please input the maxAge!`;
             }
-            if (checkParameter.maxAge < 10 || checkParameter.maxAge > 100) {
+            if (parseInt(checkParameter.maxAge) < 10 || parseInt(checkParameter.maxAge) > 100) {
                throw `Max Age should be in range 10~100!`;
             }
             if (!checkParameter.minAge) {
                throw `Please input the minAge!`;
             }
-            if (checkParameter.minAge < 10 || checkParameter.minAge > 100) {
+            if (parseInt(checkParameter.minAge) < 10 || parseInt(checkParameter.minAge) > 100) {
                throw `Min Age should be in range 10~100!`;
             }
-            if (checkParameter.minAge > checkParameter.maxAge) {
+            if (parseInt(checkParameter.minAge) > parseInt(checkParameter.maxAge)) {
                throw `Min Age should not be bigger than max age!`;
             }
             if (!checkParameter.maxGroupNo) {
                throw `Please input the maxGroupNo!`;
             }
-            if (checkParameter.maxGroupNo <= 0) {
+            if (parseInt(checkParameter.maxGroupNo) <= 0) {
                throw `Max group number should be bigger than 0!`;
             }
 
@@ -86,10 +86,10 @@ export default function GroupSetting(props) {
             if (checkParameter.groupNotice && checkParameter.groupNotice !== group.groupNotice) {
                reqBody.groupNotice = checkParameter.groupNotice;
             }
-            if (checkParameter.zipcode && checkParameter.zipcode !== group.zipcode) {
+            // if (checkParameter.zipcode && checkParameter.zipcode !== group.zipcode) {
                reqBody.zipcode = checkParameter.zipcode;
-               alert(`Zipcode Checked! But the latitude and longitude is still same! Need to implemant later!`);
-            }
+               // alert(`Zipcode Checked! But the latitude and longitude is still same! Need to implemant later!`);
+            // }
             if (checkParameter.maxAge && checkParameter.maxAge !== group.maxAge) {
                reqBody.maxAge = checkParameter.maxAge;
             }
@@ -192,6 +192,7 @@ export default function GroupSetting(props) {
                            <input type='text' name='zipcode' id='zipcode'
                               value={checkParameter && checkParameter.zipcode}
                               onChange={(e) => setCheckParameter({ ...checkParameter, zipcode: e.target.value })}
+                              disabled
                            />
                         </div>
                         <p>Group Limitations</p>
