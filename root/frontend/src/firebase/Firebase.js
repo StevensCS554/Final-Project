@@ -1,5 +1,5 @@
 import * as firebase from 'firebase/app';
-//import config from './FirebaseConfig';
+import config from './FirebaseConfig';
 import 'firebase/auth';
 import 'firebase/storage';
 
