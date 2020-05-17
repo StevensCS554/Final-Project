@@ -111,7 +111,7 @@ const Landing = () => {
                <div id='landing-tm-box-c' className='is-revealed'>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={k} alt="kuanlvu's picture"/>
+                        <img src={k} alt="kuanlyu's picture"/>
                         <h3>Kuan Lyu</h3>
                      </div>
                      <div id='landing-tm-box-contact'>
@@ -131,7 +131,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
-                        <img src={r} alt="teamBg" />
+                        <img src={r} alt="rui xing yuan's picture" />
                         <h3>Xingyuan Rui</h3>
                      </div>
                      <div id='landing-tm-box-contact'>

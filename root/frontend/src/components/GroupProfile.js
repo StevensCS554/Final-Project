@@ -227,7 +227,8 @@ export default function Groupprofile(props) {
          setIsMember(true);
          return;
       } catch (e) {
-         window.location.href = `http://localhost:3000/error/${e}`
+         // window.location.href = `http://localhost:3000/error/${e}`
+         alert(e);
       }
    }
 

@@ -185,10 +185,14 @@
    box-shadow: 2px 2px 4px 4px;
 
    &-profile {
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      font-weight: bolder;
       text-align: center;
    }
 
    &-contact {
+      margin-top: 2rem;
+      font-size: 1.5rem;
       text-align: center;
    }
    &:hover {

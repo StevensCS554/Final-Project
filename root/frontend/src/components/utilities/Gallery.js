@@ -16,7 +16,6 @@ export default function Gallery(props) {
    const [allLocalGroups, setAllLocalGroups] = useState(null);
    const [numLeftOver, setNoLeftOver] = useState(1);
    const [pageNo, setPageNo] = useState(0);
-
    let li = null;
    let take = 6;
    let skip = 0;
@@ -109,8 +108,11 @@ export default function Gallery(props) {
                const { data } = await axios.get(`http://localhost:4000/zipcodeApi/${position.coords.latitude}/${position.coords.longitude}/${username}`);
                setZipCode(data);
             }, error => {
-               alert(error);
+            window.location.href = `http://localhost:3000/error/Allow Please or Open it again!`;
             })
+         } else {
+            alert(3);
+            window.location.href = 'http://localhost:3000/error/PleaseAllow!'
          }
       } catch (e) {
          alert(e);

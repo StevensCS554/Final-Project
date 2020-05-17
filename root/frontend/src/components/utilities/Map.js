@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react';
 import { GoogleMap, Marker, InfoWindow } from 'react-google-maps';
 import axios from 'axios';
 import { AuthContext } from '../../firebase/Auth';
-import { Link } from 'react-router-dom';
 
 export default function Map() {
    const [selectedGroup, setSelectedGroup] = useState(null);
@@ -19,8 +18,10 @@ export default function Map() {
                setLat(position.coords.latitude);
                setLng(position.coords.longitude);
             }, error => {
-               alert(error);
+               window.location.href = `http://localhost:3000/error/Allow Please or Open it again!`;
             })
+         } else {
+            window.location.href = 'http://localhost:3000/error/PleaseAllow!';
          }
       };
       getUserLocation();
@@ -79,13 +80,13 @@ export default function Map() {
       <div>
          {lat && lng && (
             <GoogleMap
-               defaultZoom={12}
+               defaultZoom={15}
                defaultCenter={{ lat: lat, lng: lng }}
             >
-               <Marker position={{
+               {/* <Marker position={{
                   lat: lat,
                   lng: lng
-               }} />
+               }} /> */}
                {groupData && groupData.map((group) => (
                   <Marker
                      key={group._id}

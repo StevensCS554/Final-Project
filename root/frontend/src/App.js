@@ -4,6 +4,7 @@ import './styles/App.scss';
 import { AuthProvider } from './firebase/Auth';
 import PrivateRoute from './components/utilities/PrivateRoutes';
 import Error from './components/utilities/Error';
+import Error404 from './components/utilities/Error404';
 import Landing from './components/Landing';
 import Explore from './components/Explore';
 import Signup from './components/Signup';
@@ -24,6 +25,7 @@ function App() {
                <Route exact path='/explore' component={Explore} />
                <Route exact path='/signup' component={Signup} />
                <Route exact path='/login' component={Login} />
+               {/* <Route exact path='/*' component={Error404} /> */}
                <PrivateRoute path='/userprofile/:username' component={UserProfile} />
                <PrivateRoute path='/create-group/:username' component={CreateGroup} />
                <PrivateRoute path='/group-profile/:groupId' component={GroupProfile} />
