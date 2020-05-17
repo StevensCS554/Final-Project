@@ -2,13 +2,20 @@ const express = require("express");
 const redis = require('redis')
 const session = require('express-session');
 const cors = require('cors');
+const helmet = require('helmet');
 const app = express();
 const cookieParser = require('cookie-parser');
-
+const mongoSanitize = require('express-mongo-sanitize'); 
 
 let RedisStore = require('connect-redis')(session)
 let redisClient = redis.createClient()
  
+app.use(helmet({
+   frameguard: false
+}));
+
+app.use(mongoSanitize());
+
 app.use(cors({
    credentials: true,
    origin: 'http://localhost:3000'
