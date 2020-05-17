@@ -213,16 +213,16 @@ export default function ProfileForm() {
                   <img alt='user profile' src={profileUrl} />
                </div>
                <input type='file' id='userprofile' onChange={uploadFile} />
-               <label htmlFor='userprofile' />
-               <input className='standard-btn' type='submit' value='CHANGE AVATAR' />
+               <label htmlFor='userprofile-bla' />
+               <input className='standard-btn' id='userprofile-bla' type='submit' value='CHANGE AVATAR' />
             </form>
             <form id='profile-form-f'>
                <div className='form-group'>
-                  <label htmlFor='username'>Username: {userData && userData.username}</label>
+                  <p>Username: {userData && userData.username}</p>
                   {/* <input type='text' name='username' id='username' placeholder={userData && userData.username} /> */}
                </div>
                <div className='form-group'>
-                  <label htmlFor='email'>Email: {userData && userData.email}</label>
+                  <p>Email: {userData && userData.email}</p>
                </div>
                <div className='form-group' id='gender-input'>
                   <label htmlFor="gender">Gender</label>
