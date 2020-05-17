@@ -98,7 +98,7 @@ export default function Map() {
                   />
                ))}
                {/* Why there are two pup ups ?!!! */}
-               {selectedGroup && (
+               {(selectedGroup !== null) && (
                   <InfoWindow
                      position={{
                         lat: selectedGroup.lat,
@@ -108,7 +108,7 @@ export default function Map() {
                         setSelectedGroup(null);
                      }}
                   >
-                     <div>Some Details</div>
+                     <div>{selectedGroup.groupName}</div>
                   </InfoWindow>
                )}
 
