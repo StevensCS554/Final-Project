@@ -226,7 +226,7 @@ export default function ProfileForm() {
                </div>
                <div className='form-group' id='gender-input'>
                   <label htmlFor="gender">Gender</label>
-                  <select name="gender" id="gender" placeholder={userData && userData.gender} >
+                  <select name="gender" id="gender" value={userData && userData.gender} disabled>
                      <option value="male">Male</option>
                      <option value="female">Female</option>
                      {/* <option value="other">Other</option> */}
