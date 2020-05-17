@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../images/logo.png';
+import axios from 'axios';
 import { doSignInWithEmailAndPassword } from '../firebase/FirebaseFunctions';
 import { Redirect } from 'react-router-dom';
 import { AuthContext } from '../firebase/Auth';
@@ -51,6 +52,13 @@ export default function Login() {
                password.className = '';
             }
          }
+         await fetch('http://localhost:4000/users/login', {
+            credentials: "include",
+            method: "POST",
+            headers: {
+               'Content-Type': 'application/json'
+            },
+         })
          await doSignInWithEmailAndPassword(email.value, password.value);
          window.location.href = "http://localhost:3000/explore";
       } catch (e) {
@@ -79,8 +87,6 @@ export default function Login() {
 
             </div>
          </div>
-
-
 
          <div id='login-container'>
             <div id='login-header'>

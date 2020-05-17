@@ -11,6 +11,7 @@ app.use((request, response, next) => {
     next();
 });
 
+
 // // Use the session middleware: create a session-cookie across all the router.
 // // session(options)
 // // Create a session middleware with the given options.

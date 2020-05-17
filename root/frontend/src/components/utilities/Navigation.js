@@ -18,8 +18,14 @@ export default function Navigation() {
    async function getUrl() {
       if (currentUser && currentUser.displayName) {
          try {
-            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
-            const { url } = data;
+            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`, {
+               withCredentials: true
+            })
+            const { url, auth } = data;
+            if (auth === 'unauth') {
+               await doSignOut();
+               return;
+            }
             setUserProfile(url);
          } catch (e) {
             alert(e);
@@ -34,6 +40,18 @@ export default function Navigation() {
          document.querySelector('#search-btn').disabled = false;
          setQuery(item);
          window.location.href = `http://localhost:3000/search-results/${item}`;
+      }
+   }
+
+   const handleSignOut = async () => {
+      try {
+         await axios.get('http://localhost:4000/users/logout', {
+            withCredentials: true
+         });
+         await doSignOut();
+         window.location.href = 'http://localhost:3000';
+      } catch(e) {
+         window.location.href = `http://localhost:3000/error/${e}`;
       }
    }
 
@@ -64,10 +82,7 @@ export default function Navigation() {
                         <Link to='/explore'>EXPLORE</Link>
                      </div>
                      <div>
-                        <a href='#' onClick={() => {
-                           doSignOut();
-                           window.location.href = 'http://localhost:3000';
-                        }} >LOGOUT</a>
+                        <a href='#' onClick={handleSignOut} >LOGOUT</a>
                      </div>
                   </div>
 

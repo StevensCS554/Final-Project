@@ -20,7 +20,6 @@ const Landing = () => {
    };
 
    const calCaller = () => {
-      console.log('working...');
       let items = document.querySelectorAll('.is-revealed');
       items.forEach((el) => {
          calculateScroll(el);

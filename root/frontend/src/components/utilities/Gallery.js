@@ -33,7 +33,9 @@ export default function Gallery(props) {
    async function getUrl() {
       if (currentUser && currentUser.displayName) {
          try {
-            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
+            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`, {
+               withCredentials: true
+            })
             const { url } = data;
             setUserProfile(url);
          } catch (e) {
@@ -45,7 +47,9 @@ export default function Gallery(props) {
    const getGroups = async () => {
       if (user && user.displayName) {
          try {
-            const { data } = await axios.get(`http://localhost:4000/users/groups/${user.displayName}`);
+            const { data } = await axios.get(`http://localhost:4000/users/groups/${user.displayName}`, {
+               withCredentials: true
+            });
             const { groups } = data;
             setUserGroups(groups);
          } catch (e) {
@@ -57,7 +61,9 @@ export default function Gallery(props) {
    const getUserGroup = async () => {
       if (user && user.displayName) {
          try {
-            const { data } = await axios.get(`http://localhost:4000/groups/group/${user.displayName}`);
+            const { data } = await axios.get(`http://localhost:4000/groups/group/${user.displayName}`, {
+               withCredentials: true
+            });
             const { groupName, groupId } = data;
             setUserOwnGroup(groupName);
             setOwnGroupId(groupId);

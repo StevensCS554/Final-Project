@@ -1,21 +1,32 @@
 const express = require("express");
-const cookieParser = require('cookie-parser');
+const redis = require('redis')
 const session = require('express-session');
+const cors = require('cors');
 const app = express();
+const cookieParser = require('cookie-parser');
 
 
-// app.use(cookieParser());
-// app.use(bodyParser.urlencoded());
-app.use(session({
-   name: "sessionId",
-   resave: false,
-   saveUninitialized: false,
-   secret: "it is a secret!",
-   cookie: {
-      maxAge: 1000 * 60 * 60,
-      sameSite: true,
-   }
-}));
+let RedisStore = require('connect-redis')(session)
+let redisClient = redis.createClient()
+ 
+app.use(cors({
+   credentials: true,
+   origin: 'http://localhost:3000'
+}))
+
+app.use(cookieParser());
+
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient }),
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+       maxAge: 30 * 1000
+    }
+  })
+)
 
 app.use(express.json());
 const configMiddleware = require("./middleware");
