@@ -29,12 +29,21 @@
                width: 65%;
                height: 80%;
             }
+            p{
+               color:black !important;
+            }
+            a{
+               color: $pro_light_purple;
+            }
          }
 
          .single-group-member {
             margin-top: 0.5rem;
             box-shadow: 2px 2px 2px 2px;
             background-color: $pro_light-pink;
+            a{
+               color:#003d86 !important;
+            }
             p {
                display: inline-block;
                font-size: larger;
@@ -51,6 +60,7 @@
                display: flex;
                a {
                   flex: 1;
+                  color:#003d86;
                }
             }
          }
@@ -131,7 +141,6 @@
    margin-top: 3rem;
    button {
       width: 70%;
-      color: $pro_medium_pink;
    }
    text-align: center;
 }
