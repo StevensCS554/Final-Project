@@ -81,7 +81,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-fe-box' className='is-revealed'>
                      <div id='landing-fe-box-heading'>
-                        <i className="fas fa-object-ungroup fa-2x"></i><h2>Plan events on the fly</h2>
+                        <i className="fas fa-object-ungroup fa-2x"></i><h2> Make real connections</h2>
                      </div>
                      <div id='landing-fe-box-content'>
                         <p>Create your own group and start to manage it. Attract more people in your community to 
@@ -91,7 +91,7 @@ const Landing = () => {
                   </div>
                   <div id='landing-fe-box' className='is-revealed'>
                      <div id='landing-fe-box-heading'>
-                        <i className="fas fa-thumbs-up fa-2x"></i><h2>Make real connections</h2>
+                        <i className="fas fa-thumbs-up fa-2x"></i><h2>Plan events on the fly</h2>
                      </div>
                      <div id='landing-fe-box-content'>
                         <p>Chatting with group managers and group members in real time allows you to arrange group
