@@ -25,7 +25,6 @@ function App() {
                <Route exact path='/explore' component={Explore} />
                <Route exact path='/signup' component={Signup} />
                <Route exact path='/login' component={Login} />
-               {/* <Route exact path='/*' component={Error404} /> */}
                <PrivateRoute path='/userprofile/:username' component={UserProfile} />
                <PrivateRoute path='/create-group/:username' component={CreateGroup} />
                <PrivateRoute path='/group-profile/:groupId' component={GroupProfile} />
@@ -33,6 +32,7 @@ function App() {
                <PrivateRoute path='/search-results/:query' component={SearchResults} />
                <PrivateRoute path='/error/:message' component={Error} />
                <PrivateRoute path='/chat/:roomname' component={Chat} />
+               <Route path='*' component={Error404}/>
             </div>
          </Router>
       </AuthProvider>
