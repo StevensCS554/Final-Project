@@ -282,10 +282,11 @@ export default function Groupprofile(props) {
                <button className='standard-btn' onClick={() => alert(`are you sure? please contact the manager by message button`)}>LEAVE GROUP</button>
             </div>);
       else
-         return (
-            <div id='delete-group'>
-               <button className='standard-btn' onClick={() => alert(`are you sure? DELETE is not revertabel!`)}>DELETE THE Whole GROUP</button>
-            </div>);
+         // return (
+         //    <div id='delete-group'>
+         //       <button className='standard-btn' onClick={() => alert(`are you sure? DELETE is not revertabel!`)}>DELETE THE Whole GROUP</button>
+         //    </div>);
+         return;
    }
 
    const createChatHref = (chatUserName) => {

@@ -64,6 +64,8 @@ async function creatGroup(groupName, groupNotice, maxAge, minAge, gender, maxGro
          { $set: { myGroup: groupId } }
       )
       await addGroupProfile(groupId, 'https://firebasestorage.googleapis.com/v0/b/web-ii-project.appspot.com/o/group-default.jpg?alt=media&token=f94064fa-9da1-4052-9eaa-44591752cfd9');
+      // cuz of the change the redis need to be update:
+      if(zipcode) await client.delAsync(zipcode);
       return await getById(groupId);
    } catch (e) {
       throw `` + e;
@@ -85,10 +87,10 @@ async function updateGroup(id, groupName = null, groupNotice = null, zipcode = n
          const updatedGroup = await groupsCollection.updateOne({ _id: checkedId }, { $set: { groupNotice: groupNotice } });
          if (updatedGroup.modifiedCount === 0) throw "Can't Update groupNotice of Group with ID: " + checkedId;
       }
-      if (zipcode) {
-         const updatedGroup = await groupsCollection.updateOne({ _id: checkedId }, { $set: { zipcode: zipcode } });
-         if (updatedGroup.modifiedCount === 0) throw "Can't Update zipcode of Group with ID: " + checkedId;
-      }
+      // if (zipcode) {
+      //    const updatedGroup = await groupsCollection.updateOne({ _id: checkedId }, { $set: { zipcode: zipcode } });
+      //    if (updatedGroup.modifiedCount === 0) throw "Can't Update zipcode of Group with ID: " + checkedId;
+      // }
       if (maxAge) {
          const updatedGroup = await groupsCollection.updateOne({ _id: checkedId }, { $set: { maxAge: maxAge } });
          if (updatedGroup.modifiedCount === 0) throw "Can't Update maxAge of Group with ID: " + checkedId;
@@ -105,6 +107,8 @@ async function updateGroup(id, groupName = null, groupNotice = null, zipcode = n
          const updatedGroup = await groupsCollection.updateOne({ _id: checkedId }, { $set: { maxGroupNo: maxGroupNo } });
          if (updatedGroup.modifiedCount === 0) throw "Can't Update maxGroupNo of Group with ID: " + checkedId;
       }
+      // cuz of the change the redis need to be update:
+      if(zipcode) await client.delAsync(zipcode);
       return await getById(checkedId);
    } catch (e) {
       throw e;
@@ -119,6 +123,8 @@ async function deleteGroupById(id) {
       const groupcollection = await groups();
       const deleteGroup = await groupcollection.deleteOne({ _id: checkedId });
       if (!deleteGroup.result) throw "Can't Delete Comment with ID: " + checkedId;
+      // cuz of the change the redis need to be update:
+
       return true;
    } catch (e) {
       throw e;

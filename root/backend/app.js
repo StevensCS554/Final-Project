@@ -23,7 +23,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-       maxAge: 30 * 1000
+       maxAge: 5 * 60 * 1000
     }
   })
 )
