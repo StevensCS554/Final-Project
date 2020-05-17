@@ -96,11 +96,11 @@ export default function Login() {
                <form onSubmit={handleLogin}>
                   <div className='login-input'>
                      <label htmlFor='email'>EMAIL</label><label id='email-message' className='red-message'></label>
-                     <input required name='email' type='email' />
+                     <input required name='email' type='email' id='email' />
                   </div>
                   <div className='login-input'>
                      <label htmlFor='password'>PASSWORD</label><label id='password-message' className='red-message'></label>
-                     <input required name='password' type='password' />
+                     <input required name='password' type='password' id='password' />
                   </div>
                   {/* <div>
                      <a href='#'>Forget Password ?</a>

@@ -11,7 +11,6 @@ export default function Navigation() {
    const [query, setQuery] = useState(null);
 
    useEffect(() => {
-      console.log(currentUser);
       getUrl();
    }, [query]);
 

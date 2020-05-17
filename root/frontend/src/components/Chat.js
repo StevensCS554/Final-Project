@@ -40,7 +40,8 @@ export default function Chat(props) {
         <div id='chat-div'>
             <ul id="chat-messages"></ul>
             <form id='chat-message-form'>
-                <input type="text" className="input" autoComplete="off" autoFocus />
+                <label htmlFor='chat-input'/>
+                <input type="text" className="input" autoComplete="off" id='chat-input' autoFocus />
                 <button onClick={sendText}>Send</button>
             </form>
         </div>)
