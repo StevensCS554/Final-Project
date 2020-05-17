@@ -13,7 +13,7 @@ export default function Login() {
       e.preventDefault();
       const { email, password } = e.target.elements;
       try {
-         const email_v = email.value.trim();
+         const email_v = email.value.trim().toLowerCase();
          const email_message = document.getElementById('email-message');
          const password_v = password.value.trim();
          const password_message = document.getElementById('password-message');
