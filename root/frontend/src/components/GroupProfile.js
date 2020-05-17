@@ -293,9 +293,9 @@ export default function Groupprofile(props) {
             </div>);
    }
 
-   const createChatHref = () => {
-      if (manager) {
-         let roomName = [currentUser.displayName, manager.username];
+   const createChatHref = (chatUserName) => {
+      if (chatUserName) {
+         let roomName = [currentUser.displayName, chatUserName];
          return 'localhost:3000/chat/' + roomName.sort().join('');
       }
    };
@@ -314,7 +314,7 @@ export default function Groupprofile(props) {
                            <img src={(manager && manager.profileUrl) || profile} alt="manager avatar" />
                            <p>Group Manager: {manager && manager.username}</p>
                         </Link>
-                        {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href={createChatHref()} target='_blank'>MESSAGE</a>)}
+                        {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href={createChatHref(manager && manager.username)} target='_blank'>MESSAGE</a>)}
                      </div>
                   )}
 
@@ -328,7 +328,7 @@ export default function Groupprofile(props) {
                                  <img src={(user && user.profileUrl) || profile} alt="user avatar" />
                               </Link>
                               <div id='group-members-links'>
-                                 {/* <a href='#'>MESSAGE</a> */}
+                                 <a href={createChatHref(user.username)} target='_blank'>MESSAGE</a>
                                  {isManager && (<a href='#' onClick={() => handleMemberDelete(user._id)}>DELETE</a>)}
                               </div>
                            </div>
