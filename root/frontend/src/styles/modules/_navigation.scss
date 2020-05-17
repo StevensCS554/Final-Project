@@ -26,10 +26,8 @@
    }
 
    button {
-      background-color: $pro_medium_green;
       border-radius: 7px;
       width: 7rem;
-      color: $pro_light_purple;
 
       &:hover {
          background-color: $pro_light_pink;
@@ -41,9 +39,9 @@
 }
 
 .standard-btn {
-   background-color: $pro_medium_green;
+   background-color: #28bb94;
    border-radius: 7px;
-   color: $pro_light_purple;
+   color: #5e2269;
    box-shadow: 2px 2px;
    &:hover {
       background-color: $pro_light_pink;

@@ -112,7 +112,7 @@ const Landing = () => {
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
                         <img src={k} alt="kuanlyu's picture"/>
-                        <h3>Kuan Lyu</h3>
+                        <h2>Kuan Lyu</h2>
                      </div>
                      <div id='landing-tm-box-contact'>
                         <p>Group Manager</p>
@@ -122,7 +122,7 @@ const Landing = () => {
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
                         <img src={j} alt="Jason's picture" />
-                        <h3>Jiaxian Xing</h3>
+                        <h2>Jiaxian Xing</h2>
                      </div>
                      <div id='landing-tm-box-contact'>
                         <p>Group Member</p>
@@ -132,7 +132,7 @@ const Landing = () => {
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
                         <img src={r} alt="rui xing yuan's picture" />
-                        <h3>Xingyuan Rui</h3>
+                        <h2>Xingyuan Rui</h2>
                      </div>
                      <div id='landing-tm-box-contact'>
                         <p>Group Member</p>
@@ -142,7 +142,7 @@ const Landing = () => {
                   <div id='landing-tm-box'>
                      <div id='landing-tm-box-profile'>
                         <img src={z} alt="Christine's picture"/>
-                        <h3>Luyun Zheng</h3>
+                        <h2>Luyun Zheng</h2>
                      </div>
                      <div id='landing-tm-box-contact'>
                         <p>Group Member</p>

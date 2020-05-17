@@ -60,7 +60,8 @@ export default function Navigation() {
             <img src={logo} alt="logo" />
          </div>
          <div id='navbar-search'>
-            <input id='search-item' type='text' placeholder='Search group name or username' /><button id='search-btn' type='submit' onClick={handleSearch} >SEARCH</button>
+            <label htmlFor='search-item' />
+            <input id='search-item' type='text' placeholder='Search group name or username' /><button className='standard-btn' id='search-btn' type='submit' onClick={handleSearch} >SEARCH</button>
          </div>
          <div id='navbar-link'>
             {!currentUser &&

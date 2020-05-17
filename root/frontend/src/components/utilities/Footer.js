@@ -7,7 +7,7 @@ export default function Footer() {
             <div id='landing-footer-c'>
                <div id='landing-footer-social'>
                   <div id='landing-footer-h'>
-                     <h3>Agile Monsters</h3>
+                     <p style={{fontSize: '1.7rem'}}>Agile Monsters</p>
                   </div>
                   <div className="social">
                      <i className="fab fa-twitter fa-2x"></i>

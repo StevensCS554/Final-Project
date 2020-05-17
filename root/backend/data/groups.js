@@ -140,7 +140,7 @@ async function joinGroup(userId, groupId) {
       let group = await getById(groupId);
       const user = await userData.readUser(userId);
       if (user.age >= group.maxAge || user.age <= group.minAge)
-         throw 'Your age does not meet requirements!';
+         throw 'Your age does not meet age requirements!';
       if (group.users.length >= group.maxGroupNo)
          throw 'Goup has met its max number!';
       if (group.gender !== 'none' && group.gender !== user.gender)
