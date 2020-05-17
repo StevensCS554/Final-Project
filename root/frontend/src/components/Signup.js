@@ -94,6 +94,7 @@ export default function Signup() {
    const usernameBlur = async (e) => {
       e.preventDefault();
       e.persist();
+      e.target.value = e.target.value.trim().toLowerCase();
       const newUsername = e.target.value.trim();
       const message = document.getElementById('username-message');
       if (!newUsername || newUsername.length === 0) {
@@ -156,6 +157,7 @@ export default function Signup() {
    const emailBlur = async (e) => {
       e.preventDefault();
       e.persist();
+      e.target.value = e.target.value.trim().toLowerCase();
       const newEmail = e.target.value.trim();
       const message = document.getElementById('email-message');
       if (!newEmail || newEmail.length === 0) {
