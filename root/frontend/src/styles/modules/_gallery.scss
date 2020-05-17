@@ -20,6 +20,9 @@
       flex: 0.6;
       min-height: 100vh;
       overflow: scroll;
+      a {
+         color: #0063d0;
+      }
 
       &-profile {
          color: $pro_medium_purple;
@@ -99,7 +102,7 @@
          opacity: 0;
          bottom: 0;
          left: 0;
-         background-color: rgba(238, 133, 133, 0.8);
+         background-color: rgba(49, 29, 29, 0.8);
          text-align: center;
          p {
             color: white;
