@@ -5,10 +5,18 @@
 
    #search-results-user {
       flex: 1;
+      img {
+         // height: 15rem;
+         width: 10rem;
+      }
       text-align: center;
    }
 
    #search-results-group {
       flex: 1;
+      text-align: center;
+      img {
+         width: 1rem;
+      }
    }
 }

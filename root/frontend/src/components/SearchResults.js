@@ -3,6 +3,7 @@ import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { doSignOut } from '../firebase/FirebaseFunctions';
 
 
 export default function SearchResults(props) {
@@ -15,13 +16,19 @@ export default function SearchResults(props) {
 
    async function getSearchResult() {
       try {
-         const { data } = await axios.get(`http://localhost:4000/users/search/${props.match.params.query}`);
-         const { result } = data;
+         const { data } = await axios.get(`http://localhost:4000/users/search/${props.match.params.query}`,
+            { withCredentials: true }
+         );
+         const { result, auth } = data;
+         if (auth === 'unauth') {
+            await doSignOut();
+            return;
+         }
          const { groupsInfo, userInfo } = result
          setUser(userInfo);
          setGroups(groupsInfo);
       } catch (e) {
-         alert(e);
+         window.location.href = `http://localhost:3000/error/${e}`
       }
    }
 
@@ -32,7 +39,7 @@ export default function SearchResults(props) {
             <div id='search-results-user'>
                {user && (
                   <Link to={`/userprofile/${user.username}`}>
-                     <img src={user.profileUrl} />
+                     <img src={user.profileUrl} alt="user profile url"/>
                      <p>username: {user.username}</p>
                   </Link>
                )}
@@ -46,7 +53,7 @@ export default function SearchResults(props) {
                {groups && groups.map((group => {
                   return <Link to={`/group-profile/${group._id}`}>
                      <div className='single-group'>
-                        <img style={{ width: '100%', height: '100%' }} src={group.groupProfileUrl} />
+                        <img style={{ width: '100%', height: '100%' }} src={group.groupProfileUrl} alt="group profile url"/>
                         <div className='single-group-overlay'>
                            <p>{group.groupName}</p>
                         </div>

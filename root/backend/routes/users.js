@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const path = require('path');
 const { ObjectId } = require("mongodb");
+const authUser = require('../middleware/auth');
 //middleware
 // const middleware 	= require("../middleware");
 const data = require('../data');
@@ -18,10 +19,19 @@ const usersData = data.usersData;
 //     }
 // });
 
+// redirection was disrupted by get /
+router.get('/logout', async(req, res) => {
+   console.log('--------logout----------');
+   res.clearCookie('connect.sid');
+   req.session.destroy();
+   res.status(200).json({
+      auth: 'unauth'
+   });
+})
 //create
 router.post("/", async (req, res) => {
+   // console.log('----------------------/---------post------------')
    try {
-
       const username = req.body.username;
       const email = req.body.email;
       const age = req.body.age;
@@ -81,7 +91,6 @@ router.post("/", async (req, res) => {
       }
       const newUser = await usersData.createUser(username, email, age, zipcode, gender, phone, bio);
       req.session.userId = newUser._id;
-      console.log(req.session);
       res.json(newUser);
    } catch (e) {
       res.status(500).json(e);
@@ -89,7 +98,6 @@ router.post("/", async (req, res) => {
 });
 
 router.get("/:newUsername", async (req, res) => {
-   console.log(req.body);
    try {
       const newUsername = req.params.newUsername;
 
@@ -101,7 +109,7 @@ router.get("/:newUsername", async (req, res) => {
    }
 });
 
-router.get("/getbyid/:id", async (req, res) => {
+router.get("/getbyid/:id", authUser, async (req, res) => {
    try {
 
       const id = req.params.id;
@@ -160,7 +168,7 @@ router.get("/getUserByUsername/:username", async (req, res) => {
    }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authUser, async (req, res) => {
    try {
 
       const id = req.params.id;
@@ -219,7 +227,7 @@ router.put("/:id", async (req, res) => {
    }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authUser, async (req, res) => {
    try {
       const checkedId = checkId(req.params.id);
 
@@ -232,7 +240,7 @@ router.delete("/:id", async (req, res) => {
 })
 
 // Add a group to a user
-router.put("/:userId/:groupId", async (req, res) => {
+router.put("/:userId/:groupId", authUser, async (req, res) => {
    try {
       const checkedUserId = checkId(req.params.userId);
       const checkedGroupId = checkId(req.params.groupId);
@@ -245,7 +253,7 @@ router.put("/:userId/:groupId", async (req, res) => {
 })
 
 // delete a group from a user
-router.delete("/:userId/:groupId", async (req, res) => {
+router.delete("/:userId/:groupId", authUser, async (req, res) => {
    try {
       let groupId = req.params.groupId;
       let userId = req.params.userId;
@@ -259,29 +267,9 @@ router.delete("/:userId/:groupId", async (req, res) => {
    }
 })
 
-// User Image file upload route!!! Added by Kuan //
-// router.post('/upload', async (req, res) => {
-//    if (req.files.file === null)
-//       return res.status(400).json({ msg: 'No file uploaded!' });
-
-//    const file = req.files.file;
-//    const date = new Date();
-//    const newName = date + file.name;
-//    file.mv(path.resolve(`../frontend/src/upload/users/${newName}`), err => {
-//       if (err) {
-//          console.log(err);
-//          return res.status(500).json({ e: err });
-//       }
-//       res.status(500).json({
-//          filename: file.name,
-//          filepath: `/uploads/users/${newName}`
-//       })
-//    });
-// });
-
-
+// ----------------------- Added by Kuan ------------------ //
 // Get groups user in
-router.get('/groups/:username', async (req, res) => {
+router.get('/groups/:username', authUser, async (req, res) => {
    try {
       const groups = await usersData.getUserGroup(req.params.username);
       res.status(200).json({
@@ -295,24 +283,20 @@ router.get('/groups/:username', async (req, res) => {
    }
 });
 
-const hehe = (s) => {
-   return JSON.parse(JSON.stringify(s));
-}
-
-router.get('/profile/:username', async (req, res) => {
+router.get('/profile/:username', authUser, async (req, res) => {
+   // if (Object.entries(cookie).length === 0 && cookie.constructor === Object) {
+   //    console.log(1);
+   //    console.log(hehe(req.cookies));
+   //    res.cookie("Agile Monster", "value", {
+   //       maxAge: 1000 * 60 * 60
+   //    });
+   //    req.session.cookie.userId = req.session.userId;
+   //    console.log(req.session.cookie);
+   //    console.log(hehe(req.cookies));
+   // }
+   console.log('get profile cookies and session')
+   console.log(req.cookies);
    console.log(req.session);
-   const cookie = JSON.parse(JSON.stringify(req.cookies));
-   if (Object.entries(cookie).length === 0 && cookie.constructor === Object) {
-      console.log(1);
-      console.log(hehe(req.cookies));
-      res.cookie("Agile Monster", "value", {
-         maxAge: 1000 * 60 * 60
-      });
-      req.session.cookie.userId = req.session.userId;
-      console.log(req.session.cookie);
-      console.log(hehe(req.cookies));
-   }
-
    try {
       const url = await usersData.getUserProfileUrl(req.params.username);
       res.status(200).json({
@@ -326,7 +310,7 @@ router.get('/profile/:username', async (req, res) => {
 });
 
 // update user profile
-router.post('/profile/:username', async (req, res) => {
+router.post('/profile/:username', authUser, async (req, res) => {
    try {
       await usersData.updateUserProfile(req.params.username, req.body.url);
       res.status(200).json({
@@ -355,6 +339,8 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/getUserByName/:username', async (req, res) => {
+   console.log('get user by name');
+   console.log(req.session);
    try {
       const user = await usersData.readUserByName(req.params.username);
       res.status(200).json({
@@ -369,7 +355,7 @@ router.get('/getUserByName/:username', async (req, res) => {
 })
 
 // search everything !!!
-router.get('/search/:item', async (req, res) => {
+router.get('/search/:item', authUser, async (req, res) => {
    try {
       const result = {
          userInfo: undefined,
@@ -387,6 +373,15 @@ router.get('/search/:item', async (req, res) => {
       })
    }
 });
+
+router.post('/login', async(req, res, next) => {
+   req.session.auth = 'user';
+   console.log('------------login-------------');
+   console.log(req.session);
+   res.status(200);
+   next();
+})
+
 
 
 

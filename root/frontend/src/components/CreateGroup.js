@@ -38,7 +38,9 @@ export default function Creategroup(props) {
                   if (currentUser) {
                      username = currentUser.displayName;
                   }
-                  const { data } = await axios.get(`http://localhost:4000/zipcodeApi/${position.coords.latitude}/${position.coords.longitude}/${username}`);
+                  const { data } = await axios.get(`http://localhost:4000/zipcodeApi/${position.coords.latitude}/${position.coords.longitude}/${username}`, {
+                     withCredentials: true
+                  });
                   setGeoZipcode(data);
                   latitude = position.coords.latitude;
                   longitude = position.coords.longitude;
@@ -69,6 +71,7 @@ export default function Creategroup(props) {
       try {
          const user = await fetch(`http://localhost:4000/users/getUserByUsername/${username}`, {
             method: "GET",
+            credentials: 'include',
             headers: {
                'Content-Type': 'application/json'
             }
@@ -127,6 +130,7 @@ export default function Creategroup(props) {
 
          const response = await fetch(`http://localhost:4000/groups/${user._id}`, {
             method: "POST",
+            credentials: 'include',
             headers: {
                'Content-Type': 'application/json'
             },

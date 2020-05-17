@@ -1,12 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import Navigation from './Navigation';
+import Footer from './Footer';
 
 export default function error404(props) {
-    return (
-        <div>
-            <h1> 404 ! Not Found! {props.message}</h1>
+   return (
+      <div>
+         <Navigation />
+         <div style={{minHeight: '90vh'}}>
+
+            <h1> Oops something wrong in the server: {props.match.params.message}</h1>
             <br />
-            <Link to="/">Go to Home </Link>
-        </div>
-    )
+            <Link to="/explore">Go to main page</Link>
+         </div>
+         <Footer />
+      </div>
+   )
 }

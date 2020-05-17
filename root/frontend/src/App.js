@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './styles/App.scss';
 import { AuthProvider } from './firebase/Auth';
 import PrivateRoute from './components/utilities/PrivateRoutes';
+import Error from './components/utilities/Error';
 import Landing from './components/Landing';
 import Explore from './components/Explore';
 import Signup from './components/Signup';
@@ -28,6 +29,7 @@ function App() {
                <PrivateRoute path='/group-profile/:groupId' component={GroupProfile} />
                <PrivateRoute path='/edit-group/:userId' component={GroupSetting} />
                <PrivateRoute path='/search-results/:query' component={SearchResults} />
+               <PrivateRoute path='/error/:message' component={Error} />
                <PrivateRoute path='/chat/:roomname' component={Chat} />
             </div>
          </Router>

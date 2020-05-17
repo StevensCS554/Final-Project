@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from '../../images/logo.png';
 import axios from 'axios';
 import { AuthContext } from '../../firebase/Auth';
@@ -18,8 +18,14 @@ export default function Navigation() {
    async function getUrl() {
       if (currentUser && currentUser.displayName) {
          try {
-            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
-            const { url } = data;
+            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`, {
+               withCredentials: true
+            })
+            const { url, auth } = data;
+            if (auth === 'unauth') {
+               await doSignOut();
+               return;
+            }
             setUserProfile(url);
          } catch (e) {
             alert(e);
@@ -37,10 +43,22 @@ export default function Navigation() {
       }
    }
 
+   const handleSignOut = async () => {
+      try {
+         await axios.get('http://localhost:4000/users/logout', {
+            withCredentials: true
+         });
+         await doSignOut();
+         window.location.href = 'http://localhost:3000';
+      } catch(e) {
+         window.location.href = `http://localhost:3000/error/${e}`;
+      }
+   }
+
    return (
       <div className='navigation-bar'>
          <div id='navbar-logo'>
-            <img src={logo} />
+            <img src={logo} alt="logo" />
          </div>
          <div id='navbar-search'>
             <input id='search-item' type='text' placeholder='Search group name or username' /><button id='search-btn' type='submit' onClick={handleSearch} >SEARCH</button>
@@ -56,7 +74,7 @@ export default function Navigation() {
             {currentUser &&
                (<div id='navbar-link-profile'>
                   <div id='div1'>
-                     <p>Welcome {currentUser.displayName}!</p><Link to={`/userprofile/${currentUser.displayName}`}><img src={userProfile} /></Link>
+                     <p>Welcome {currentUser.displayName}!</p><Link to={`/userprofile/${currentUser.displayName}`}><img src={userProfile} alt="userProfile"/></Link>
                   </div>
 
                   <div id='div2'>
@@ -64,10 +82,7 @@ export default function Navigation() {
                         <Link to='/explore'>EXPLORE</Link>
                      </div>
                      <div>
-                        <a href='#' onClick={() => {
-                           doSignOut();
-                           window.location.href = 'http://localhost:3000';
-                        }} >LOGOUT</a>
+                        <a href='#' onClick={handleSignOut} >LOGOUT</a>
                      </div>
                   </div>
 

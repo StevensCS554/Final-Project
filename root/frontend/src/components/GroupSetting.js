@@ -22,7 +22,8 @@ export default function GroupSetting(props) {
    useEffect(() => {
       async function getGroup() {
          try {
-            const { data } = await axios.get(`http://localhost:4000/groups/manager/${props.match.params.userId}`);
+            const { data } = await axios.get(`http://localhost:4000/groups/manager/${props.match.params.userId}`,
+               { withCredentials: true });
             const { group } = data;
             setGroup(group);
             setProfileUrl(group.groupProfileUrl);
@@ -106,6 +107,7 @@ export default function GroupSetting(props) {
             }
             const response = await fetch(`http://localhost:4000/groups/${group._id}`, {
                method: "PUT",
+               credentials: 'include',
                headers: {
                   'Content-Type': 'application/json'
                },
@@ -120,7 +122,7 @@ export default function GroupSetting(props) {
             window.location.href = `http://localhost:3000/group-profile/${group._id}`;
          }
       } catch (e) {
-         alert(e);
+         window.location.href = `http://localhost:3000/error/${e}`
       }
 
    }
@@ -144,9 +146,11 @@ export default function GroupSetting(props) {
                setProfileUrl(url);
                try {
                   await axios.put(`http://localhost:4000/groups/profile/${group._id}`,
-                     { url: url });
+                     { url: url }, {
+                     withCredentials: true
+                  });
                } catch (e) {
-                  alert(e);
+                  window.location.href = `http://localhost:3000/error/${e}`
                }
             });
          }
@@ -161,7 +165,7 @@ export default function GroupSetting(props) {
                <div id='create-group-container'>
                   <form id='form1' onSubmit={submitForm1}>
                      <div id='create-group-profile'>
-                        <img src={profileUrl} />
+                        <img src={profileUrl} alt="profileUrl"/>
                         <input id='setting-input1' type='file' onChange={uploadFile} />
                         <label htmlFor='userprofile' />
                         <input id='setting-input2' className='standard-btn' type='submit' value='CHANGE AVATAR' />

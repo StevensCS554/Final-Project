@@ -5,8 +5,6 @@ import profile from '../images/team-bg.jpeg';
 import Navigation from './utilities/Navigation';
 import Footer from './utilities/Footer';
 import { AuthContext } from '../firebase/Auth';
-import axios from 'axios';
-// import Error from './utilities/Error';//404 component!
 
 export default function Groupprofile(props) {
    const { currentUser } = useContext(AuthContext);
@@ -16,8 +14,6 @@ export default function Groupprofile(props) {
    const [isMember, setIsMember] = useState(false);
    const [manager, setManager] = useState(undefined);
    const [memberList, setMemberList] = useState(undefined);
-   const [userProfile, setUserProfile] = useState(null);
-   // const [error, setError] = useState(undefined);
 
    useEffect(() => {
       async function groupProfile() {
@@ -35,24 +31,15 @@ export default function Groupprofile(props) {
          }
       }
       groupProfile();
-   }, [props.match.params.groupId, currentUser]
+   }, [props.match.params.groupId, currentUser, isMember]
    );
-
-   // async function getUrl(username) {
-   //    try {
-   //       const { data } = await axios.get(`http://localhost:4000/users/profile/${username}`)
-   //       const { url } = data;
-   //       return url;
-   //    } catch (e) {
-   //       alert(e.error);
-   //    }
-   // }
 
    //get the group by groupId in the path.
    async function fetchGroupData() {
       try {
          const group = await fetch(`http://localhost:4000/groups/${props.match.params.groupId}`, {
             method: "GET",
+            credentials: "include",
             headers: {
                'Content-Type': 'application/json'
             }
@@ -63,7 +50,7 @@ export default function Groupprofile(props) {
             throw `error in group info fetching`;
          return await group.json();
       } catch (e) {
-         throw e;
+         window.location.href = `http://localhost:3000/error/${e}`;
       }
    }
 
@@ -73,6 +60,7 @@ export default function Groupprofile(props) {
          // alert(`fetch for the user with id: ${userId}`);
          const user = await fetch(`http://localhost:4000/users/getbyid/${userId}`, {
             method: "GET",
+            credentials: 'include',
             headers: {
                'Content-Type': 'application/json'
             }
@@ -84,7 +72,7 @@ export default function Groupprofile(props) {
          // alert(resolved.email);
          return resolved;
       } catch (e) {
-         throw e;
+         window.location.href = `http://localhost:3000/error/${e}`
       }
    }
 
@@ -99,7 +87,7 @@ export default function Groupprofile(props) {
          }
          return userList;
       } catch (e) {
-         throw e;
+         window.location.href = `http://localhost:3000/error/${e}`;
       }
    }
 
@@ -113,7 +101,7 @@ export default function Groupprofile(props) {
             setIsManager(true);
          }
       } catch (e) {
-         throw e;
+         window.location.href = `http://localhost:3000/error/${e}`
       }
    }
 
@@ -130,7 +118,7 @@ export default function Groupprofile(props) {
             }
          })
       } catch (e) {
-         throw e;
+         window.location.href = `http://localhost:3000/error/${e}`
       }
    }
 
@@ -142,6 +130,7 @@ export default function Groupprofile(props) {
          const time = new Date().toUTCString();
          const Result = await fetch(`http://localhost:4000/groups/post/${groupData._id}`, {
             method: "POST",
+            credentials: 'include',
             headers: {
                'Content-Type': 'application/json'
             },
@@ -163,7 +152,7 @@ export default function Groupprofile(props) {
          postContent.value = "";
          return;
       } catch (e) {
-         alert(`-error: ${e}`);
+         window.location.href = `http://localhost:3000/error/${e}`
       }
    }
 
@@ -172,6 +161,7 @@ export default function Groupprofile(props) {
       try {
          const Result = await fetch(`http://localhost:4000/groups/post/${groupData._id}/${postId}`, {
             method: "DELETE",
+            credentials: 'include',
             headers: {
                'Content-Type': 'application/json'
             }
@@ -185,16 +175,17 @@ export default function Groupprofile(props) {
          document.getElementById(postId).style.display = "none";
          return;
       } catch (e) {
-         alert(`-error: ${e}`);
+         window.location.href = `http://localhost:3000/error/${e}`
       }
    }
 
    //add the current user to the group:
    async function handleJoinGroup(email) {
-      alert("handleJoinGroup with: " + email);
+      // alert("handleJoinGroup with: " + email);
       try {
          let user = await fetch(`http://localhost:4000/users/getuserbyemail/${email}`, {
             method: "GET",
+            credentials: 'include',
             headers: {
                'Content-Type': 'application/json'
             }
@@ -208,6 +199,7 @@ export default function Groupprofile(props) {
 
          const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${user._id}`, {
             method: "POST",
+            credentials: 'include',
             headers: {
                'Content-Type': 'application/json'
             }
@@ -235,7 +227,7 @@ export default function Groupprofile(props) {
          setIsMember(true);
          return;
       } catch (e) {
-         alert(`error-error: ${e}`);
+         window.location.href = `http://localhost:3000/error/${e}`
       }
    }
 
@@ -245,12 +237,13 @@ export default function Groupprofile(props) {
          // alert("handleMemberDelete groupData._id: " + `http://localhost:4000/groups/${groupData._id}/${userId}`);
          const groupResult = await fetch(`http://localhost:4000/groups/${groupData._id}/${userId}`, {
             method: 'DELETE',
+            credentials: 'include',
             headers: {
                'Content-Type': 'application/json'
             }
          });
          //error handle! 
-         if (groupResult.ok == false) {
+         if (groupResult.ok === false) {
             throw `fail to delete user from group! status:${groupResult.status}, statusText:${groupResult.statusText} message: ${await groupResult.json().then((error) => {
                return error;
             })}`
@@ -258,6 +251,7 @@ export default function Groupprofile(props) {
 
          const userResult = await fetch(`http://localhost:4000/users/${userId}/${groupData._id}`, {
             method: "DELETE",
+            credentials: 'include',
             headers: {
                'Content-Type': 'application/json'
             }
@@ -272,7 +266,7 @@ export default function Groupprofile(props) {
          document.getElementById(userId).style.display = "none";
          return;
       } catch (e) {
-         alert(`-error: ${e}`);
+         window.location.href = `http://localhost:3000/error/${e}`
       }
    }
 
@@ -294,9 +288,9 @@ export default function Groupprofile(props) {
             </div>);
    }
 
-   const createChatHref = () => {
-      if (manager) {
-         let roomName = [currentUser.displayName, manager.username];
+   const createChatHref = (chatUserName) => {
+      if (chatUserName) {
+         let roomName = [currentUser.displayName, chatUserName];
          return 'localhost:3000/chat/' + roomName.sort().join('');
       }
    };
@@ -312,10 +306,10 @@ export default function Groupprofile(props) {
                   {manager && (
                      <div id='group-manager'>
                         <Link to={`/userprofile/${manager.username}`}>
-                           <img src={manager && manager.profileUrl || profile} alt="manager avatar" />
+                           <img src={(manager && manager.profileUrl) || profile} alt="manager avatar" />
                            <p>Group Manager: {manager && manager.username}</p>
                         </Link>
-                        {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href={createChatHref()} target='_blank'>MESSAGE</a>)}
+                        {isManager ? (<Link to={`/edit-group/${manager._id}`} >Change Group Setting</Link>) : (<a href={createChatHref(manager && manager.username)} target='_blank'>MESSAGE</a>)}
                      </div>
                   )}
 
@@ -326,10 +320,10 @@ export default function Groupprofile(props) {
                            <div id={user._id} className='single-group-member'>
                               <Link to={`/userprofile/${user.username}`}>
                                  <p>{user.username}</p>
-                                 <img src={user && user.profileUrl || profile} alt="user avatar" />
+                                 <img src={(user && user.profileUrl) || profile} alt="user avatar" />
                               </Link>
                               <div id='group-members-links'>
-                                 {/* <a href='#'>MESSAGE</a> */}
+                                 <a href={createChatHref(user.username)} target='_blank'>MESSAGE</a>
                                  {isManager && (<a href='#' onClick={() => handleMemberDelete(user._id)}>DELETE</a>)}
                               </div>
                            </div>
@@ -343,7 +337,7 @@ export default function Groupprofile(props) {
                   {/* group info section */}
                   <div id='group-info-container'>
                      <div id='group-info-pic'>
-                        <img src={groupData && groupData.groupProfileUrl || defaultGroup} alt="group avatar" />
+                        <img src={(groupData && groupData.groupProfileUrl) || defaultGroup} alt="group avatar" />
                      </div>
                      <div id='group-info-name'>
                         <p>Group Name: {groupData && groupData.groupName}</p>

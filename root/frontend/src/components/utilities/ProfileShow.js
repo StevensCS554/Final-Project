@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 // can't import images outside src folder
 import profile from '../../images/team-bg.jpeg';
-
+import { AuthContext } from '../../firebase/Auth';
 
 export default function ProfileForm(props) {
+    const { currentUser } = useContext(AuthContext);
     const [userData, setUserData] = useState(undefined);
 
     useEffect(() => {
@@ -12,6 +13,7 @@ export default function ProfileForm(props) {
             try {
                 const user = await fetch(`http://localhost:4000/users/getUserByUsername/${props.username}`, {
                     method: "GET",
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -25,16 +27,23 @@ export default function ProfileForm(props) {
                 setUserData(resolved);
                 return;
             } catch (e) {
-                alert(e);
+               window.location.href = `http://localhost:3000/error/${e}`
             }
         }
         get();
     }, [props.username]);
 
+    const createChatHref = (chatUserName) => {
+        if (chatUserName && chatUserName !== currentUser.displayName) {
+           let roomName = [currentUser.displayName, chatUserName];
+           return 'localhost:3000/chat/' + roomName.sort().join('');
+        }
+     };
+
     return (
         <div id='profileShow-container'>
             <div id='profileShow-img'>
-                <img src={userData && userData.profileUrl || profile} alt="user avatar" />
+                <img src={( userData && userData.profileUrl )|| profile} alt="user avatar" />
             </div>
             <div id='profileShow-info'>
                 <p type='text' name='username' id='username'>USERNAME: {userData && userData.username}</p>
@@ -43,6 +52,7 @@ export default function ProfileForm(props) {
                 <p type='text' name='zipcode' id='zipcode' >ZIPCODE: {userData && userData.zipcode}</p>
                 <p type='tel' name='cellphone' id='cellphone' >PHONE: {userData && userData.phone}</p>
                 <p type='tel' name='bio' id='bio' >BIO: {userData && userData.bio ? userData.bio : "NONE"}</p>
+                <p><a href={createChatHref(userData && userData.username)} target='_blank'>MESSAGE</a></p>
             </div>
         </div>
     )
