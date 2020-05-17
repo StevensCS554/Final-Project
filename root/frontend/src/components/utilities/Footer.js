@@ -17,7 +17,7 @@ export default function Footer() {
                   </div>
                </div>
                <div id='landing-footer-links'>
-                  <a href='www.linkedin.com/in/kuan-lyu' target='_blank'>Group Manager</a>
+                  <a href='https://www.linkedin.com/in/kuan-lyu/' target='_blank'>Group Manager</a>
                   {/* <a href='#'>dummy link</a>
                   <a href='#'>dummy link</a>
                   <a href='#'>dummy link</a> */}

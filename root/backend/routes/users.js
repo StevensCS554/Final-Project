@@ -13,7 +13,7 @@ const usersData = data.usersData;
 // router.get("/", async (req, res) => {
 //     try {
 //         const allGroup = await usersData.getAll();
-//         res.json(allGroup)
+//         res.status(200).json(allGroup)
 //     } catch (e) {
 //         res.status(500).json(e);
 //     }
@@ -91,7 +91,7 @@ router.post("/", async (req, res) => {
       }
       const newUser = await usersData.createUser(username, email, age, zipcode, gender, phone, bio);
       req.session.userId = newUser._id;
-      res.json(newUser);
+      res.status(200).json(newUser);
    } catch (e) {
       res.status(500).json(e);
    }
@@ -102,8 +102,8 @@ router.get("/:newUsername", async (req, res) => {
       const newUsername = req.params.newUsername;
 
       const user = await usersData.readUserByName(newUsername);
-      if (user == null) res.json({ noUser: true });
-      else res.json({ noUser: false });
+      if (user == null) res.status(200).json({ noUser: true });
+      else res.status(200).json({ noUser: false });
    } catch (e) {
       res.status(500).json(e);
    }
@@ -116,7 +116,7 @@ router.get("/getbyid/:id", authUser, async (req, res) => {
       const checkedId = checkId(id);
 
       const user = await usersData.readUser(checkedId);
-      res.json(user);
+      res.status(200).json(user);
    } catch (e) {
       console.log(e);
       res.status(500).json(e);
@@ -129,8 +129,8 @@ router.get("/getbyemail/:newEmail", async (req, res) => {
       const newEmail = req.params.newEmail;
 
       const user = await usersData.readUserByEmail(newEmail);
-      if (user == null) res.json({ noEmail: true });
-      else res.json({ noEmail: false });
+      if (user == null) res.status(200).json({ noEmail: true });
+      else res.status(200).json({ noEmail: false });
    } catch (e) {
       res.status(500).json(e);
    }
@@ -220,7 +220,7 @@ router.put("/:id", authUser, async (req, res) => {
       }
 
       const updatedUser = await usersData.updateUser(checkedId, username, email, age, zipcode, gender, phone, bio);
-      res.json(updatedUser);
+      res.status(200).json(updatedUser);
 
    } catch (e) {
       res.status(500).json(e);
@@ -232,7 +232,7 @@ router.delete("/:id", authUser, async (req, res) => {
       const checkedId = checkId(req.params.id);
 
       const deletedUser = await usersData.deleteGroupById(checkedId);
-      res.json(deletedUser);
+      res.status(200).json(deletedUser);
    } catch (e) {
       res.status(500).json(e);
    }
@@ -246,7 +246,7 @@ router.put("/:userId/:groupId", authUser, async (req, res) => {
       const checkedGroupId = checkId(req.params.groupId);
 
       const addedUser = await usersData.addGroup(checkedUserId, checkedGroupId);
-      res.json(addedUser);
+      res.status(200).json(addedUser);
    } catch (e) {
       res.status(500).json(e);
    }

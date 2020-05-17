@@ -74,6 +74,19 @@
    #header-content {
       text-align: center;
       padding-top: 20%;
+      h1 {
+         font-size: 4rem;
+         color: rgb(56, 48, 27);
+      }
+      p {
+         font-size: 2rem;
+      }
+      a {
+         color: $pro_medium_pink;
+         &:hover {
+            color: $pro_light_pink;
+         }
+      }
    }
 }
 
@@ -98,6 +111,7 @@
    &-features {
       display: flex;
       margin: 1rem 2rem;
+
    }
 
    &-box {
@@ -106,9 +120,16 @@
       min-height: 60vh;
       flex: 1;
       box-shadow: 2px 2px 4px 4px;
+      &-content {
+         line-height: 3rem;
+         font-size: 1.8rem;
+         margin-left: 0.3rem;
+         margin-right: 0.3rem;
+         font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;;
+      }
 
       &-heading {
-         margin: 0.5rem auto;
+         margin: 1rem auto;
          color: $pro_medium_purple;
       }
    }

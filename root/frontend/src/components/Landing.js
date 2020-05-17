@@ -52,9 +52,9 @@ const Landing = () => {
                </nav>
 
                <div id='header-content'>
-                  <h1>A New Way of life</h1>
-                  <p>Join a local group, discover something new, or do what you interested about.</p>
-                  <a href='/explore'>Get Started Now!</a>
+                  <h1>King of Community</h1>
+                  <p>Social media web application supported by Agile Monsters</p>
+                  <Link style={{fontSize: '1.7rem'}} to='/explore'>Get Started Now!</Link>
                </div>
             </div>
          </div>
@@ -68,42 +68,30 @@ const Landing = () => {
                <div id='landing-fe-features'>
                   <div id='landing-fe-box' className='is-revealed'>
                      <div id='landing-fe-box-heading'>
-                        <i className="fas fa-desktop fa-2x"></i><h2>feature1</h2>
+                        <i className="fas fa-desktop fa-2x"></i><h2>FEATURE 1</h2>
                      </div>
                      <div id='landing-fe-box-content'>
-                        <p>Authentication</p>
-                        <ul>
-                           <li>Sign up</li>
-                           <li>Sign in</li>
-                           <li>Sign out</li>
-                        </ul>
+                        <p>Find what your neighbors are up to and find a gorup of your interest to join. With the help of Google Map, 
+                           you can just stay at home and check what is going on around you. </p>
                      </div>
                   </div>
                   <div id='landing-fe-box' className='is-revealed'>
                      <div id='landing-fe-box-heading'>
-                        <i className="fas fa-object-ungroup fa-2x"></i><h2>feature2</h2>
+                        <i className="fas fa-object-ungroup fa-2x"></i><h2>FEATURE 2</h2>
                      </div>
                      <div id='landing-fe-box-content'>
-                        <p>Group Activity</p>
-                           <ul >
-                              <li>Start a new goup</li>
-                              <li>Discover groups by location</li>
-                              <li>Join groups</li>
-                              <li>Delete a member in group</li>
-                              <li>add posts in group</li>
-                           </ul>
+                        <p>Create your own group and start to manage it. Attract more people in your community to 
+                           join with your amazing group management ability and become a star in your neighborhood!
+                        </p>
                      </div>
                   </div>
                   <div id='landing-fe-box' className='is-revealed'>
                      <div id='landing-fe-box-heading'>
-                        <i className="fas fa-thumbs-up fa-2x"></i><h2>feature3</h2>
+                        <i className="fas fa-thumbs-up fa-2x"></i><h2>FEATURE 3</h2>
                      </div>
                      <div id='landing-fe-box-content'>
-                        <p>Small Chatting Room</p>
-                     <ul>
-                        <li>Chat between two people</li>
-                        <li>Quit notification</li>
-                     </ul>
+                        <p>Chatting with group managers and group members in real time allows you to arrange group
+                           activity or meetup with ease!</p>
                      </div>
                   </div>
                </div>
@@ -124,7 +112,7 @@ const Landing = () => {
                      </div>
                      <div id='landing-tm-box-contact'>
                         <p>Group Manager</p>
-                        <a href='https://www.linkedin.com/in/kuan-lyu/'>Contact Him</a>
+                        <a target='_blanket' href='https://www.linkedin.com/in/kuan-lyu/'>Contact Him</a>
                      </div>
                   </div>
                   <div id='landing-tm-box'>
@@ -134,7 +122,7 @@ const Landing = () => {
                      </div>
                      <div id='landing-tm-box-contact'>
                         <p>Group Member</p>
-                        <a href='https://www.linkedin.com/in/jiaxian-xing/'>Contact Him</a>
+                        <a target='_blanket' href='https://www.linkedin.com/in/jiaxian-xing/'>Contact Him</a>
                      </div>
                   </div>
                   <div id='landing-tm-box'>
@@ -144,7 +132,7 @@ const Landing = () => {
                      </div>
                      <div id='landing-tm-box-contact'>
                         <p>Group Member</p>
-                        <a href='https://www.linkedin.com/in/xingyuan-rui-b53212196/'>Contact Him</a>
+                        <a target='_blanket' href='https://www.linkedin.com/in/xingyuan-rui-b53212196/'>Contact Him</a>
                      </div>
                   </div>
                   <div id='landing-tm-box'>
@@ -154,7 +142,7 @@ const Landing = () => {
                      </div>
                      <div id='landing-tm-box-contact'>
                         <p>Group Member</p>
-                        <a href='https://www.linkedin.com/in/luyun-zheng-772283193/'>Contact Her</a>
+                        <a target='_blanket' href='https://www.linkedin.com/in/luyun-zheng-772283193/'>Contact Her</a>
                      </div>
                   </div>
                </div>
