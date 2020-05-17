@@ -48,8 +48,8 @@ export default function Navigation() {
          await axios.get('http://localhost:4000/users/logout', {
             withCredentials: true
          });
-         await doSignOut();
          window.location.href = 'http://localhost:3000';
+         await doSignOut();
       } catch(e) {
          window.location.href = `http://localhost:3000/error/${e}`;
       }
