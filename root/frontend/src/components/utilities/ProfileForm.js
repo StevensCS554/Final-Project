@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { storage } from '../../firebase/Firebase';
 import { AuthContext } from '../../firebase/Auth';
+import { doSignOut } from '../../firebase/FirebaseFunctions';
 // can't import images outside src folder
 
 export default function ProfileForm() {
@@ -15,8 +16,14 @@ export default function ProfileForm() {
       // document.getElementById("upload-profile-btn").addEventListener("click", createGroup);
       async function getUrl() {
          try {
-            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`)
-            const { url } = data;
+            const { data } = await axios.get(`http://localhost:4000/users/profile/${currentUser.displayName}`, {
+               withCredentials: true
+            })
+            const { url, auth } = data;
+            if (auth === 'unauth') {
+               await doSignOut();
+               return;
+            }
             setProfileUrl(url);
          } catch (e) {
             alert(e);
@@ -25,7 +32,9 @@ export default function ProfileForm() {
       async function getUserData() {
          if (currentUser && currentUser.displayName) {
             try {
-               const { data } = await axios.get(`http://localhost:4000/users/getUserByName/${currentUser.displayName}`);
+               const { data } = await axios.get(`http://localhost:4000/users/getUserByName/${currentUser.displayName}`, {
+                  withCredentials: true
+               });
                const { user } = data;
                setUserData(user);
             } catch (e) {
@@ -69,6 +78,7 @@ export default function ProfileForm() {
             return false;
          }
          const response = await fetch(`http://localhost:4000/users/${userData._id}`, {
+            credentials: "include",
             method: "PUT",
             headers: {
                'Content-Type': 'application/json'
@@ -76,11 +86,18 @@ export default function ProfileForm() {
             body: JSON.stringify(reqBody)
          });
          if (response.status === 200) {
+            const { isLoggedIn } = await response.json();
+            if (isLoggedIn !== null && isLoggedIn === false) {
+               alert(isLoggedIn);
+               await doSignOut();
+            }
+
             alert('Succes!');
          }
          else {
-            alert('Sorry, something went wrong!');
-            console.log(await response.json());
+            // alert('Sorry, something went wrong!');
+            const e = await response.json();
+            window.location.href = `http://localhost:3000/error/${e}`
          }
          //window.location.reload();
       }
@@ -105,9 +122,11 @@ export default function ProfileForm() {
                setProfileUrl(url);
                try {
                   await axios.post(`http://localhost:4000/users/profile/${currentUser.displayName}`,
-                     { url: url });
+                     { url: url }, {
+                     withCredentials: true
+                  });
                } catch (e) {
-                  alert(e);
+                  window.location.href = `http://localhost:3000/error/${e}`
                }
             });
          }
@@ -210,7 +229,7 @@ export default function ProfileForm() {
                   <select name="gender" id="gender" placeholder={userData && userData.gender} >
                      <option value="male">Male</option>
                      <option value="female">Female</option>
-                     <option value="other">Other</option>
+                     {/* <option value="other">Other</option> */}
                   </select>
                </div>
                <div className='form-group' id='age-input'>

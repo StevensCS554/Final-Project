@@ -59,9 +59,10 @@ export default function Signup() {
          // if (!gender_v) throw 'No gender provided!';  //unlikely
          // if (!phone_v) throw 'No phone provided!';
          // if (!password_v) throw 'No password provided!';
-        await doCreateUserWithEmailAndPassword(email_v, password_v, username_v);
-   
+         await doCreateUserWithEmailAndPassword(email_v, password_v, username_v);
+
          const response = await fetch("http://localhost:4000/users", {
+            credentials: "include",
             method: "POST",
             headers: {
                'Content-Type': 'application/json'
@@ -86,7 +87,7 @@ export default function Signup() {
             window.location.href = "http://localhost:3000/";
          }
       } catch (e) {
-         alert(e.message ? e.message : e);
+         window.location.href = `http://localhost:3000/error/${e}`
       }
    }
 
@@ -145,8 +146,8 @@ export default function Signup() {
                }
             }
             else {
-               alert('Sorry, something went wrong!');
-               console.log(await response.json());
+               const err = await response.json();
+               window.location.href = `http://localhost:3000/error/${err}`
             }
          }
       }
@@ -438,10 +439,10 @@ export default function Signup() {
 
    return (
       <div>
-        {/* navigation */}
-        <div className='navigation-bar'>
+         {/* navigation */}
+         <div className='navigation-bar'>
             <div id='navbar-logo'>
-               <img src={logo} />
+               <img src={logo} alt="logo"/>
             </div>
 
             <div id='navbar-link'>

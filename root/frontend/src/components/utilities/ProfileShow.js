@@ -13,6 +13,7 @@ export default function ProfileForm(props) {
             try {
                 const user = await fetch(`http://localhost:4000/users/getUserByUsername/${props.username}`, {
                     method: "GET",
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -26,7 +27,7 @@ export default function ProfileForm(props) {
                 setUserData(resolved);
                 return;
             } catch (e) {
-                alert(e);
+               window.location.href = `http://localhost:3000/error/${e}`
             }
         }
         get();
@@ -42,7 +43,7 @@ export default function ProfileForm(props) {
     return (
         <div id='profileShow-container'>
             <div id='profileShow-img'>
-                <img src={userData && userData.profileUrl || profile} alt="user avatar" />
+                <img src={( userData && userData.profileUrl )|| profile} alt="user avatar" />
             </div>
             <div id='profileShow-info'>
                 <p type='text' name='username' id='username'>USERNAME: {userData && userData.username}</p>
